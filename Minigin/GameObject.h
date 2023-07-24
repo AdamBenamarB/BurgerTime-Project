@@ -1,31 +1,82 @@
 #pragma once
 #include <memory>
+#include <vector>
+
 #include "Transform.h"
 
 namespace dae
 {
+	class Component;
 	class Texture2D;
-
-	// todo: this should become final.
-	class GameObject 
+	
+	class GameObject final
 	{
 	public:
-		virtual void Update();
-		virtual void Render() const;
-
-		void SetTexture(const std::string& filename);
-		void SetPosition(float x, float y);
-
-		GameObject() = default;
+		GameObject() { m_Transform = AddComponent<Transform>(); };
 		virtual ~GameObject();
 		GameObject(const GameObject& other) = delete;
 		GameObject(GameObject&& other) = delete;
 		GameObject& operator=(const GameObject& other) = delete;
 		GameObject& operator=(GameObject&& other) = delete;
 
+		void FixedUpdate(float deltaTime);
+		void Update(float deltaTime);
+		void Render() const;
+
+		Transform* GetTransform() { return m_Transform; }
+
+		template<typename T> T* AddComponent();
+		template<typename T> T* GetComponent() const;
+		template<typename T> void RemoveComponent();
+
 	private:
-		Transform m_transform{};
+		Transform* m_Transform;
 		// todo: mmm, every gameobject has a texture? Is that correct?
-		std::shared_ptr<Texture2D> m_texture{};
+		std::vector<std::shared_ptr<Component>> m_Components{};
 	};
+}
+
+template <typename T>
+T* dae::GameObject::AddComponent()
+{
+	if (std::is_base_of<Component, T>())
+	{
+
+		std::shared_ptr < T > ptr = std::make_shared<T>(this);
+		m_Components.push_back(ptr);
+		return ptr.get();
+	}
+	else return nullptr;
+}
+
+template <typename T>
+T* dae::GameObject::GetComponent() const
+{
+	for (std::shared_ptr<Component> comp : m_Components)
+	{
+		if (typeid(T) == typeid(*comp))
+		{
+			return (T*)comp.get();
+		}
+
+	}
+	return nullptr;
+}
+
+
+template<typename T>
+void dae::GameObject::RemoveComponent()
+{
+	for (auto it = m_Components.begin(); it < m_Components.end();)
+	{
+		if (typeid(**it) == typeid(T))
+		{
+			it = m_Components.erase(it);
+		}
+		else
+		{
+			++it;
+		}
+	}
+
 }
