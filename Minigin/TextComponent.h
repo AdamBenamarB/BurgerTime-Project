@@ -21,6 +21,7 @@ namespace dae
 	{
 	public:
 		void Update(float deltaTime) override;
+		void FixedUpdate(float) override {};
 
 		void SetText(const std::string& text);
 		void SetFont(const std::shared_ptr<Font>& font);

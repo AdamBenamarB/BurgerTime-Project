@@ -9,6 +9,10 @@ namespace dae
 	{
 	public:
 		RenderComponent(GameObject* owner);
+
+		void Update(float) override {};
+		void FixedUpdate(float) override {};
+
 		virtual void Render() const;
 		void SetTexture(const std::shared_ptr<Texture2D> texture);
 		void SetTexture(const std::string& filename);

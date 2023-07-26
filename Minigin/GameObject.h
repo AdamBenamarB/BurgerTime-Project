@@ -23,13 +23,23 @@ namespace dae
 		void Update(float deltaTime);
 		void Render() const;
 
+		GameObject* GetParent() const{ return m_Parent; }
+		void SetParent(GameObject* parent, bool keepWorldPos = false);
+		void AddChild(GameObject* child);
+		void RemoveChild(GameObject* child);
+
+		std::vector<GameObject*> GetChildren() const { return m_Children; }
+
 		Transform* GetTransform() { return m_Transform; }
 
 		template<typename T> T* AddComponent();
 		template<typename T> T* GetComponent() const;
 		template<typename T> void RemoveComponent();
 
+
 	private:
+		GameObject* m_Parent = nullptr;
+		std::vector<GameObject*> m_Children{};
 		Transform* m_Transform;
 		// todo: mmm, every gameobject has a texture? Is that correct?
 		std::vector<std::shared_ptr<Component>> m_Components{};

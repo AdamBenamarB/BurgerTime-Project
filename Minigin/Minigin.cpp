@@ -10,6 +10,7 @@
 #include "Renderer.h"
 #include "ResourceManager.h"
 #include <chrono>
+#include <thread>
 SDL_Window* g_window{};
 
 void PrintSDLVersion()
@@ -104,5 +105,8 @@ void dae::Minigin::Run(const std::function<void()>& load)
 		}
 		sceneManager.Update(deltaTime);
 		renderer.Render();
+
+		const auto sleepTime = currentTime + std::chrono::milliseconds(MsPerFrame) - std::chrono::high_resolution_clock::now();
+		std::this_thread::sleep_for(sleepTime);
 	}
 }

@@ -7,10 +7,14 @@ dae::FPS::FPS(GameObject* owner)
 {
 	m_TextComponent = GetOwner()->GetComponent<TextComponent>();
 	m_TextComponent->SetText("0");
+	m_TextComponent->SetColor(0, 1, 0);
 }
 
 void dae::FPS::Update(float deltaTime)
 {
+	auto pos = GetOwner()->GetTransform()->GetWorldPosition();
+	pos.x += 1;
+	GetOwner()->GetTransform()->SetLocalPosition(pos);
 	++m_FrameCount;
 	m_ElapsedSeconds += deltaTime;
 	if (m_ElapsedSeconds >= 1)
@@ -18,7 +22,7 @@ void dae::FPS::Update(float deltaTime)
 		m_FPS = int(m_FrameCount / m_ElapsedSeconds);
 		m_FrameCount = 0;
 		m_ElapsedSeconds = 0;
-		m_TextComponent->SetText(GetFPS());
+		m_TextComponent->SetText(GetFPS() + " FPS");
 	}
 }
 

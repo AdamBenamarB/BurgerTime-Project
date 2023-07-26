@@ -12,6 +12,7 @@ namespace dae
 	public:
 		FPS(GameObject* owner);
 		void Update(float deltaTime) override;
+		void FixedUpdate(float) override {};
 		std::string GetFPS() const;
 	private:
 		int m_FrameCount{};
