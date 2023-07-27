@@ -12,9 +12,12 @@ dae::FPS::FPS(GameObject* owner)
 
 void dae::FPS::Update(float deltaTime)
 {
-	auto pos = GetOwner()->GetTransform()->GetWorldPosition();
-	pos.x += 1;
-	GetOwner()->GetTransform()->SetLocalPosition(pos);
+	if (m_Test)
+	{
+		auto pos = GetOwner()->GetTransform()->GetWorldPosition();
+		pos.x += 1;
+		GetOwner()->GetTransform()->SetLocalPosition(pos);
+	}
 	++m_FrameCount;
 	m_ElapsedSeconds += deltaTime;
 	if (m_ElapsedSeconds >= 1)
