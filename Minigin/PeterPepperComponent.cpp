@@ -28,16 +28,43 @@ void dae::PeterPepperComponent::HandleMovement(float deltaTime)
 		break;
 	case State::left:
 		{
-		auto pos = m_Transform->GetWorldPosition();
-		pos.x -= m_MovementSpeed * deltaTime;
-		m_Transform->SetLocalPosition(pos);
+		for (auto object : SceneManager::GetInstance().GetActiveScene().GetObjects())
+		{
+			auto colcomp = object->GetComponent<CollisionComponent>();
+			if (colcomp)
+			{
+				if (m_CollisionComp->IsOverlapping(object.get()))
+				{
+					if (object->GetTag().compare("PLATFORM") == 0)
+					{
+						auto pos = m_Transform->GetWorldPosition();
+						pos.x -= m_MovementSpeed * deltaTime;
+						m_Transform->SetLocalPosition(pos);
+					}
+				}
+			}
+		}
+		
 		break;
 		}
 	case State::right:
 		{
-		auto pos = m_Transform->GetWorldPosition();
-		pos.x += m_MovementSpeed * deltaTime;
-		m_Transform->SetLocalPosition(pos);
+		for (auto object : SceneManager::GetInstance().GetActiveScene().GetObjects())
+		{
+			auto colcomp = object->GetComponent<CollisionComponent>();
+			if (colcomp)
+			{
+				if (m_CollisionComp->IsOverlapping(object.get()))
+				{
+					if (object->GetTag().compare("PLATFORM") == 0)
+					{
+						auto pos = m_Transform->GetWorldPosition();
+						pos.x += m_MovementSpeed * deltaTime;
+						m_Transform->SetLocalPosition(pos);
+					}
+				}
+			}
+		}
 		break;
 		}
 	case State::down:
