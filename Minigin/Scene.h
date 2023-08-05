@@ -16,6 +16,8 @@ namespace dae
 		void Update(float deltaTime);
 		void Render() const;
 
+		std::string& GetName() { return m_Name; }
+		std::vector<std::shared_ptr<GameObject>>& GetObjects() { return m_Objects; }
 		~Scene();
 		Scene(const Scene& other) = delete;
 		Scene(Scene&& other) = delete;
@@ -25,8 +27,8 @@ namespace dae
 	private: 
 		explicit Scene(const std::string& name);
 
-		std::string m_name;
-		std::vector < std::shared_ptr<GameObject>> m_objects{};
+		std::string m_Name;
+		std::vector < std::shared_ptr<GameObject>> m_Objects{};
 
 		static unsigned int m_idCounter; 
 	};

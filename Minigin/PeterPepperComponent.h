@@ -4,6 +4,7 @@
 #include "RenderComponent.h"
 
 namespace dae {
+	class CollisionComponent;
 	class Transform;
 	//class AnimatedRenderComponent;
 
@@ -18,7 +19,7 @@ namespace dae {
             up,
             down
         };
-        PeterPepperComponent(GameObject* owner) :Component(owner) { m_Transform = owner->GetTransform(); }
+        PeterPepperComponent(GameObject* owner);
         ~PeterPepperComponent(){}
         void Update(float deltaTime) override;
         void FixedUpdate(float) override{}
@@ -28,7 +29,8 @@ namespace dae {
     private:
         float m_MovementSpeed = 50.f;
         Transform* m_Transform = nullptr;
-        RenderComponent* m_RenderComp;
+        RenderComponent* m_RenderComp = nullptr;
+        CollisionComponent* m_CollisionComp = nullptr;
         State m_State = State::idle;
         void HandleMovement(float deltaTime);
         void HandleCollision(float deltaTime);

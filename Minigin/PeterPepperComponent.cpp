@@ -1,6 +1,18 @@
 #include "PeterPepperComponent.h"
 
+#include <iostream>
+
+#include "CollisionComponent.h"
 #include "GameObject.h"
+#include "Scene.h"
+#include "SceneManager.h"
+
+dae::PeterPepperComponent::PeterPepperComponent(GameObject* owner) :Component(owner)
+{
+	m_Transform = owner->GetTransform();
+	m_CollisionComp = owner->GetComponent<CollisionComponent>();
+}
+
 
 void dae::PeterPepperComponent::Update(float deltaTime)
 {
@@ -33,7 +45,17 @@ void dae::PeterPepperComponent::HandleMovement(float deltaTime)
 
 void dae::PeterPepperComponent::HandleCollision(float)// deltaTime)
 {
-	
+	for( auto object : SceneManager::GetInstance().GetActiveScene().GetObjects())
+	{
+		auto colcomp = object->GetComponent<CollisionComponent>();
+		if(colcomp)
+		{
+			if(m_CollisionComp->IsOverlapping(object.get()))
+			{
+				std::cout << "Overlapping!/n";
+			}
+		}
+	}
 }
 
 
