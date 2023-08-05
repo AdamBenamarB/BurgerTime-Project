@@ -24,7 +24,7 @@ namespace dae {
         void Update(float deltaTime) override;
         void FixedUpdate(float) override{}
 
-        void SetState(State state) { m_State = state; }
+        void SetState(State state) { m_State = state; }//DO CHECK FOR LADDER WHEN UP DOWN, CHECK FOR FLOOR LEFT RIGHT
         
     private:
         float m_MovementSpeed = 50.f;

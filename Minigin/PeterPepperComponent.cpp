@@ -27,17 +27,57 @@ void dae::PeterPepperComponent::HandleMovement(float deltaTime)
 	case State::idle:
 		break;
 	case State::left:
-	{
+		{
 		auto pos = m_Transform->GetWorldPosition();
 		pos.x -= m_MovementSpeed * deltaTime;
 		m_Transform->SetLocalPosition(pos);
 		break;
-	}
+		}
 	case State::right:
-	{
+		{
 		auto pos = m_Transform->GetWorldPosition();
 		pos.x += m_MovementSpeed * deltaTime;
 		m_Transform->SetLocalPosition(pos);
+		break;
+		}
+	case State::down:
+		{
+		for (auto object : SceneManager::GetInstance().GetActiveScene().GetObjects())
+		{
+			auto colcomp = object->GetComponent<CollisionComponent>();
+			if (colcomp)
+			{
+				if (m_CollisionComp->IsOverlapping(object.get()))
+				{
+					if (object->GetTag().compare("LADDER") == 0)
+						{
+						auto pos = m_Transform->GetWorldPosition();
+						pos.y += m_MovementSpeed * deltaTime;
+						m_Transform->SetLocalPosition(pos);
+						}
+				}
+			}
+		}
+		break;
+		}
+	case State::up:
+	{
+		for (auto object : SceneManager::GetInstance().GetActiveScene().GetObjects())
+		{
+			auto colcomp = object->GetComponent<CollisionComponent>();
+			if (colcomp)
+			{
+				if (m_CollisionComp->IsOverlapping(object.get()))
+				{
+					if (object->GetTag().compare("LADDER") == 0)
+					{
+						auto pos = m_Transform->GetWorldPosition();
+						pos.y -= m_MovementSpeed * deltaTime;
+						m_Transform->SetLocalPosition(pos);
+					}
+				}
+			}
+		}
 		break;
 	}
 	}
@@ -52,7 +92,7 @@ void dae::PeterPepperComponent::HandleCollision(float)// deltaTime)
 		{
 			if(m_CollisionComp->IsOverlapping(object.get()))
 			{
-				std::cout << "Overlapping!/n";
+
 			}
 		}
 	}

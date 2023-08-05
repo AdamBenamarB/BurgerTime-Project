@@ -56,5 +56,19 @@ namespace dae
 		void Execute() override { GetGameObject()->GetComponent<PeterPepperComponent>()->SetState(PeterPepperComponent::State::right); }
 	};
 
+	class MoveUp : public Command
+	{
+	public:
+		MoveUp(std::shared_ptr<GameObject> obj) : Command(obj) {}
+		void Execute() override { GetGameObject()->GetComponent<PeterPepperComponent>()->SetState(PeterPepperComponent::State::up); }
+	};
+
+	class MoveDown : public Command
+	{
+	public:
+		MoveDown(std::shared_ptr<GameObject> obj) : Command(obj) {}
+		void Execute() override { GetGameObject()->GetComponent<PeterPepperComponent>()->SetState(PeterPepperComponent::State::down); }
+	};
+
 
 }
