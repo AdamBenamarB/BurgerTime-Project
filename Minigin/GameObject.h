@@ -2,6 +2,8 @@
 #include <memory>
 #include <vector>
 #include <string>
+
+#include "Tags.h"
 #include "Transform.h"
 
 namespace dae
@@ -28,8 +30,8 @@ namespace dae
 		void AddChild(GameObject* child);
 		void RemoveChild(GameObject* child);
 
-		void SetTag(const std::string& tag) { m_Tag = tag; }
-		const std::string& GetTag() const { return m_Tag; }
+		void SetTag(Tag tag) { m_Tag = tag; }
+		const Tag& GetTag() const { return m_Tag; }
 		std::vector<GameObject*> GetChildren() const { return m_Children; }
 
 		Transform* GetTransform() { return m_Transform; }
@@ -45,7 +47,7 @@ namespace dae
 		Transform* m_Transform;
 		// todo: mmm, every gameobject has a texture? Is that correct?
 		std::vector<std::shared_ptr<Component>> m_Components{};
-		std::string m_Tag{};
+		Tag m_Tag{};
 	};
 }
 

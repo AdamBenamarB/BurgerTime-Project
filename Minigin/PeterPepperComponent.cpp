@@ -4,6 +4,7 @@
 
 #include "CollisionComponent.h"
 #include "GameObject.h"
+#include "PlatformComponent.h"
 #include "Scene.h"
 #include "SceneManager.h"
 
@@ -35,10 +36,11 @@ void dae::PeterPepperComponent::HandleMovement(float deltaTime)
 			{
 				if (m_CollisionComp->IsOverlapping(object.get()))
 				{
-					if (object->GetTag().compare("PLATFORM") == 0)
+					if (object->GetTag() == Tag::platform)
 					{
 						auto pos = m_Transform->GetWorldPosition();
 						pos.x -= m_MovementSpeed * deltaTime;
+						pos.y = object->GetComponent<PlatformComponent>()->GetFloorPos().y;
 						m_Transform->SetLocalPosition(pos);
 					}
 				}
@@ -56,10 +58,11 @@ void dae::PeterPepperComponent::HandleMovement(float deltaTime)
 			{
 				if (m_CollisionComp->IsOverlapping(object.get()))
 				{
-					if (object->GetTag().compare("PLATFORM") == 0)
+					if (object->GetTag() == Tag::platform)
 					{
 						auto pos = m_Transform->GetWorldPosition();
 						pos.x += m_MovementSpeed * deltaTime;
+						pos.y = object->GetComponent<PlatformComponent>()->GetFloorPos().y;
 						m_Transform->SetLocalPosition(pos);
 					}
 				}
@@ -76,7 +79,7 @@ void dae::PeterPepperComponent::HandleMovement(float deltaTime)
 			{
 				if (m_CollisionComp->IsOverlapping(object.get()))
 				{
-					if (object->GetTag().compare("LADDER") == 0)
+					if (object->GetTag() == Tag::ladder)
 						{
 						auto pos = m_Transform->GetWorldPosition();
 						pos.y += m_MovementSpeed * deltaTime;
@@ -96,7 +99,7 @@ void dae::PeterPepperComponent::HandleMovement(float deltaTime)
 			{
 				if (m_CollisionComp->IsOverlapping(object.get()))
 				{
-					if (object->GetTag().compare("LADDER") == 0)
+					if (object->GetTag() == Tag::ladder)
 					{
 						auto pos = m_Transform->GetWorldPosition();
 						pos.y -= m_MovementSpeed * deltaTime;
