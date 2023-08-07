@@ -7,6 +7,7 @@
 #include "PlatformComponent.h"
 #include "Scene.h"
 #include "SceneManager.h"
+#include "Tags.h"
 
 dae::PeterPepperComponent::PeterPepperComponent(GameObject* owner) :Component(owner)
 {

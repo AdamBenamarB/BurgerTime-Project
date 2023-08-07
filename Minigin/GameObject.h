@@ -2,15 +2,15 @@
 #include <memory>
 #include <vector>
 #include <string>
-
-#include "Tags.h"
 #include "Transform.h"
+
+enum class Tag;
 
 namespace dae
 {
 	class Component;
 	class Texture2D;
-	
+
 	class GameObject final
 	{
 	public:
