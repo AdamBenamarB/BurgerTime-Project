@@ -40,8 +40,10 @@ void dae::PeterPepperComponent::HandleMovement(float deltaTime)
 					if (object->GetTag() == Tag::platform)
 					{
 						auto pos = m_Transform->GetWorldPosition();
+						if (abs(pos.y - object->GetTransform()->GetWorldPosition().y) > 4)
+							break;
 						pos.x -= m_MovementSpeed * deltaTime;
-						pos.y = object->GetComponent<PlatformComponent>()->GetFloorPos().y;
+						pos.y = object->GetTransform()->GetWorldPosition().y;
 						m_Transform->SetLocalPosition(pos);
 					}
 				}
@@ -62,8 +64,10 @@ void dae::PeterPepperComponent::HandleMovement(float deltaTime)
 					if (object->GetTag() == Tag::platform)
 					{
 						auto pos = m_Transform->GetWorldPosition();
+						if (abs(pos.y - object->GetTransform()->GetWorldPosition().y) > 4)
+							break;
 						pos.x += m_MovementSpeed * deltaTime;
-						pos.y = object->GetComponent<PlatformComponent>()->GetFloorPos().y;
+						pos.y = object->GetTransform()->GetWorldPosition().y;
 						m_Transform->SetLocalPosition(pos);
 					}
 				}
@@ -84,6 +88,7 @@ void dae::PeterPepperComponent::HandleMovement(float deltaTime)
 						{
 						auto pos = m_Transform->GetWorldPosition();
 						pos.y += m_MovementSpeed * deltaTime;
+						pos.x = object->GetTransform()->GetWorldPosition().x;
 						m_Transform->SetLocalPosition(pos);
 						}
 				}
@@ -104,6 +109,7 @@ void dae::PeterPepperComponent::HandleMovement(float deltaTime)
 					{
 						auto pos = m_Transform->GetWorldPosition();
 						pos.y -= m_MovementSpeed * deltaTime;
+						pos.x = object->GetTransform()->GetWorldPosition().x;
 						m_Transform->SetLocalPosition(pos);
 					}
 				}

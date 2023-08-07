@@ -11,7 +11,9 @@
 #include "HealthDisplayComponent.h"
 #include "Input.h"
 #include "InputManager.h"
+#include "Ladder.h"
 #include "PeterPepperComponent.h"
+#include "Platform.h"
 #include "PlatformComponent.h"
 #include "RenderComponent.h"
 #include "SceneManager.h"
@@ -74,7 +76,15 @@ void load()
 	scene.Add(go);*/
 
 	//Ladder
-	auto ladder = std::make_shared<dae::GameObject>();
+	dae::Ladder(scene,Vec2{150,10});
+	dae::Ladder(scene, Vec2{ 150,26 });
+
+	for (int i{}; i < 10; ++i)
+	{
+		dae::Platform(scene, Vec2{ float(i * 16),10 });
+	}
+	
+	/*auto ladder = std::make_shared<dae::GameObject>();
 	auto rc = ladder->AddComponent<dae::RenderComponent>();
 	rc->SetDimensions(16, 16);
 	rc->SetTexture("\\Sprites\\World\\ladder.png");
@@ -92,17 +102,17 @@ void load()
 	ladder->GetTransform()->SetLocalPosition(150, 26, 0);
 	ladder->SetTag(Tag::ladder);
 
-	scene.Add(ladder);
+	scene.Add(ladder);*/
 
 	auto peterpepper = std::make_shared<dae::GameObject>();
 	peterpepper->AddComponent<dae::HealthComponent>();
 	peterpepper->AddComponent<dae::CollisionComponent>()->SetSize(16, 16);
-	rc = peterpepper->AddComponent<dae::RenderComponent>();
+	auto rc = peterpepper->AddComponent<dae::RenderComponent>();
 	rc->SetTexture("\\Sprites\\PeterPepper\\peter.png");
 	peterpepper->AddComponent<dae::PeterPepperComponent>();
 	peterpepper->GetTransform()->SetLocalPosition(10, 10, 0);
 
-	for (int i{}; i < 10; ++i)
+	/*for (int i{}; i < 10; ++i)
 	{
 		auto platform = std::make_shared<dae::GameObject>();
 		rc = platform->AddComponent<dae::RenderComponent>();
@@ -114,7 +124,7 @@ void load()
 		platform->SetTag(Tag::platform);
 
 		scene.Add(platform);
-	}
+	}*/
 
 	//LEFT
 	auto controllerkey = Input::ControllerKey({ 0, dae::XBox360Controller::ControllerButton::DpadLeft,Input::KeyState::OnPressed });

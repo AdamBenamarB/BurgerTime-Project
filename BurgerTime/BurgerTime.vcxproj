@@ -157,12 +157,16 @@
   <ItemGroup>
     <ClCompile Include="..\Minigin\PeterPepperComponent.cpp" />
     <ClCompile Include="..\Minigin\PlatformComponent.cpp" />
+    <ClCompile Include="Ladder.cpp" />
     <ClCompile Include="Main.cpp" />
+    <ClCompile Include="Platform.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Minigin\PeterPepperComponent.h" />
     <ClInclude Include="..\Minigin\PlatformComponent.h" />
     <ClInclude Include="..\Minigin\Tags.h" />
+    <ClInclude Include="Ladder.h" />
+    <ClInclude Include="Platform.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

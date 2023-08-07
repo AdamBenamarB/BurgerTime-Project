@@ -33,6 +33,12 @@
     <ClCompile Include="..\Minigin\PlatformComponent.cpp">
       <Filter>Components</Filter>
     </ClCompile>
+    <ClCompile Include="Platform.cpp">
+      <Filter>Prefabs</Filter>
+    </ClCompile>
+    <ClCompile Include="Ladder.cpp">
+      <Filter>Prefabs</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Minigin\PeterPepperComponent.h">
@@ -43,6 +49,12 @@
     </ClInclude>
     <ClInclude Include="..\Minigin\Tags.h">
       <Filter>Misc</Filter>
+    </ClInclude>
+    <ClInclude Include="Platform.h">
+      <Filter>Prefabs</Filter>
+    </ClInclude>
+    <ClInclude Include="Ladder.h">
+      <Filter>Prefabs</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
