@@ -1,6 +1,7 @@
 #include <stdexcept>
 #include "Renderer.h"
 #include "SceneManager.h"
+#include "Structs.h"
 #include "Texture2D.h"
 
 int GetOpenGLDriverIndex()
@@ -56,6 +57,8 @@ void dae::Renderer::RenderTexture(const Texture2D& texture, const float x, const
 	SDL_RenderCopy(GetSDLRenderer(), texture.GetSDLTexture(), nullptr, &dst);
 }
 
+
+
 void dae::Renderer::RenderTexture(const Texture2D& texture, const float x, const float y, const float width, const float height) const
 {
 	SDL_Rect dst{};
@@ -66,4 +69,19 @@ void dae::Renderer::RenderTexture(const Texture2D& texture, const float x, const
 	SDL_RenderCopy(GetSDLRenderer(), texture.GetSDLTexture(), nullptr, &dst);
 }
 
+void dae::Renderer::RenderTexture(const Texture2D& texture, Rect dst, Rect src)
+{
+	SDL_Rect dstR{};
+	dstR.x = int(dst.x);
+	dstR.y = int(dst.y);
+	dstR.w = int(dst.width);
+	dstR.h = int(dst.height);
+
+	SDL_Rect srcR{};
+	srcR.x = int(src.x);
+	srcR.y = int(src.y);
+	srcR.w = int(src.width);
+	srcR.h = int(src.height);
+	SDL_RenderCopy(GetSDLRenderer(), texture.GetSDLTexture(), &srcR, &dstR);
+}
 SDL_Renderer* dae::Renderer::GetSDLRenderer() const { return m_renderer; }

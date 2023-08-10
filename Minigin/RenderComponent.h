@@ -19,7 +19,7 @@ namespace dae
 		void SetDimensions(float width, float height);
 
 		void SetEnabled(bool enabled) { m_Enabled = enabled; }
-	private:
+	protected:
 		std::shared_ptr<Texture2D> m_Texture;
 		float m_Width{},
 			m_Height{};

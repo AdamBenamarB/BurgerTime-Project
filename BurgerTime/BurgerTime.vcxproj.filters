@@ -39,6 +39,9 @@
     <ClCompile Include="Ladder.cpp">
       <Filter>Prefabs</Filter>
     </ClCompile>
+    <ClCompile Include="PeterPepper.cpp">
+      <Filter>Prefabs</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Minigin\PeterPepperComponent.h">
@@ -54,6 +57,9 @@
       <Filter>Prefabs</Filter>
     </ClInclude>
     <ClInclude Include="Ladder.h">
+      <Filter>Prefabs</Filter>
+    </ClInclude>
+    <ClInclude Include="PeterPepper.h">
       <Filter>Prefabs</Filter>
     </ClInclude>
   </ItemGroup>

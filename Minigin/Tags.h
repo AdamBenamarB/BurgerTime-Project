@@ -2,5 +2,6 @@
 enum class Tag
 {
 	platform,
-	ladder
+	ladder,
+	peter
 };
