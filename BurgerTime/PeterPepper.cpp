@@ -17,6 +17,7 @@ dae::PeterPepper::PeterPepper(dae::Scene& scene, Vec2 loc)
 void dae::PeterPepper::Initialize(dae::Scene& scene, Vec2 loc)
 {
 	auto go = std::make_shared<dae::GameObject>();
+	m_Peter = go.get();
 	go->AddComponent<dae::HealthComponent>();
 	go->AddComponent<dae::CollisionComponent>()->SetSize(16, 16);
 
@@ -29,7 +30,7 @@ void dae::PeterPepper::Initialize(dae::Scene& scene, Vec2 loc)
 	rc->SetSpriteDimensions(16, 16);
 
 	go->AddComponent<dae::PeterPepperComponent>()->InitAnimation(rc);
-	go->GetTransform()->SetLocalPosition(10, 10, 0);
+	go->GetTransform()->SetLocalPosition(loc.x, loc.y, 0);
 	scene.Add(go);
 
 	auto controllerkey = Input::ControllerKey({ 0, dae::XBox360Controller::ControllerButton::DpadLeft,Input::KeyState::OnPressed });
@@ -67,6 +68,7 @@ void dae::PeterPepper::Initialize(dae::Scene& scene, Vec2 loc)
 	auto command8 = std::make_unique<dae::Idle>(go);
 	dae::InputManager::GetInstance().AddCommand(controllerkey, std::move(command8));
 
+	
 
 }
 

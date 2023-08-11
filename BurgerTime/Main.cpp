@@ -12,6 +12,7 @@
 #include "Input.h"
 #include "InputManager.h"
 #include "Ladder.h"
+#include "MrHotDog.h"
 #include "PeterPepper.h"
 #include "PeterPepperComponent.h"
 #include "Platform.h"
@@ -28,15 +29,17 @@ void load()
 	auto& scene = dae::SceneManager::GetInstance().CreateScene("Demo");
 
 	//Ladder
-	dae::Ladder(scene,Vec2{150,10});
-	dae::Ladder(scene, Vec2{ 150,26 });
+	dae::Ladder(scene,Vec2{150,16});
+	dae::Ladder(scene, Vec2{ 150,32 });
 
-	for (int i{}; i < 11; ++i)
+	for(int x{}; x < 11; ++x)
+	for (int i{}; i < 18; ++i)
 	{
-		dae::Platform(scene, Vec2{ float(i * 16),10 });
+		dae::Platform(scene, Vec2{ float(i * 16),float(32*x) });
 	}
 	
-	dae::PeterPepper{ scene,Vec2{10,10} };
+	dae::PeterPepper peter{ scene,Vec2{10,0} };
+	dae::MrHotDog{ scene,Vec2{80,0},peter.GetGameObject() };
 	
 }
 

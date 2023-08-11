@@ -11,6 +11,8 @@
 #include "ResourceManager.h"
 #include <chrono>
 #include <thread>
+
+#include "ServiceLocator.h"
 SDL_Window* g_window{};
 
 void PrintSDLVersion()
@@ -66,6 +68,8 @@ dae::Minigin::Minigin(const std::string &dataPath)
 	Renderer::GetInstance().Init(g_window);
 
 	ResourceManager::GetInstance().Init(dataPath);
+
+	ServiceLocator::RegisterSoundSystem(new SoundSystem());
 }
 
 dae::Minigin::~Minigin()
@@ -73,6 +77,7 @@ dae::Minigin::~Minigin()
 	Renderer::GetInstance().Destroy();
 	SDL_DestroyWindow(g_window);
 	g_window = nullptr;
+	ServiceLocator::DestroySoundSystem();
 	SDL_Quit();
 }
 
@@ -83,8 +88,7 @@ void dae::Minigin::Run(const std::function<void()>& load)
 	auto& renderer = Renderer::GetInstance();
 	auto& sceneManager = SceneManager::GetInstance();
 	auto& input = InputManager::GetInstance();
-
-	// todo: this update loop could use some work.
+	
 	bool doContinue = true;
 	auto lastTime = std::chrono::high_resolution_clock::now();
 	float lag = 0.f;

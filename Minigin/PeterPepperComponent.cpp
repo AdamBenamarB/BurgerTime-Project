@@ -139,6 +139,9 @@ void dae::PeterPepperComponent::HandleCollision(float deltaTime)
 {
 	int platforms = 0;
 	int ladders = 0;
+
+	GameObject* ladder = nullptr;
+	GameObject* platform = nullptr;
 	for( auto object : SceneManager::GetInstance().GetActiveScene().GetObjects())
 	{
 		auto colcomp = object->GetComponent<CollisionComponent>();
@@ -148,9 +151,15 @@ void dae::PeterPepperComponent::HandleCollision(float deltaTime)
 			if(m_CollisionComp->IsOverlapping(object.get()))
 			{
 				if (object->GetTag() == Tag::platform)
+				{
 					platforms++;
+					platform = object.get();
+				}
 				if (object->GetTag() == Tag::ladder)
+				{
 					ladders++;
+					ladder = object.get();
+				}
 			}
 		}
 	}
@@ -176,17 +185,32 @@ void dae::PeterPepperComponent::HandleCollision(float deltaTime)
 	case State::up:
 		if (ladders == 1)
 		{
-			auto pos = m_Transform->GetWorldPosition();
+			/*auto pos = m_Transform->GetWorldPosition();
 			pos.y += m_MovementSpeed * deltaTime;
-			m_Transform->SetLocalPosition(pos);
+			m_Transform->SetLocalPosition(pos);*/
 		}
 		break;
 	case State::down:
 		if (ladders == 1)
 		{
-			auto pos = m_Transform->GetWorldPosition();
-			pos.y -= m_MovementSpeed * deltaTime;
-			m_Transform->SetLocalPosition(pos);
+			if (GetOwner()->GetTransform()->GetWorldPosition().y - ladder->GetTransform()->GetWorldPosition().y > 1)
+			{
+				auto pos = m_Transform->GetWorldPosition();
+				pos.y -= m_MovementSpeed * deltaTime;
+				m_Transform->SetLocalPosition(pos);
+			}
+		}
+		break;
+	case State::idle:
+		if (ladders == 0)
+		{
+			if (platform)
+			{
+				auto pos = m_Transform->GetWorldPosition();
+				pos.y = platform->GetTransform()->GetWorldPosition().y;
+				m_Transform->SetLocalPosition(pos);
+			}
+			
 		}
 		break;
 	}

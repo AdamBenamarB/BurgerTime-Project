@@ -3,5 +3,6 @@ enum class Tag
 {
 	platform,
 	ladder,
-	peter
+	peter,
+	hotdog
 };

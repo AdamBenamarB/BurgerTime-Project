@@ -28,12 +28,17 @@ namespace dae {
         void SetState(State state) { m_State = state; }//DO CHECK FOR LADDER WHEN UP DOWN, CHECK FOR FLOOR LEFT RIGHT
 
         void InitAnimation(AnimatedRenderComponent* comp);
+
+        void Hit(){};
     private:
         float m_MovementSpeed = 50.f;
         Transform* m_Transform = nullptr;
         RenderComponent* m_RenderComp = nullptr;
         CollisionComponent* m_CollisionComp = nullptr;
         State m_State = State::idle;
+
+        bool m_OnPlatform = false;
+        bool m_OnLadder = false;
 
         //ANIM
         AnimatedRenderComponent* m_Anim{};

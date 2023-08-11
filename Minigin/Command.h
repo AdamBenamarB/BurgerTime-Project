@@ -5,10 +5,11 @@
 #include "GameObject.h"
 #include "HealthComponent.h"
 #include "PeterPepperComponent.h"
+#include "../BurgerTime/EnemyComponent.h"
 
 namespace dae
 {
-	
+
 	class Command
 	{
 	public:
@@ -68,6 +69,13 @@ namespace dae
 	public:
 		MoveDown(std::shared_ptr<GameObject> obj) : Command(obj) {}
 		void Execute() override { GetGameObject()->GetComponent<PeterPepperComponent>()->SetState(PeterPepperComponent::State::down); }
+	};
+
+	class Kill : public Command
+	{
+	public:
+		Kill(std::shared_ptr<GameObject> obj) : Command(obj) {}
+		void Execute() override { GetGameObject()->GetComponent<EnemyComponent>()->Kill(); }
 	};
 
 

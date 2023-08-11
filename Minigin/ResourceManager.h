@@ -2,6 +2,7 @@
 #include <string>
 #include <memory>
 #include "Singleton.h"
+struct Mix_Chunk;
 
 namespace dae
 {

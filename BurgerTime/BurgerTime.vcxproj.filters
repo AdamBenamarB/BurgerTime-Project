@@ -42,6 +42,12 @@
     <ClCompile Include="PeterPepper.cpp">
       <Filter>Prefabs</Filter>
     </ClCompile>
+    <ClCompile Include="EnemyComponent.cpp">
+      <Filter>Components</Filter>
+    </ClCompile>
+    <ClCompile Include="MrHotDog.cpp">
+      <Filter>Prefabs</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Minigin\PeterPepperComponent.h">
@@ -60,6 +66,12 @@
       <Filter>Prefabs</Filter>
     </ClInclude>
     <ClInclude Include="PeterPepper.h">
+      <Filter>Prefabs</Filter>
+    </ClInclude>
+    <ClInclude Include="EnemyComponent.h">
+      <Filter>Components</Filter>
+    </ClInclude>
+    <ClInclude Include="MrHotDog.h">
       <Filter>Prefabs</Filter>
     </ClInclude>
   </ItemGroup>
