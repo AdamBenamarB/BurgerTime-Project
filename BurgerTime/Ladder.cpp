@@ -3,6 +3,7 @@
 #include "CollisionComponent.h"
 #include "RenderComponent.h"
 #include "GameObject.h"
+#include "LadderComponent.h"
 #include "Scene.h"
 #include "Tags.h"
 
@@ -21,6 +22,8 @@ void dae::Ladder::Initialize(dae::Scene& scene, Vec2 loc)
 	auto col = go->AddComponent<CollisionComponent>();
 	col->SetSize(32, 32);
 	go->GetTransform()->SetLocalPosition(loc.x, loc.y, 0);
+
+	go->AddComponent<LadderComponent>();
 
 	go->SetTag(Tag::ladder);
 	scene.Add(go);

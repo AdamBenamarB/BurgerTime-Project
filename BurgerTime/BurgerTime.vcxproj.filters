@@ -30,9 +30,6 @@
     <ClCompile Include="..\Minigin\PeterPepperComponent.cpp">
       <Filter>Components</Filter>
     </ClCompile>
-    <ClCompile Include="..\Minigin\PlatformComponent.cpp">
-      <Filter>Components</Filter>
-    </ClCompile>
     <ClCompile Include="Platform.cpp">
       <Filter>Prefabs</Filter>
     </ClCompile>
@@ -48,12 +45,12 @@
     <ClCompile Include="MrHotDog.cpp">
       <Filter>Prefabs</Filter>
     </ClCompile>
+    <ClCompile Include="LadderComponent.cpp">
+      <Filter>Components</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Minigin\PeterPepperComponent.h">
-      <Filter>Components</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Minigin\PlatformComponent.h">
       <Filter>Components</Filter>
     </ClInclude>
     <ClInclude Include="..\Minigin\Tags.h">
@@ -73,6 +70,9 @@
     </ClInclude>
     <ClInclude Include="MrHotDog.h">
       <Filter>Prefabs</Filter>
+    </ClInclude>
+    <ClInclude Include="LadderComponent.h">
+      <Filter>Components</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -5,6 +5,7 @@
 #include "AnimatedRenderComponent.h"
 #include "CollisionComponent.h"
 #include "GameObject.h"
+#include "LadderComponent.h"
 #include "Scene.h"
 #include "SceneManager.h"
 #include "ServiceLocator.h"
@@ -19,7 +20,7 @@ dae::EnemyComponent::EnemyComponent(GameObject* owner)
 void dae::EnemyComponent::Update(float deltaTime)
 {
 	HandleMovement(deltaTime);
-	HandleCollision(deltaTime);
+	//HandleCollision(deltaTime);
 	HandleAnim();
 	HandleStun(deltaTime);
 
@@ -51,22 +52,29 @@ void dae::EnemyComponent::HandleMovement(float deltaTime)
 		{
 			if (m_CollisionComp->IsOverlapping(object.get()))
 			{
-				if (object->GetTag() == Tag::ladder && abs(m_Transform->GetWorldPosition().x - object->GetTransform()->GetWorldPosition().x) < 2)//check if in range of ladder to not teleport
+				if (object->GetTag() == Tag::ladder 
+					&& abs(m_Transform->GetWorldPosition().x - object->GetTransform()->GetWorldPosition().x) < 2)//check if in range of ladder to not teleport
 				{
-					if (abs(m_Direction.y) > 1 && !m_NoLadderDown)//check if bottomladder
+					if (abs(m_Direction.y) > 1)
 					{
 						auto pos = m_Transform->GetWorldPosition();
+						auto laddercomp = object->GetComponent<LadderComponent>();
+
 						if (m_Direction.y > 0)
 						{
-							pos.y += m_ClimbSpeed * deltaTime;
-							m_State = State::down;
-							pos.x = object->GetTransform()->GetWorldPosition().x;
-							m_Transform->SetLocalPosition(pos);
-							m_OnLadder = true;
-							m_OnPlatform = false;
-							break;
+							if(!laddercomp->OnBottom(GetOwner()))
+							{
+								pos.y += m_ClimbSpeed * deltaTime;
+								m_State = State::down;
+								pos.x = object->GetTransform()->GetWorldPosition().x;
+								m_Transform->SetLocalPosition(pos);
+								m_OnLadder = true;
+								m_OnPlatform = false;
+								break;
+							}
+
 						}
-						if (m_Direction.y < 0 && abs(m_Transform->GetWorldPosition().y - object->GetTransform()->GetWorldPosition().y) < 31)//check if ladder can go up or just passes by one
+						if (m_Direction.y < 0 && !laddercomp->OnTop(GetOwner()))//check if ladder can go up or just passes by one
 						{
 							pos.y -= m_ClimbSpeed * deltaTime;
 							m_State = State::up;
