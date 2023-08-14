@@ -52,10 +52,9 @@ namespace dae {
         float m_StunTime{ 1.5f },
             m_StunElapsed{};
 
-        bool m_OnPlatform{ false },
+        bool m_OnPlatform{ true },
             m_OnLadder{ false },
-            m_Horizontal{ false },
-            m_Switched{ false };
+            m_NoLadderDown{ false };
 
         GameObject* m_Peter{};
 
