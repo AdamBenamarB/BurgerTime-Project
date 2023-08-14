@@ -19,7 +19,7 @@ void dae::PeterPepper::Initialize(dae::Scene& scene, Vec2 loc)
 	auto go = std::make_shared<dae::GameObject>();
 	m_Peter = go.get();
 	go->AddComponent<dae::HealthComponent>();
-	go->AddComponent<dae::CollisionComponent>()->SetSize(16, 16);
+	go->AddComponent<dae::CollisionComponent>()->SetSize(32, 32);
 
 	/*auto rc = go->AddComponent<dae::RenderComponent>();
 	rc->SetTexture("\\Sprites\\PeterPepper\\peter.png");*/

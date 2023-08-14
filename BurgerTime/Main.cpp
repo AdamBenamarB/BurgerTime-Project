@@ -29,17 +29,17 @@ void load()
 	auto& scene = dae::SceneManager::GetInstance().CreateScene("Demo");
 
 	//Ladder
-	dae::Ladder(scene,Vec2{150,16});
-	dae::Ladder(scene, Vec2{ 150,32 });
-	dae::Ladder(scene, Vec2{ 100,16 });
+	dae::Ladder(scene,Vec2{150,32});
+	dae::Ladder(scene, Vec2{ 150,64 });
 	dae::Ladder(scene, Vec2{ 100,32 });
-	dae::Ladder(scene, Vec2{ 240,48 });
-	dae::Ladder(scene, Vec2{ 240,64 });
+	dae::Ladder(scene, Vec2{ 100,64 });
+	dae::Ladder(scene, Vec2{ 240,96 });
+	dae::Ladder(scene, Vec2{ 240,128 });
 
 	for(int x{}; x < 11; ++x)
 	for (int i{}; i < 18; ++i)
 	{
-		dae::Platform(scene, Vec2{ float(i * 16),float(32*x) });
+		dae::Platform(scene, Vec2{ float(i * 32),float(64*x) });
 	}
 	
 	dae::PeterPepper peter{ scene,Vec2{10,0} };

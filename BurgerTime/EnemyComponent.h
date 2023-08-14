@@ -45,8 +45,8 @@ namespace dae {
         void HandleStun(float deltaTime);
         State m_State = State::left;
 
-        float m_Speed{ 10.f },//50 //30
-            m_ClimbSpeed{ 40.f },
+        float m_Speed{ 15.f },//50 //30
+            m_ClimbSpeed{ 30.f },
             m_FallSpeed{ 150.f };
 
         float m_StunTime{ 1.5f },

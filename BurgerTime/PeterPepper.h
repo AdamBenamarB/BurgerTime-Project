@@ -23,8 +23,8 @@ namespace dae
 	private:
 		void Initialize(dae::Scene& scene, Vec2 loc);
 
-		float m_Height{ 16 },
-			m_Width{ 16 };
+		float m_Height{ 32 },
+			m_Width{ 32 };
 		GameObject* m_Peter{};
 
 	};

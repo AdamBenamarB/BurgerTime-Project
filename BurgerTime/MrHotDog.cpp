@@ -21,7 +21,7 @@ void dae::MrHotDog::Initialize(dae::Scene& scene, Vec2 loc, GameObject* peter)
 	auto go = std::make_shared<dae::GameObject>();
 
 	auto col = go->AddComponent<CollisionComponent>();
-	col->SetSize(16, 16);
+	col->SetSize(32, 32);
 
 	auto enemycomp = go->AddComponent<EnemyComponent>();
 	enemycomp->SetPeter(peter);
