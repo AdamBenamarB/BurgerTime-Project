@@ -19,6 +19,10 @@ dae::MrHotDog::MrHotDog(dae::Scene& scene, Vec2 loc, GameObject* peter)
 void dae::MrHotDog::Initialize(dae::Scene& scene, Vec2 loc, GameObject* peter)
 {
 	auto go = std::make_shared<dae::GameObject>();
+
+	auto col = go->AddComponent<CollisionComponent>();
+	col->SetSize(16, 16);
+
 	auto enemycomp = go->AddComponent<EnemyComponent>();
 	enemycomp->SetPeter(peter);
 
@@ -27,8 +31,6 @@ void dae::MrHotDog::Initialize(dae::Scene& scene, Vec2 loc, GameObject* peter)
 	rc->SetSpriteDimensions(16, 16);
 	enemycomp->InitAnimation(rc, "\\Sprites\\Enemies\\dog.png");
 
-	auto col = go->AddComponent<CollisionComponent>();
-	col->SetSize(16, 16);
 
 	go->SetTag(Tag::hotdog);
 

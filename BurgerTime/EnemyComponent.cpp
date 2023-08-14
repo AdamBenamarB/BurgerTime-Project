@@ -19,19 +19,138 @@ dae::EnemyComponent::EnemyComponent(GameObject* owner)
 void dae::EnemyComponent::Update(float deltaTime)
 {
 	HandleMovement(deltaTime);
-	HandleCollision(deltaTime);
+	//HandleCollision(deltaTime);
 	HandleAnim();
 	HandleStun(deltaTime);
+
+	std::cout << "State: " << (int)m_State << '\n' << "Direction x: " << m_Direction.x << " y: " << m_Direction.y << '\n';
 }
 
-void dae::EnemyComponent::HandleMovement(float)// deltaTime)
+void dae::EnemyComponent::HandleMovement(float deltaTime)
 {
+	glm::vec3 peterPos = m_Peter->GetTransform()->GetWorldPosition();
+	glm::vec3 pos = GetOwner()->GetTransform()->GetWorldPosition();
+
+	m_Direction.y = peterPos.y - pos.y;
+
+	if(m_Direction.x == 0 || m_Direction.y == 0)
+	m_Direction.x = peterPos.x - pos.x;
+
 	
+
+	for (auto object : SceneManager::GetInstance().GetActiveScene().GetObjects())
+	{
+		//if y is bigger than 0 then move x in random direction till ladder,
+		//if ladder move on it
+		//if y == 0 move x in direction of peter
+		if(object->GetComponent<CollisionComponent>())
+		{
+			if (m_CollisionComp->IsOverlapping(object.get()))
+			{
+				if (object->GetTag() == Tag::ladder && abs(m_Direction.y)>0.1)
+				{
+					auto pos = m_Transform->GetWorldPosition();
+					if (m_Direction.y > 0)
+					{
+						pos.y += m_ClimbSpeed * deltaTime;
+						m_State = State::down;
+					}
+					if (m_Direction.y < 0)
+					{
+						pos.y -= m_ClimbSpeed * deltaTime;
+						m_State = State::up;
+					}
+					pos.x = object->GetTransform()->GetWorldPosition().x;
+					m_Transform->SetLocalPosition(pos);
+					break;
+					
+				}
+				if (object->GetTag() == Tag::platform)
+				{
+					auto pos = m_Transform->GetWorldPosition();
+					if (m_Direction.x > 0)
+					{
+						pos.x += m_Speed * deltaTime;
+						m_State = State::right;
+					}
+					if (m_Direction.x < 0)
+					{
+						pos.x -= m_Speed * deltaTime;
+						m_State = State::left;
+					}
+					pos.y = object->GetTransform()->GetWorldPosition().y;
+					m_Transform->SetLocalPosition(pos);
+				}
+			}
+		}
+		
+	}
+
 }
 
-void dae::EnemyComponent::HandleCollision(float)// deltaTime)
+void dae::EnemyComponent::HandleCollision(float deltaTime)
 {
+	int platforms = 0;
+	int ladders = 0;
+	GameObject* platform = nullptr;
+	GameObject* ladder = nullptr;
 	
+	for (auto object : SceneManager::GetInstance().GetActiveScene().GetObjects())
+	{
+		auto colcomp = object->GetComponent<CollisionComponent>();
+		if (colcomp)
+		{
+
+			if (m_CollisionComp->IsOverlapping(object.get()))
+			{
+				if (object->GetTag() == Tag::platform)
+				{
+					platforms++;
+					platform = object.get();
+				}
+				if (object->GetTag() == Tag::ladder)
+				{
+					ladders++;
+					ladder = object.get();
+				}
+			}
+		}
+	}
+	switch (m_State)
+	{
+	case State::left:
+		if (platforms == 1)
+		{
+			m_Direction.x = -m_Direction.x;
+		}
+		break;
+	case State::right:
+		if (platforms == 1)
+		{
+			m_Direction.x = -m_Direction.x;
+		}
+		break;
+	case State::up:
+		if (ladders == 1)
+		{
+			/*auto pos = m_Transform->GetWorldPosition();
+			pos.y += m_MovementSpeed * deltaTime;
+			m_Transform->SetLocalPosition(pos);*/
+		}
+		break;
+	case State::down:
+		if (ladders == 1)
+		{
+			if (GetOwner()->GetTransform()->GetWorldPosition().y - ladder->GetTransform()->GetWorldPosition().y > 1)
+			{
+				auto pos = m_Transform->GetWorldPosition();
+				pos.y -= m_Speed * deltaTime;
+				m_Transform->SetLocalPosition(pos);
+			}
+		}
+		break;
+	}
+
 }
 
 void dae::EnemyComponent::SetState(State state)
@@ -99,6 +218,8 @@ void dae::EnemyComponent::Initialize()
 {
 	m_Hit = dae::ServiceLocator::GetSoundSystem().AddSound("../Data/Sounds/enemyhit.wav");
 	m_Fall = dae::ServiceLocator::GetSoundSystem().AddSound("../Data/Sounds/enemyfall.wav");
+	m_CollisionComp = GetOwner()->GetComponent<CollisionComponent>();
+	m_Transform = GetOwner()->GetTransform();
 }
 
 void dae::EnemyComponent::HandleStun(float deltaTime)

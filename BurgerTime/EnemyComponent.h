@@ -45,7 +45,7 @@ namespace dae {
         void HandleStun(float deltaTime);
         State m_State = State::left;
 
-        float m_Speed{ 60.f },//50 //30
+        float m_Speed{ 10.f },//50 //30
             m_ClimbSpeed{ 40.f },
             m_FallSpeed{ 150.f };
 
@@ -63,6 +63,9 @@ namespace dae {
 
         AnimatedRenderComponent* m_Anim{};
 
+        CollisionComponent* m_CollisionComp = nullptr;
+
+        Transform* m_Transform = nullptr;
         //Anim
         int m_RunLeft{},
             m_RunRight{},
