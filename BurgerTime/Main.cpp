@@ -29,8 +29,8 @@ void load()
 	auto& scene = dae::SceneManager::GetInstance().CreateScene("Demo");
 
 	//Ladder
-	dae::Ladder(scene,Vec2{150,32});
-	dae::Ladder(scene, Vec2{ 150,64 });
+	dae::Ladder(scene,Vec2{200,32});
+	dae::Ladder(scene, Vec2{ 200,64 });
 	dae::Ladder(scene, Vec2{ 100,32 });
 	dae::Ladder(scene, Vec2{ 100,64 });
 	dae::Ladder(scene, Vec2{ 240,96 });

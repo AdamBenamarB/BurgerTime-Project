@@ -24,6 +24,7 @@ void dae::EnemyComponent::Update(float deltaTime)
 	HandleStun(deltaTime);
 
 	std::cout << "State: " << (int)m_State << '\n' << "Direction x: " << m_Direction.x << " y: " << m_Direction.y << '\n';
+	//std::cout << "On Ladder: " << m_OnLadder << '\n';
 }
 
 void dae::EnemyComponent::HandleMovement(float deltaTime)
@@ -36,7 +37,7 @@ void dae::EnemyComponent::HandleMovement(float deltaTime)
 	if(m_OnPlatform)
 	m_Direction.y = peterPos.y - pos.y;
 
-	if(m_Direction.x == 0 || m_Direction.y == 0)
+	if(m_Direction.x == 0 || m_Direction.y == 0 || m_OnLadder)
 	m_Direction.x = peterPos.x - pos.x;
 
 	
@@ -50,38 +51,43 @@ void dae::EnemyComponent::HandleMovement(float deltaTime)
 		{
 			if (m_CollisionComp->IsOverlapping(object.get()))
 			{
-				if (object->GetTag() == Tag::ladder && abs(m_Transform->GetWorldPosition().x - object->GetTransform()->GetWorldPosition().x) < 2)
+				if (object->GetTag() == Tag::ladder && abs(m_Transform->GetWorldPosition().x - object->GetTransform()->GetWorldPosition().x) < 2)//check if in range of ladder to not teleport
 				{
-					if (abs(m_Direction.y) > 1 && !m_NoLadderDown)
+					if (abs(m_Direction.y) > 1 && !m_NoLadderDown)//check if bottomladder
 					{
 						auto pos = m_Transform->GetWorldPosition();
 						if (m_Direction.y > 0)
 						{
 							pos.y += m_ClimbSpeed * deltaTime;
 							m_State = State::down;
+							pos.x = object->GetTransform()->GetWorldPosition().x;
+							m_Transform->SetLocalPosition(pos);
+							m_OnLadder = true;
+							m_OnPlatform = false;
+							break;
 						}
-						if (m_Direction.y < 0)
+						if (m_Direction.y < 0 && abs(m_Transform->GetWorldPosition().y - object->GetTransform()->GetWorldPosition().y) < 31)//check if ladder can go up or just passes by one
 						{
 							pos.y -= m_ClimbSpeed * deltaTime;
 							m_State = State::up;
+							pos.x = object->GetTransform()->GetWorldPosition().x;
+							m_Transform->SetLocalPosition(pos);
+							m_OnLadder = true;
+							m_OnPlatform = false;
+							break;
 						}
-						pos.x = object->GetTransform()->GetWorldPosition().x;
-						m_Transform->SetLocalPosition(pos);
-						m_OnLadder = true;
-						m_OnPlatform = false;
-						break;
 
 					}
 				}
 				if (object->GetTag() == Tag::platform)
 				{
 					auto pos = m_Transform->GetWorldPosition();
-					if (m_Direction.x > 0)
+					if (m_Direction.x > 1)
 					{
 						pos.x += m_Speed * deltaTime;
 						m_State = State::right;
 					}
-					if (m_Direction.x < 0)
+					if (m_Direction.x < -1)
 					{
 						pos.x -= m_Speed * deltaTime;
 						m_State = State::left;
@@ -90,6 +96,7 @@ void dae::EnemyComponent::HandleMovement(float deltaTime)
 					m_Transform->SetLocalPosition(pos);
 					m_OnLadder = false;
 					m_OnPlatform = true;
+					break;
 				}
 			}
 		}
@@ -104,7 +111,7 @@ void dae::EnemyComponent::HandleCollision(float deltaTime)
 	int ladders = 0;
 	GameObject* platform = nullptr;
 	GameObject* ladder = nullptr;
-	
+
 	for (auto object : SceneManager::GetInstance().GetActiveScene().GetObjects())
 	{
 		auto colcomp = object->GetComponent<CollisionComponent>();
@@ -122,6 +129,7 @@ void dae::EnemyComponent::HandleCollision(float deltaTime)
 				{
 					ladders++;
 					ladder = object.get();
+					
 				}
 			}
 		}
@@ -143,9 +151,7 @@ void dae::EnemyComponent::HandleCollision(float deltaTime)
 	case State::up:
 		if (ladders == 1)
 		{
-			/*auto pos = m_Transform->GetWorldPosition();
-			pos.y += m_MovementSpeed * deltaTime;
-			m_Transform->SetLocalPosition(pos);*/
+			
 		}
 		break;
 	case State::down:
