@@ -21,7 +21,7 @@ dae::EnemyComponent::EnemyComponent(GameObject* owner)
 void dae::EnemyComponent::Update(float deltaTime)
 {
 	HandleMovement(deltaTime);
-	HandleCollision(deltaTime);
+	//HandleCollision(deltaTime);
 	HandleAnim();
 	HandleStun(deltaTime);
 }
@@ -37,10 +37,10 @@ void dae::EnemyComponent::HandleMovement(float deltaTime)
 		if (m_OnPlatform)
 			m_Direction.y = peterPos.y - pos.y;
 
-		if (m_Direction.x == 0 || m_Direction.y == 0 || m_OnLadder)
-			m_Direction.x = peterPos.x - pos.x;
+		//if (m_Direction.x == 0 || m_Direction.y == 0 || m_OnLadder)
+		//	m_Direction.x = peterPos.x - pos.x;
 
-
+		std::cout << "X: " << m_Direction.x << "Y: " << m_Direction.y << std::endl;
 
 		for (auto object : SceneManager::GetInstance().GetActiveScene().GetObjects())
 		{
@@ -49,12 +49,13 @@ void dae::EnemyComponent::HandleMovement(float deltaTime)
 			{
 				if (m_CollisionComp->IsOverlapping(object.get()))
 				{
+					
 					if (object->GetTag() == Tag::ladder)
 					{
 						auto laddercomp = object->GetComponent<LadderComponent>();
 						if (laddercomp->InRange(GetOwner()))
 						{
-							if (abs(m_Direction.y) > 1)
+							if (abs(m_Direction.y) > 8)
 							{
 								auto pos = m_Transform->GetWorldPosition();
 
@@ -70,17 +71,24 @@ void dae::EnemyComponent::HandleMovement(float deltaTime)
 										m_OnPlatform = false;
 										break;
 									}
+									else
+										CalcDirection();
 
 								}
-								if (m_Direction.y < 0 && !laddercomp->OnTop(GetOwner()))
+								if (m_Direction.y < 0)
 								{
-									pos.y -= m_ClimbSpeed * deltaTime;
-									m_State = State::up;
-									pos.x = object->GetTransform()->GetWorldPosition().x;
-									m_Transform->SetLocalPosition(pos);
-									m_OnLadder = true;
-									m_OnPlatform = false;
-									break;
+									if (!laddercomp->OnTop(GetOwner()))
+									{
+										pos.y -= m_ClimbSpeed * deltaTime;
+										m_State = State::up;
+										pos.x = object->GetTransform()->GetWorldPosition().x;
+										m_Transform->SetLocalPosition(pos);
+										m_OnLadder = true;
+										m_OnPlatform = false;
+										break;
+									}
+									else
+										CalcDirection();
 								}
 
 							}
@@ -101,6 +109,7 @@ void dae::EnemyComponent::HandleMovement(float deltaTime)
 								m_Transform->SetLocalPosition(pos);
 								m_OnLadder = false;
 								m_OnPlatform = true;
+								CalcDirection();
 								break;
 							}
 							pos.x += m_Speed * deltaTime;
@@ -116,6 +125,7 @@ void dae::EnemyComponent::HandleMovement(float deltaTime)
 								m_Transform->SetLocalPosition(pos);
 								m_OnLadder = false;
 								m_OnPlatform = true;
+								CalcDirection();
 								break;
 							}
 							pos.x -= m_Speed * deltaTime;
@@ -127,6 +137,7 @@ void dae::EnemyComponent::HandleMovement(float deltaTime)
 						m_OnPlatform = true;
 						break;
 					}
+					
 				}
 			}
 
@@ -176,6 +187,8 @@ void dae::EnemyComponent::HandleCollision(float deltaTime)
 
 void dae::EnemyComponent::SetState(State state)
 {
+	
+
 	m_State = state;
 }
 
@@ -259,4 +272,13 @@ void dae::EnemyComponent::HandleStun(float deltaTime)
 void dae::EnemyComponent::Stun()
 {
 	m_State = State::stunned;
+}
+
+void dae::EnemyComponent::CalcDirection()
+{
+	glm::vec3 peterPos = m_Peter->GetTransform()->GetWorldPosition();
+	glm::vec3 pos = GetOwner()->GetTransform()->GetWorldPosition();
+
+	m_Direction.y = peterPos.y - pos.y;
+	m_Direction.x = peterPos.x - pos.x;
 }

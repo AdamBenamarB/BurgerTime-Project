@@ -37,6 +37,8 @@ namespace dae {
 
         void Stun();
 
+        void CalcDirection();
+
     private:
         void Initialize();
         void HandleMovement(float deltaTime);

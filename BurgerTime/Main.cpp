@@ -41,6 +41,7 @@ void load()
 	dae::Ladder(scene, Vec2{ 240,160 });
 	dae::Ladder(scene, Vec2{ 240,192 });
 	dae::Ladder(scene, Vec2{ 240,224 });
+	dae::Ladder(scene, Vec2{ 240,256 });
 
 
 	for(int x{}; x < 11; ++x)

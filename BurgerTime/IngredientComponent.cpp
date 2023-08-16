@@ -49,8 +49,6 @@ void dae::IngredientComponent::HandleMovement(float deltaTime)
 
 void dae::IngredientComponent::HandleCollision(float)// deltaTime)
 {
-	if(m_Platform)
-	std::cout << int(m_State) << std::endl;
 	switch(m_State)
 	{
 	case State::idle:
@@ -110,57 +108,71 @@ void dae::IngredientComponent::HandleCollision(float)// deltaTime)
 		{
 		for (auto& obj : SceneManager::GetInstance().GetActiveScene().GetObjects())
 		{
-			
-				if (m_Collisions[0]->IsOverlapping(obj.get()))
+			for (int i{}; i < m_Collisions.size(); ++i)
+			{
+				if (m_Collisions[i]->IsOverlapping(obj.get()))
 				{
-					if (obj.get() == m_Platform)
-						break;
-					if (obj->GetTag() == Tag::platform && obj.get() != m_Platform)
+					if (i == 0)
 					{
-						if (obj->GetComponent<PlatformComponent>()->OnBottom(GetOwner()))
+						if (obj.get() == m_Platform)
+							break;
+						if (obj->GetTag() == Tag::platform && obj.get() != m_Platform)
 						{
-							m_State = State::idle;
-							m_Platform = obj.get();
+							if (obj->GetComponent<PlatformComponent>()->OnBottom(GetOwner()))
+							{
+								m_State = State::idle;
+								m_Platform = obj.get();
+								for (int i{}; i < 4; ++i)
+								{
+									m_DropStates[i] = false;
+									m_Sprites[i]->SetOffsetY(0);
+								}
+								for (auto enemy : m_Enemies)
+								{
+									enemy->GetComponent<EnemyComponent>()->SetState(EnemyComponent::State::left);
+									enemy->SetParent(nullptr);
+								}
+							}
+						}
+						else if (auto comp = obj->GetComponent<IngredientComponent>())
+						{
+							if (comp->m_State == State::plated)
+							{
+								m_State = State::plated;
+
+								if (GetOwner()->GetTag() == Tag::bun)
+									GameInstance::GetInstance().FillPlate();
+								ServiceLocator::GetSoundSystem().Play(m_Bounce, 100);
+							}
+							else {
+								m_CollidedIngredient = obj.get();
+								comp->SetState(State::falling);
+							}
+						}
+						else if (obj->GetTag() == Tag::plate)
+						{
 							for (int i{}; i < 4; ++i)
 							{
 								m_DropStates[i] = false;
 								m_Sprites[i]->SetOffsetY(0);
 							}
-							for(auto enemy: m_Enemies)
-							{
-								enemy->GetComponent<EnemyComponent>()->SetState(EnemyComponent::State::left);
-								enemy->SetParent(nullptr);
-							}
-						}
-					}
-					else if (auto comp = obj->GetComponent<IngredientComponent>())
-					{
-						if (comp->m_State == State::plated)
-						{
 							m_State = State::plated;
-
-							if (GetOwner()->GetTag() == Tag::bun)
-								GameInstance::GetInstance().FillPlate();
+							m_Enemies.clear();
+							m_Peter->GetComponent<PeterPepperComponent>()->AddPoints(50);
 							ServiceLocator::GetSoundSystem().Play(m_Bounce, 100);
 						}
-						else {
-							m_CollidedIngredient = obj.get();
-							comp->SetState(State::falling);
-						}
 					}
-					else if (obj->GetTag() == Tag::plate)
+
+					if (auto comp = obj->GetComponent<EnemyComponent>())
 					{
-						for (int i{}; i < 4; ++i)
-						{
-							m_DropStates[i] = false;
-							m_Sprites[i]->SetOffsetY(0);
-						}
-						m_State = State::plated;
-						m_Enemies.clear();
-						m_Peter->GetComponent<PeterPepperComponent>()->AddPoints(50);
-						ServiceLocator::GetSoundSystem().Play(m_Bounce, 100);
+						comp->Kill();
+
 					}
 				}
+
+				
+			}
+				
 			
 		}
 		}
