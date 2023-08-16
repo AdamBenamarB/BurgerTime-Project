@@ -220,6 +220,8 @@ xcopy "$(SolutionDir)3rdParty\SDL2_mixer-2.0.4\lib\$(PlatformTarget)\SDL2_mixer.
     <ClInclude Include="HealthComponent.h" />
     <ClInclude Include="HealthDisplayComponent.h" />
     <ClInclude Include="Observer.h" />
+    <ClInclude Include="PointsComponent.h" />
+    <ClInclude Include="PointsDisplayComponent.h" />
     <ClInclude Include="ServiceLocator.h" />
     <ClInclude Include="SoundSystem.h" />
     <ClInclude Include="Structs.h" />
@@ -253,6 +255,7 @@ xcopy "$(SolutionDir)3rdParty\SDL2_mixer-2.0.4\lib\$(PlatformTarget)\SDL2_mixer.
     <ClCompile Include="InputManager.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="Minigin.cpp" />
+    <ClCompile Include="PointsDisplayComponent.cpp" />
     <ClCompile Include="RenderComponent.cpp" />
     <ClCompile Include="Renderer.cpp" />
     <ClCompile Include="ResourceManager.cpp" />

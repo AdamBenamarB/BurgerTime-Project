@@ -36,6 +36,7 @@ int dae::SoundSystem::AddSound(std::string loc)
 
 void dae::SoundSystem::CheckQueue()
 {
+	if(false)
 	while (m_Active)
 	{
 		while (m_ToBePlayed.size() > 0)

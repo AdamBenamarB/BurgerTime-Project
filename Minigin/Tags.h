@@ -4,5 +4,14 @@ enum class Tag
 	platform,
 	ladder,
 	peter,
-	hotdog
+	hotdog,
+	pickle,
+	egg,
+	bun,
+	plate,
+	cheese,
+	bottombun,
+	lettuce,
+	patty,
+	tomato
 };

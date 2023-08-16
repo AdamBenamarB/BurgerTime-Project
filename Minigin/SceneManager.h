@@ -16,10 +16,12 @@ namespace dae
 		void FixedUpdate(float deltaTime);
 		void Update(float deltaTime);
 		void Render();
+		void RemoveScene(Scene& scene);
 	private:
 		friend class Singleton<SceneManager>;
 		SceneManager() = default;
 		std::vector<std::shared_ptr<Scene>> m_Scenes;
 		Scene* m_ActiveScene = nullptr;
+		Scene* m_ToRemove = nullptr;
 	};
 }

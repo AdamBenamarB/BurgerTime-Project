@@ -17,9 +17,9 @@ void dae::RenderComponent::Render() const
 			auto pos = GetOwner()->GetTransform()->GetWorldPosition();
 
 			if (m_UseDimensions)
-				Renderer::GetInstance().RenderTexture(*m_Texture, pos.x, pos.y, m_Width, m_Height);
+				Renderer::GetInstance().RenderTexture(*m_Texture, pos.x + m_OffsetX, pos.y + m_OffsetY, m_Width, m_Height);
 			else
-				Renderer::GetInstance().RenderTexture(*m_Texture, pos.x , pos.y );
+				Renderer::GetInstance().RenderTexture(*m_Texture, pos.x + m_OffsetX, pos.y + m_OffsetY);
 		}
 	}
 }

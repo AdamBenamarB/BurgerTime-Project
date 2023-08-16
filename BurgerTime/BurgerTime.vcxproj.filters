@@ -9,10 +9,6 @@
       <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
       <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
     </Filter>
-    <Filter Include="Resource Files">
-      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
-      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
-    </Filter>
     <Filter Include="Components">
       <UniqueIdentifier>{6ed6b837-67fe-4015-93de-9174c0535f31}</UniqueIdentifier>
     </Filter>
@@ -48,6 +44,66 @@
     <ClCompile Include="LadderComponent.cpp">
       <Filter>Components</Filter>
     </ClCompile>
+    <ClCompile Include="PlatformComponent.cpp">
+      <Filter>Components</Filter>
+    </ClCompile>
+    <ClCompile Include="IngredientComponent.cpp">
+      <Filter>Components</Filter>
+    </ClCompile>
+    <ClCompile Include="GameInstance.cpp">
+      <Filter>Misc</Filter>
+    </ClCompile>
+    <ClCompile Include="LevelLoader.cpp">
+      <Filter>Misc</Filter>
+    </ClCompile>
+    <ClCompile Include="NextScreen.cpp">
+      <Filter>Prefabs</Filter>
+    </ClCompile>
+    <ClCompile Include="DeathScreen.cpp">
+      <Filter>Prefabs</Filter>
+    </ClCompile>
+    <ClCompile Include="TransitionComponent.cpp">
+      <Filter>Components</Filter>
+    </ClCompile>
+    <ClCompile Include="MrEgg.cpp">
+      <Filter>Prefabs</Filter>
+    </ClCompile>
+    <ClCompile Include="Cheese.cpp">
+      <Filter>Prefabs</Filter>
+    </ClCompile>
+    <ClCompile Include="Bun.cpp">
+      <Filter>Prefabs</Filter>
+    </ClCompile>
+    <ClCompile Include="BottomBun.cpp">
+      <Filter>Prefabs</Filter>
+    </ClCompile>
+    <ClCompile Include="Lettuce.cpp">
+      <Filter>Prefabs</Filter>
+    </ClCompile>
+    <ClCompile Include="Patty.cpp">
+      <Filter>Prefabs</Filter>
+    </ClCompile>
+    <ClCompile Include="Tomato.cpp">
+      <Filter>Prefabs</Filter>
+    </ClCompile>
+    <ClCompile Include="PepperDisplayComponent.cpp">
+      <Filter>Components</Filter>
+    </ClCompile>
+    <ClCompile Include="Plate.cpp">
+      <Filter>Prefabs</Filter>
+    </ClCompile>
+    <ClCompile Include="PepperComponent.cpp">
+      <Filter>Components</Filter>
+    </ClCompile>
+    <ClCompile Include="EnemySpawner.cpp">
+      <Filter>Prefabs</Filter>
+    </ClCompile>
+    <ClCompile Include="MrPickle.cpp">
+      <Filter>Prefabs</Filter>
+    </ClCompile>
+    <ClCompile Include="EnemySpawnComponent.cpp">
+      <Filter>Components</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Minigin\PeterPepperComponent.h">
@@ -72,6 +128,66 @@
       <Filter>Prefabs</Filter>
     </ClInclude>
     <ClInclude Include="LadderComponent.h">
+      <Filter>Components</Filter>
+    </ClInclude>
+    <ClInclude Include="IngredientComponent.h">
+      <Filter>Components</Filter>
+    </ClInclude>
+    <ClInclude Include="PlatformComponent.h">
+      <Filter>Components</Filter>
+    </ClInclude>
+    <ClInclude Include="GameInstance.h">
+      <Filter>Misc</Filter>
+    </ClInclude>
+    <ClInclude Include="LevelLoader.h">
+      <Filter>Misc</Filter>
+    </ClInclude>
+    <ClInclude Include="NextScreen.h">
+      <Filter>Prefabs</Filter>
+    </ClInclude>
+    <ClInclude Include="DeathScreen.h">
+      <Filter>Prefabs</Filter>
+    </ClInclude>
+    <ClInclude Include="TransitionComponent.h">
+      <Filter>Components</Filter>
+    </ClInclude>
+    <ClInclude Include="MrEgg.h">
+      <Filter>Prefabs</Filter>
+    </ClInclude>
+    <ClInclude Include="Cheese.h">
+      <Filter>Prefabs</Filter>
+    </ClInclude>
+    <ClInclude Include="Bun.h">
+      <Filter>Prefabs</Filter>
+    </ClInclude>
+    <ClInclude Include="BottomBun.h">
+      <Filter>Prefabs</Filter>
+    </ClInclude>
+    <ClInclude Include="Lettuce.h">
+      <Filter>Prefabs</Filter>
+    </ClInclude>
+    <ClInclude Include="Patty.h">
+      <Filter>Prefabs</Filter>
+    </ClInclude>
+    <ClInclude Include="Tomato.h">
+      <Filter>Prefabs</Filter>
+    </ClInclude>
+    <ClInclude Include="PepperDisplayComponent.h">
+      <Filter>Components</Filter>
+    </ClInclude>
+    <ClInclude Include="EnemySpawner.h">
+      <Filter>Prefabs</Filter>
+    </ClInclude>
+    <ClInclude Include="PepperComponent.h">
+      <Filter>Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Plate.h">
+      <Filter>Prefabs</Filter>
+    </ClInclude>
+    <ClInclude Include="MrPickle.h">
+      <Filter>Prefabs</Filter>
+    </ClInclude>
+    <ClInclude Include="EnemySpawnComponent.h">
       <Filter>Components</Filter>
     </ClInclude>
   </ItemGroup>

@@ -4,6 +4,7 @@
 #endif
 #endif
 
+#include "Bun.h"
 #include "Minigin.h"
 #include "CollisionComponent.h"
 #include "FPS.h"
@@ -15,6 +16,7 @@
 #include "MrHotDog.h"
 #include "PeterPepper.h"
 #include "PeterPepperComponent.h"
+#include "Plate.h"
 #include "Platform.h"
 #include "PlatformComponent.h"
 #include "RenderComponent.h"
@@ -23,6 +25,7 @@
 #include "Scene.h"
 #include "Tags.h"
 #include "TextComponent.h"
+#include "Tomato.h"
 
 void load()
 {
@@ -35,6 +38,10 @@ void load()
 	dae::Ladder(scene, Vec2{ 100,64 });
 	dae::Ladder(scene, Vec2{ 240,96 });
 	dae::Ladder(scene, Vec2{ 240,128 });
+	dae::Ladder(scene, Vec2{ 240,160 });
+	dae::Ladder(scene, Vec2{ 240,192 });
+	dae::Ladder(scene, Vec2{ 240,224 });
+
 
 	for(int x{}; x < 11; ++x)
 	for (int i{}; i < 18; ++i)
@@ -42,9 +49,12 @@ void load()
 		dae::Platform(scene, Vec2{ float(i * 32),float(64*x) });
 	}
 	
-	dae::PeterPepper peter{ scene,Vec2{10,0} };
+	dae::PeterPepper peter{ scene,Vec2{480,0} };
 	dae::MrHotDog{ scene,Vec2{80,0},peter.GetGameObject() };
 	
+	dae::Tomato(scene, Vec2{ 320,0 });
+
+	dae::Plate(scene, Vec2{ 320, 220 });
 }
 
 int main(int, char* []) {

@@ -1,5 +1,5 @@
 #pragma once
-#include "GameObject.h"
+#include "Component.h"
 
 namespace dae {
 	class LadderComponent : public Component
@@ -13,11 +13,14 @@ namespace dae {
 		bool OnBottom(GameObject* go);
 		bool IsBottom();
 		bool IsTop();
+
+		bool InRange(GameObject* go);
 	private:
 		void CheckPos();
 		bool m_CheckedPos = false;
 		bool m_IsBottom = true;
 		bool m_IsTop = true;
+		float m_ClimbRange = 8.f;
 	};
 
 }

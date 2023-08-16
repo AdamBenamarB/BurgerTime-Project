@@ -38,6 +38,7 @@ namespace dae
 
 		template<typename T> T* AddComponent();
 		template<typename T> T* GetComponent() const;
+		template<typename T> std::vector<T*> GetComponents() const;
 		template<typename T> void RemoveComponent();
 
 
@@ -78,6 +79,19 @@ T* dae::GameObject::GetComponent() const
 	return nullptr;
 }
 
+template <typename T>
+std::vector<T*> dae::GameObject::GetComponents() const
+{
+	std::vector<T*> comps{};
+	for (std::shared_ptr<Component> comp : m_Components)
+	{
+		if (dynamic_cast<T*>(comp.get()))
+		{
+			comps.push_back((T*)comp.get());
+		}
+	}
+	return comps;
+}
 
 template<typename T>
 void dae::GameObject::RemoveComponent()

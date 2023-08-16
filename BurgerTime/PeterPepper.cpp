@@ -2,10 +2,12 @@
 
 #include "AnimatedRenderComponent.h"
 #include "CollisionComponent.h"
+#include "GameInstance.h"
 #include "RenderComponent.h"
 #include "GameObject.h"
 #include "Input.h"
 #include "InputManager.h"
+#include "PointsComponent.h"
 #include "Scene.h"
 #include "Tags.h"
 
@@ -18,6 +20,7 @@ void dae::PeterPepper::Initialize(dae::Scene& scene, Vec2 loc)
 {
 	auto go = std::make_shared<dae::GameObject>();
 	m_Peter = go.get();
+	go->SetTag(Tag::peter);
 	go->AddComponent<dae::HealthComponent>();
 	go->AddComponent<dae::CollisionComponent>()->SetSize(32, 32);
 
@@ -31,6 +34,9 @@ void dae::PeterPepper::Initialize(dae::Scene& scene, Vec2 loc)
 
 	go->AddComponent<dae::PeterPepperComponent>()->InitAnimation(rc);
 	go->GetTransform()->SetLocalPosition(loc.x, loc.y, 0);
+
+	go->AddComponent<PointsComponent>()->AddPoints(GameInstance::GetInstance().GetScore());
+
 	scene.Add(go);
 
 	auto controllerkey = Input::ControllerKey({ 0, dae::XBox360Controller::ControllerButton::DpadLeft,Input::KeyState::OnPressed });

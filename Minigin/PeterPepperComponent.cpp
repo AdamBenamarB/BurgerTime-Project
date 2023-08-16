@@ -5,9 +5,18 @@
 #include "CollisionComponent.h"
 #include "GameObject.h"
 #include "AnimatedRenderComponent.h"
+#include "PointsComponent.h"
 #include "Scene.h"
 #include "SceneManager.h"
 #include "Tags.h"
+#include "../BurgerTime/LadderComponent.h"
+#include "../BurgerTime/PlatformComponent.h"
+
+namespace dae
+{
+	class PlatformComponent;
+	class LadderComponent;
+}
 
 dae::PeterPepperComponent::PeterPepperComponent(GameObject* owner) :Component(owner)
 {
@@ -19,7 +28,7 @@ dae::PeterPepperComponent::PeterPepperComponent(GameObject* owner) :Component(ow
 void dae::PeterPepperComponent::Update(float deltaTime)
 {
 	HandleMovement(deltaTime);
-	HandleCollision(deltaTime);
+	//HandleCollision(deltaTime);
 	HandleAnim(deltaTime);
 }
 
@@ -38,14 +47,15 @@ void dae::PeterPepperComponent::HandleMovement(float deltaTime)
 			{
 				if (m_CollisionComp->IsOverlapping(object.get()))
 				{
-					if (object->GetTag() == Tag::platform)
+					if (object->GetTag() == Tag::platform && !object->GetComponent<PlatformComponent>()->OnLeft(GetOwner()))
 					{
 						auto pos = m_Transform->GetWorldPosition();
-						if (abs(pos.y - object->GetTransform()->GetWorldPosition().y) > 4)
+						if (abs(pos.y - object->GetTransform()->GetWorldPosition().y) > 4)//check for ladder to platform
 							break;
 						pos.x -= m_MovementSpeed * deltaTime;
 						pos.y = object->GetTransform()->GetWorldPosition().y;
 						m_Transform->SetLocalPosition(pos);
+						break;
 					}
 				}
 			}
@@ -62,7 +72,7 @@ void dae::PeterPepperComponent::HandleMovement(float deltaTime)
 			{
 				if (m_CollisionComp->IsOverlapping(object.get()))
 				{
-					if (object->GetTag() == Tag::platform)
+					if (object->GetTag() == Tag::platform && !object->GetComponent<PlatformComponent>()->OnRight(GetOwner()))
 					{
 						auto pos = m_Transform->GetWorldPosition();
 						if (abs(pos.y - object->GetTransform()->GetWorldPosition().y) > 4)
@@ -70,6 +80,7 @@ void dae::PeterPepperComponent::HandleMovement(float deltaTime)
 						pos.x += m_MovementSpeed * deltaTime;
 						pos.y = object->GetTransform()->GetWorldPosition().y;
 						m_Transform->SetLocalPosition(pos);
+						break;
 					}
 				}
 			}
@@ -87,10 +98,15 @@ void dae::PeterPepperComponent::HandleMovement(float deltaTime)
 				{
 					if (object->GetTag() == Tag::ladder)
 						{
-						auto pos = m_Transform->GetWorldPosition();
-						pos.y += m_MovementSpeed * deltaTime;
-						pos.x = object->GetTransform()->GetWorldPosition().x;
-						m_Transform->SetLocalPosition(pos);
+						auto laddercomp = object->GetComponent<LadderComponent>();
+						if (!laddercomp->OnBottom(GetOwner()) && laddercomp->InRange(GetOwner()))
+						{
+							auto pos = m_Transform->GetWorldPosition();
+							pos.y += m_MovementSpeed * deltaTime;
+							pos.x = object->GetTransform()->GetWorldPosition().x;
+							m_Transform->SetLocalPosition(pos);
+							break;
+						}
 						}
 				}
 			}
@@ -108,10 +124,15 @@ void dae::PeterPepperComponent::HandleMovement(float deltaTime)
 				{
 					if (object->GetTag() == Tag::ladder)
 					{
-						auto pos = m_Transform->GetWorldPosition();
-						pos.y -= m_MovementSpeed * deltaTime;
-						pos.x = object->GetTransform()->GetWorldPosition().x;
-						m_Transform->SetLocalPosition(pos);
+						auto laddercomp = object->GetComponent<LadderComponent>();
+						if (!laddercomp->OnTop(GetOwner()) && laddercomp->InRange(GetOwner()))
+						{
+							auto pos = m_Transform->GetWorldPosition();
+							pos.y -= m_MovementSpeed * deltaTime;
+							pos.x = object->GetTransform()->GetWorldPosition().x;
+							m_Transform->SetLocalPosition(pos);
+							break;
+						}
 					}
 				}
 			}
@@ -236,4 +257,21 @@ void dae::PeterPepperComponent::HandleAnim(float deltaTime)
 			m_Anim->SetClip(m_ClimbDown);
 		break;
 	}
+}
+
+void dae::PeterPepperComponent::AddPoints(GameObject* go)
+{
+	Tag tag = go->GetTag();
+
+	if (tag == Tag::hotdog)
+		GetOwner()->GetComponent<PointsComponent>()->AddPoints(100);
+	else if (tag == Tag::pickle)
+		GetOwner()->GetComponent<PointsComponent>()->AddPoints(200);
+	else if (tag == Tag::egg)
+		GetOwner()->GetComponent<PointsComponent>()->AddPoints(300);
+}
+
+void dae::PeterPepperComponent::AddPoints(int amt)
+{
+	GetOwner()->GetComponent<PointsComponent>()->AddPoints(amt);
 }

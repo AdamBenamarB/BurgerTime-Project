@@ -27,9 +27,9 @@ namespace dae {
         void Update(float deltaTime) override;
         void FixedUpdate(float) override{}
 
-        void SetPeter(GameObject* peterObj);// { m_Peter = peterObj; }
+        void SetPeter(GameObject* peterObj);
 
-        void SetState(State state);// { m_State = state; }
+        void SetState(State state);
 
         void InitAnimation(AnimatedRenderComponent* animComp, std::string textureLoc);
 
@@ -45,7 +45,7 @@ namespace dae {
         void HandleStun(float deltaTime);
         State m_State = State::left;
 
-        float m_Speed{ 35.f },//50 //30
+        float m_Speed{ 35.f },
             m_ClimbSpeed{ 30.f },
             m_FallSpeed{ 150.f };
 
@@ -53,8 +53,7 @@ namespace dae {
             m_StunElapsed{};
 
         bool m_OnPlatform{ true },
-            m_OnLadder{ false },
-            m_NoLadderDown{ false };
+            m_OnLadder{ false };
 
         GameObject* m_Peter{};
 

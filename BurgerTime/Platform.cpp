@@ -19,6 +19,8 @@ void dae::Platform::Initialize(dae::Scene& scene, Vec2 loc)
 	rc->SetTexture("\\Sprites\\World\\platform.png");
 	rc->SetDimensions(32, 32);
 
+	go->AddComponent<PlatformComponent>();
+
 	auto col = go->AddComponent<CollisionComponent>();
 	col->SetSize(32, 32);
 

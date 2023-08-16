@@ -1,6 +1,5 @@
 #pragma once
 #include "Component.h"
-#include "GameObject.h"
 #include "RenderComponent.h"
 
 namespace dae {
@@ -26,12 +25,15 @@ namespace dae {
         void FixedUpdate(float) override{}
 
         void SetState(State state) { m_State = state; }//DO CHECK FOR LADDER WHEN UP DOWN, CHECK FOR FLOOR LEFT RIGHT
-
+        State GetState() const { return m_State; }
         void InitAnimation(AnimatedRenderComponent* comp);
 
         void Hit(){};
+
+        void AddPoints(GameObject* go);
+        void AddPoints(int amt);
     private:
-        float m_MovementSpeed = 50.f;
+        float m_MovementSpeed = 80.f;
         Transform* m_Transform = nullptr;
         RenderComponent* m_RenderComp = nullptr;
         CollisionComponent* m_CollisionComp = nullptr;

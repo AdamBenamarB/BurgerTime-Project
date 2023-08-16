@@ -3,6 +3,7 @@
 #include "SceneManager.h"
 #include "Scene.h"
 #include "Tags.h"
+#include "GameObject.h"
 
 bool dae::LadderComponent::IsBottom()
 {
@@ -50,4 +51,9 @@ bool dae::LadderComponent::OnTop(GameObject* go)
 	if(IsTop())
 		return go->GetTransform()->GetWorldPosition().y - GetOwner()->GetTransform()->GetWorldPosition().y < -31;
 	return false;
+}
+
+bool dae::LadderComponent::InRange(GameObject* go)
+{
+	return abs(go->GetTransform()->GetWorldPosition().x - GetOwner()->GetTransform()->GetWorldPosition().x) < m_ClimbRange;
 }
