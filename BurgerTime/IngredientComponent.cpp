@@ -53,6 +53,12 @@ void dae::IngredientComponent::HandleCollision(float)// deltaTime)
 	{
 	case State::idle:
 		{
+		int amtDropped{};
+		for (int i{}; i < 4; ++i)
+		{
+			if (m_DropStates[i] == true)
+				++amtDropped;
+		}
 			for (auto& obj : SceneManager::GetInstance().GetActiveScene().GetObjects())
 			{
 				for (int i{}; i < m_Collisions.size(); ++i)
@@ -64,7 +70,7 @@ void dae::IngredientComponent::HandleCollision(float)// deltaTime)
 							m_DropStates[i] = true;
 							m_Sprites[i]->SetOffsetY(5);
 
-							ServiceLocator::GetSoundSystem().Play(m_Walk, 100);
+							//ServiceLocator::GetSoundSystem().Play(m_Walk, 100);
 
 						}
 						if (i == 0 && obj.get() != m_Platform && obj->GetTag() == Tag::platform )
@@ -79,6 +85,15 @@ void dae::IngredientComponent::HandleCollision(float)// deltaTime)
 					}
 				}
 			}
+
+			int after{};
+			for (int i{}; i < 4; ++i)
+			{
+				if (m_DropStates[i] == true)
+					++after;
+			}
+			if (after > amtDropped)
+				ServiceLocator::GetSoundSystem().Play(m_Walk, 100);
 
 			bool dropped = true;
 			for (int i{}; i < 4; ++i)

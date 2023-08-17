@@ -24,9 +24,6 @@ void dae::PeterPepper::Initialize(dae::Scene& scene, Vec2 loc)
 	go->AddComponent<dae::HealthComponent>();
 	go->AddComponent<dae::CollisionComponent>()->SetSize(32, 32);
 
-	/*auto rc = go->AddComponent<dae::RenderComponent>();
-	rc->SetTexture("\\Sprites\\PeterPepper\\peter.png");*/
-
 	auto rc = go->AddComponent<dae::AnimatedRenderComponent>();
 	rc->SetTexture("\\Sprites\\PeterPepper\\sprites.png");
 	rc->SetDimensions(m_Height, m_Width);

@@ -19,6 +19,10 @@ dae::SoundSystem::~SoundSystem()
 
 void dae::SoundSystem::Initialize()
 {
+	if (Mix_OpenAudio(22050, MIX_DEFAULT_FORMAT, 2, 4096) == -1)
+	{
+		throw std::runtime_error(std::string("SDL_Init Error: ") + SDL_GetError());
+	}
 
 	m_Thread = std::thread(&dae::SoundSystem::CheckQueue, this);
 }
@@ -36,7 +40,7 @@ int dae::SoundSystem::AddSound(std::string loc)
 
 void dae::SoundSystem::CheckQueue()
 {
-	if(false)
+	
 	while (m_Active)
 	{
 		while (m_ToBePlayed.size() > 0)
