@@ -7,6 +7,7 @@
 #include "GameObject.h"
 #include "Input.h"
 #include "InputManager.h"
+#include "PepperComponent.h"
 #include "PointsComponent.h"
 #include "Scene.h"
 #include "Tags.h"
@@ -22,6 +23,8 @@ void dae::PeterPepper::Initialize(dae::Scene& scene, Vec2 loc)
 	m_Peter = go.get();
 	go->SetTag(Tag::peter);
 	go->AddComponent<dae::HealthComponent>();
+	go->AddComponent<PepperComponent>();
+
 	go->AddComponent<dae::CollisionComponent>()->SetSize(32, 32);
 
 	auto rc = go->AddComponent<dae::AnimatedRenderComponent>();

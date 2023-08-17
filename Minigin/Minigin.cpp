@@ -43,7 +43,7 @@ void PrintSDLVersion()
 		version.major, version.minor, version.patch);
 }
 
-dae::Minigin::Minigin(const std::string &dataPath)
+void dae::Minigin::Initialize()
 {
 	PrintSDLVersion();
 	
@@ -68,12 +68,13 @@ dae::Minigin::Minigin(const std::string &dataPath)
 
 	Renderer::GetInstance().Init(g_window);
 
-	ResourceManager::GetInstance().Init(dataPath);
+	ResourceManager::GetInstance().Init("../Data/");
 
 	ServiceLocator::RegisterSoundSystem(new SoundSystem());
 }
 
-dae::Minigin::~Minigin()
+
+void dae::Minigin::Cleanup()
 {
 	Renderer::GetInstance().Destroy();
 	SDL_DestroyWindow(g_window);
@@ -82,9 +83,11 @@ dae::Minigin::~Minigin()
 	SDL_Quit();
 }
 
-void dae::Minigin::Run(const std::function<void()>& load)
+void dae::Minigin::Run()
 {
-	load();
+
+	Initialize();
+	LoadGame();
 
 	auto& renderer = Renderer::GetInstance();
 	auto& sceneManager = SceneManager::GetInstance();
@@ -117,4 +120,6 @@ void dae::Minigin::Run(const std::function<void()>& load)
 		const auto sleepTime = currentTime + std::chrono::milliseconds(MsPerFrame) - std::chrono::high_resolution_clock::now();
 		std::this_thread::sleep_for(sleepTime);
 	}
+
+	Cleanup();
 }
