@@ -13,6 +13,7 @@ dae::SoundSystem::SoundSystem()
 
 dae::SoundSystem::~SoundSystem()
 {
+	Mix_CloseAudio();
 	m_Active = false;
 	m_Thread.join();
 }
