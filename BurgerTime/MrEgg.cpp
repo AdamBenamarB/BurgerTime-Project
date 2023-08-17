@@ -19,6 +19,10 @@ dae::MrEgg::MrEgg(dae::Scene& scene, Vec2 loc, GameObject* peter)
 void dae::MrEgg::Initialize(dae::Scene& scene, Vec2 loc, GameObject* peter)
 {
 	auto go = std::make_shared<dae::GameObject>();
+
+	auto col = go->AddComponent<CollisionComponent>();
+	col->SetSize(32, 32);
+
 	auto enemycomp = go->AddComponent<EnemyComponent>();
 	enemycomp->SetPeter(peter);
 
@@ -27,9 +31,7 @@ void dae::MrEgg::Initialize(dae::Scene& scene, Vec2 loc, GameObject* peter)
 	rc->SetSpriteDimensions(16, 16);
 	enemycomp->InitAnimation(rc, "\\Sprites\\Enemies\\egg.png");
 
-	auto col = go->AddComponent<CollisionComponent>();
-	col->SetSize(20, 32.5f);
-	col->SetOffset(6, 0);
+	
 
 	go->SetTag(Tag::egg);
 

@@ -13,7 +13,9 @@
 #include "Input.h"
 #include "InputManager.h"
 #include "Ladder.h"
+#include "MrEgg.h"
 #include "MrHotDog.h"
+#include "MrPickle.h"
 #include "PeterPepper.h"
 #include "PeterPepperComponent.h"
 #include "Plate.h"
@@ -50,10 +52,13 @@ void load()
 		dae::Platform(scene, Vec2{ float(i * 32),float(64*x) });
 	}
 	
-	dae::PeterPepper peter{ scene,Vec2{480,0} };
+	dae::PeterPepper peter{ scene,Vec2{10,0} };
 	dae::MrHotDog{ scene,Vec2{80,0},peter.GetGameObject() };
+	//dae::MrEgg{ scene,Vec2{100,64},peter.GetGameObject() };
+	//dae::MrPickle{ scene,Vec2{400,64},peter.GetGameObject() };
 	
-	dae::Tomato(scene, Vec2{ 320,0 });
+	dae::Bun(scene, Vec2{ 320,0 });
+	dae::Tomato(scene, Vec2{ 320,64 });
 
 	dae::Plate(scene, Vec2{ 320, 220 });
 }

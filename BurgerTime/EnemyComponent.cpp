@@ -37,11 +37,6 @@ void dae::EnemyComponent::HandleMovement(float deltaTime)
 		if (m_OnPlatform)
 			m_Direction.y = peterPos.y - pos.y;
 
-		//if (m_Direction.x == 0 || m_Direction.y == 0 || m_OnLadder)
-		//	m_Direction.x = peterPos.x - pos.x;
-
-		std::cout << "X: " << m_Direction.x << "Y: " << m_Direction.y << std::endl;
-
 		for (auto object : SceneManager::GetInstance().GetActiveScene().GetObjects())
 		{
 
@@ -143,10 +138,6 @@ void dae::EnemyComponent::HandleMovement(float deltaTime)
 
 		}
 	}
-	else
-	{
-		std::cout << GetOwner()->GetTransform()->GetWorldPosition().x;
-	}
 }
 
 void dae::EnemyComponent::HandleCollision(float deltaTime)
@@ -187,9 +178,9 @@ void dae::EnemyComponent::HandleCollision(float deltaTime)
 
 void dae::EnemyComponent::SetState(State state)
 {
-	
-
+	CalcDirection();
 	m_State = state;
+	
 }
 
 void dae::EnemyComponent::InitAnimation(AnimatedRenderComponent* animComp, std::string textureLoc)

@@ -30,6 +30,7 @@ namespace dae {
         void SetPeter(GameObject* peterObj);
 
         void SetState(State state);
+        State GetState() const { return m_State; }
 
         void InitAnimation(AnimatedRenderComponent* animComp, std::string textureLoc);
 

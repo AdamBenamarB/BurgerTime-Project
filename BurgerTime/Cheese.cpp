@@ -49,25 +49,26 @@ void dae::Cheese::Initialize(dae::Scene& scene, Vec2 loc)
 
 	//COLLISION
 	auto col = go->AddComponent<CollisionComponent>();
-	col->SetSize(16, 14);
+	col->SetSize(8, 14);
+	col->SetOffset(4, 0);
 
 	cols.push_back(col);
 
 	col = go->AddComponent<CollisionComponent>();
-	col->SetSize(16, 14);
-	col->SetOffset(16, 0);
+	col->SetSize(8, 14);
+	col->SetOffset(20, 0);
 
 	cols.push_back(col);
 
 	col = go->AddComponent<CollisionComponent>();
-	col->SetSize(16, 14);
-	col->SetOffset(32, 0);
+	col->SetSize(8, 14);
+	col->SetOffset(36, 0);
 
 	cols.push_back(col);
 
 	col = go->AddComponent<CollisionComponent>();
-	col->SetSize(16, 14);
-	col->SetOffset(48, 0);
+	col->SetSize(8, 14);
+	col->SetOffset(52, 0);
 
 	cols.push_back(col);
 

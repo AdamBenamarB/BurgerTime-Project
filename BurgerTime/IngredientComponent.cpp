@@ -64,6 +64,8 @@ void dae::IngredientComponent::HandleCollision(float)// deltaTime)
 							m_DropStates[i] = true;
 							m_Sprites[i]->SetOffsetY(5);
 
+							ServiceLocator::GetSoundSystem().Play(m_Walk, 100);
+
 						}
 						if (i == 0 && obj.get() != m_Platform && obj->GetTag() == Tag::platform )
 						{
@@ -141,7 +143,7 @@ void dae::IngredientComponent::HandleCollision(float)// deltaTime)
 								m_State = State::plated;
 
 								if (GetOwner()->GetTag() == Tag::bun)
-									GameInstance::GetInstance().FillPlate();
+									//GameInstance::GetInstance().FillPlate();
 								ServiceLocator::GetSoundSystem().Play(m_Bounce, 100);
 							}
 							else {
@@ -165,6 +167,7 @@ void dae::IngredientComponent::HandleCollision(float)// deltaTime)
 
 					if (auto comp = obj->GetComponent<EnemyComponent>())
 					{
+						if(comp->GetState() != EnemyComponent::State::falling)
 						comp->Kill();
 
 					}
@@ -375,6 +378,8 @@ void dae::IngredientComponent::SetState(State state)
 
 void dae::IngredientComponent::Initialize()
 {
+
+	//m_Walk = dae::ServiceLocator::GetSoundSystem().AddSound("C:/School/Prog4/Retake/minigin-main/Data/Sounds/ingredientwalk.wav");
 	m_Walk = dae::ServiceLocator::GetSoundSystem().AddSound("../Data/Sounds/ingredientwalk.wav");
 	m_Bounce = dae::ServiceLocator::GetSoundSystem().AddSound("../Data/Sounds/bounce.wav");
 }

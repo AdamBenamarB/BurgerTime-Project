@@ -1,6 +1,8 @@
 #include <string>
 #include "GameObject.h"
 
+#include <iostream>
+
 #include "Component.h"
 #include "RenderComponent.h"
 
@@ -52,6 +54,7 @@ void dae::GameObject::SetParent(GameObject* parent, bool worldPosStays)
 	else
 	{
 		GetTransform()->SetLocalPosition(GetTransform()->GetWorldPosition() - parent->GetTransform()->GetWorldPosition());
+
 	}
 }
 
