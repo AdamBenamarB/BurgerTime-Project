@@ -46,7 +46,6 @@ namespace dae
 		GameObject* m_Parent = nullptr;
 		std::vector<GameObject*> m_Children{};
 		Transform* m_Transform;
-		// todo: mmm, every gameobject has a texture? Is that correct?
 		std::vector<std::shared_ptr<Component>> m_Components{};
 		Tag m_Tag{};
 	};

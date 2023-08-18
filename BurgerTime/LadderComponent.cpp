@@ -43,13 +43,13 @@ bool dae::LadderComponent::OnBottom(GameObject* go)
 {
 	if (IsBottom())
 		return GetOwner()->GetTransform()->GetWorldPosition().y - go->GetTransform()->GetWorldPosition().y < 2;
-	return go->GetTransform()->GetWorldPosition().y - GetOwner()->GetTransform()->GetWorldPosition().y > 31;
+	return go->GetTransform()->GetWorldPosition().y - GetOwner()->GetTransform()->GetWorldPosition().y > 63;
 }
 
 bool dae::LadderComponent::OnTop(GameObject* go)
 {
 	if(IsTop())
-		return go->GetTransform()->GetWorldPosition().y - GetOwner()->GetTransform()->GetWorldPosition().y < -31;
+		return go->GetTransform()->GetWorldPosition().y - GetOwner()->GetTransform()->GetWorldPosition().y < -63;
 	return false;
 }
 

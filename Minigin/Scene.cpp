@@ -1,4 +1,7 @@
 #include "Scene.h"
+
+#include <iostream>
+
 #include "GameObject.h"
 
 using namespace dae;
@@ -26,25 +29,25 @@ void Scene::RemoveAll()
 
 void Scene::FixedUpdate(float deltaTime)
 {
-	for (auto& object : m_Objects)
+	for (int i{}; i < m_Objects.size(); ++i)
 	{
-		object->FixedUpdate(deltaTime);
+		m_Objects[i]->FixedUpdate(deltaTime);
 	}
 }
 
 void Scene::Update(float deltaTime)
 {
-	for(auto& object : m_Objects)
+	for(int i{}; i < m_Objects.size(); ++i)
 	{
-		object->Update(deltaTime);
+		m_Objects[i]->Update(deltaTime);
 	}
 }
 
 void Scene::Render() const
 {
-	for (const auto& object : m_Objects)
+	for (int i{}; i < m_Objects.size(); ++i)
 	{
-		object->Render();
+		m_Objects[i]->Render();
 	}
 }
 

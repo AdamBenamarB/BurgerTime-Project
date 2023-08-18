@@ -13,6 +13,9 @@ namespace dae {
         bool OnLeft(GameObject* go);
         bool OnRight(GameObject* go);
         bool OnBottom(GameObject* go);
+        bool InRange(GameObject* go) const;
+
+        float GetFloorY() const;
     private:
         void CheckEdge();
         bool m_IsRightEdge = true;

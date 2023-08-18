@@ -18,7 +18,7 @@ void dae::GameObject::FixedUpdate(float deltaTime)
 
 void dae::GameObject::Update(float deltaTime)
 {
-	for (std::shared_ptr<Component> comp : m_Components)
+	for (std::shared_ptr<Component>& comp : m_Components)
 	{
 		comp->Update(deltaTime);
 	}

@@ -15,13 +15,13 @@
 dae::EnemySpawnComponent::EnemySpawnComponent(GameObject* owner)
 	:Component(owner)
 {
-	m_ELapsedTime = m_TimePerSpawn;
+	//m_ELapsedTime = m_TimePerSpawn;
 }
 
 void dae::EnemySpawnComponent::Update(float deltaTime)
 {
-	m_ELapsedTime += deltaTime;
-	if(m_ELapsedTime>=m_TimePerSpawn)
+	//m_ELapsedTime += deltaTime;
+	if(m_ELapsedTime >= m_TimePerSpawn)
 	{
 		m_ELapsedTime = 0;
 		int random = rand() % 4;
@@ -38,7 +38,6 @@ void dae::EnemySpawnComponent::Update(float deltaTime)
 		}
 
 		auto& pos = GetOwner()->GetTransform()->GetWorldPosition();
-			
 
 		if(random <2)
 		{

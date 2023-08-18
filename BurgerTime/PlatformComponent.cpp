@@ -23,7 +23,7 @@ bool dae::PlatformComponent::OnRight(GameObject* go)
 	if (!m_CheckedEdge)
 		CheckEdge();
 	if (m_IsRightEdge)
-		return GetOwner()->GetTransform()->GetWorldPosition().x - go->GetTransform()->GetWorldPosition().x < 1;
+		return GetOwner()->GetTransform()->GetWorldPosition().x + 32 - go->GetTransform()->GetWorldPosition().x < 1;
 	return false;
 }
 
@@ -52,3 +52,14 @@ bool dae::PlatformComponent::OnBottom(GameObject* go)
 {
 	return GetOwner()->GetTransform()->GetWorldPosition().y + 23 - go->GetTransform()->GetWorldPosition().y < 1;
 }
+
+bool dae::PlatformComponent::InRange(GameObject* go) const
+{
+	return abs(go->GetTransform()->GetWorldPosition().y - (GetOwner()->GetTransform()->GetWorldPosition().y + 32)) < 4;
+}
+
+float dae::PlatformComponent::GetFloorY() const
+{
+	return GetOwner()->GetTransform()->GetWorldPosition().y + 32;
+}
+

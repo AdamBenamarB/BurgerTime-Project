@@ -47,15 +47,18 @@ void dae::PeterPepperComponent::HandleMovement(float deltaTime)
 			{
 				if (m_CollisionComp->IsOverlapping(object.get()))
 				{
-					if (object->GetTag() == Tag::platform && !object->GetComponent<PlatformComponent>()->OnLeft(GetOwner()))
+					if (object->GetTag() == Tag::platform)
 					{
-						auto pos = m_Transform->GetWorldPosition();
-						if (abs(pos.y - object->GetTransform()->GetWorldPosition().y) > 4)//check for ladder to platform
+						auto platcomp = object->GetComponent<PlatformComponent>();
+						if (!platcomp->OnLeft(GetOwner()) && platcomp->InRange(GetOwner()))
+						{
+							auto pos = m_Transform->GetWorldPosition();
+							pos.x -= m_MovementSpeed * deltaTime;
+							pos.y = platcomp->GetFloorY();
+							m_Transform->SetLocalPosition(pos);
 							break;
-						pos.x -= m_MovementSpeed * deltaTime;
-						pos.y = object->GetTransform()->GetWorldPosition().y;
-						m_Transform->SetLocalPosition(pos);
-						break;
+						}
+
 					}
 				}
 			}
@@ -72,15 +75,18 @@ void dae::PeterPepperComponent::HandleMovement(float deltaTime)
 			{
 				if (m_CollisionComp->IsOverlapping(object.get()))
 				{
-					if (object->GetTag() == Tag::platform && !object->GetComponent<PlatformComponent>()->OnRight(GetOwner()))
+					if (object->GetTag() == Tag::platform)
 					{
-						auto pos = m_Transform->GetWorldPosition();
-						if (abs(pos.y - object->GetTransform()->GetWorldPosition().y) > 4)
+						auto platcomp = object->GetComponent<PlatformComponent>();
+						if(!platcomp->OnRight(GetOwner()) && platcomp->InRange(GetOwner()))
+						{
+							auto pos = m_Transform->GetWorldPosition();
+							pos.x += m_MovementSpeed * deltaTime;
+							pos.y = platcomp->GetFloorY();
+							m_Transform->SetLocalPosition(pos);
 							break;
-						pos.x += m_MovementSpeed * deltaTime;
-						pos.y = object->GetTransform()->GetWorldPosition().y;
-						m_Transform->SetLocalPosition(pos);
-						break;
+						}
+						
 					}
 				}
 			}

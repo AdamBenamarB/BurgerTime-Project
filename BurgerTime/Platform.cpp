@@ -17,12 +17,13 @@ void dae::Platform::Initialize(dae::Scene& scene, Vec2 loc)
 	auto go = std::make_shared<dae::GameObject>();
 	auto rc = go->AddComponent<dae::RenderComponent>();
 	rc->SetTexture("\\Sprites\\World\\platform.png");
-	rc->SetDimensions(32, 32);
+	rc->SetDimensions(64, 64);
 
 	go->AddComponent<PlatformComponent>();
 
 	auto col = go->AddComponent<CollisionComponent>();
-	col->SetSize(32, 32);
+	col->SetSize(64, 32);
+	col->SetOffset(0, 32);
 
 	go->GetTransform()->SetLocalPosition(loc.x, loc.y, 0);
 
