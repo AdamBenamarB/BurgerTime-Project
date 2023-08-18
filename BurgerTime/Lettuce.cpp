@@ -76,7 +76,7 @@ void dae::Lettuce::Initialize(dae::Scene& scene, Vec2 loc)
 	ingredient->SetCollisions(cols);
 	ingredient->SetSprites(sprites);
 
-	go->GetTransform()->SetLocalPosition(loc.x, loc.y + 22, 0);
+	go->GetTransform()->SetLocalPosition(loc.x, loc.y + 54, 0);
 	go->SetTag(Tag::lettuce);
 	scene.Add(go);
 

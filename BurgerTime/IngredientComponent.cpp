@@ -158,7 +158,7 @@ void dae::IngredientComponent::HandleCollision(float)// deltaTime)
 								m_State = State::plated;
 
 								if (GetOwner()->GetTag() == Tag::bun)
-									//GameInstance::GetInstance().FillPlate();
+									GameInstance::GetInstance().FillPlate();
 								ServiceLocator::GetSoundSystem().Play(m_Bounce, 100);
 							}
 							else {

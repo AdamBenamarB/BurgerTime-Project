@@ -38,19 +38,20 @@ void dae::PlatformComponent::CheckEdge()
 			auto otherpos = object->GetTransform()->GetWorldPosition();
 			if (otherpos.y == pos.y)
 			{
-				if (otherpos.x > pos.x)
+				if (otherpos.x == pos.x + 64)
 					m_IsRightEdge = false;
-				if (otherpos.x < pos.x)
+				if (otherpos.x == pos.x - 64)
 					m_IsLeftEdge = false;
 			}
 		}
 	}
+
 	m_CheckedEdge = true;
 }
 
 bool dae::PlatformComponent::OnBottom(GameObject* go)
 {
-	return GetOwner()->GetTransform()->GetWorldPosition().y + 23 - go->GetTransform()->GetWorldPosition().y < 1;
+	return GetOwner()->GetTransform()->GetWorldPosition().y + 54 - go->GetTransform()->GetWorldPosition().y < 1;
 }
 
 bool dae::PlatformComponent::InRange(GameObject* go) const

@@ -29,9 +29,9 @@ void dae::LadderComponent::CheckPos()
 			auto otherpos = object->GetTransform()->GetWorldPosition();
 			if (otherpos.x == pos.x)
 			{
-				if (otherpos.y > pos.y)
+				if (otherpos.y == pos.y + 64)
 					m_IsBottom = false;
-				if (otherpos.y < pos.y)
+				if (otherpos.y == pos.y - 64)
 					m_IsTop = false;
 			}
 		}
@@ -42,7 +42,7 @@ void dae::LadderComponent::CheckPos()
 bool dae::LadderComponent::OnBottom(GameObject* go)
 {
 	if (IsBottom())
-		return GetOwner()->GetTransform()->GetWorldPosition().y - go->GetTransform()->GetWorldPosition().y < 2;
+		return GetOwner()->GetTransform()->GetWorldPosition().y + 32 - go->GetTransform()->GetWorldPosition().y < 2;
 	return go->GetTransform()->GetWorldPosition().y - GetOwner()->GetTransform()->GetWorldPosition().y > 63;
 }
 
