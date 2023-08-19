@@ -65,3 +65,13 @@ void dae::SoundSystem::StopAll()
 {
 	Mix_HaltChannel(-1);
 }
+
+void dae::SoundSystem::Mute()
+{
+	m_Muted = !m_Muted;
+
+	if (m_Muted)
+		Mix_Volume(-1, 0);
+	else
+		Mix_Volume(-1, MIX_MAX_VOLUME);
+}

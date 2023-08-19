@@ -21,7 +21,6 @@ dae::EnemyComponent::EnemyComponent(GameObject* owner)
 void dae::EnemyComponent::Update(float deltaTime)
 {
 	HandleMovement(deltaTime);
-	//HandleCollision(deltaTime);
 	HandleAnim();
 	HandleStun(deltaTime);
 }
@@ -30,23 +29,23 @@ void dae::EnemyComponent::HandleMovement(float deltaTime)
 {
 	if (m_State != State::falling)
 	{
-
 		glm::vec3 peterPos = m_Peter->GetTransform()->GetWorldPosition();
 		glm::vec3 pos = GetOwner()->GetTransform()->GetWorldPosition();
 
 		if (m_OnPlatform)
 			m_Direction.y = peterPos.y - pos.y;
 
-		for (auto object : SceneManager::GetInstance().GetActiveScene().GetObjects())
-		{
+		//std::cout << "X: " << m_Direction.x << " Y: " << m_Direction.y << std::endl;
 
+		for (auto& object : SceneManager::GetInstance().GetActiveScene().GetObjects())
+		{
 			if (object->GetComponent<CollisionComponent>())
 			{
 				if (m_CollisionComp->IsOverlapping(object.get()))
 				{
-					
 					if (object->GetTag() == Tag::ladder)
 					{
+						
 						auto laddercomp = object->GetComponent<LadderComponent>();
 						if (laddercomp->InRange(GetOwner()))
 						{
@@ -93,14 +92,14 @@ void dae::EnemyComponent::HandleMovement(float deltaTime)
 					if (object->GetTag() == Tag::platform)
 					{
 						auto pos = m_Transform->GetWorldPosition();
-
+						auto platcomp = object->GetComponent<PlatformComponent>();
 						if (m_Direction.x > 1)
 						{
-							if (object->GetComponent<PlatformComponent>()->OnRight(GetOwner()))
+							if (platcomp->OnRight(GetOwner()))
 							{
 								pos.x -= m_Speed * deltaTime;
 								m_State = State::left;
-								pos.y = object->GetTransform()->GetWorldPosition().y;
+								pos.y = platcomp->GetFloorY();
 								m_Transform->SetLocalPosition(pos);
 								m_OnLadder = false;
 								m_OnPlatform = true;
@@ -112,11 +111,11 @@ void dae::EnemyComponent::HandleMovement(float deltaTime)
 						}
 						if (m_Direction.x < -1)
 						{
-							if (object->GetComponent<PlatformComponent>()->OnLeft(GetOwner()))
+							if (platcomp->OnLeft(GetOwner()))
 							{
 								pos.x -= m_Speed * deltaTime;
 								m_State = State::left;
-								pos.y = object->GetTransform()->GetWorldPosition().y;
+								pos.y = platcomp->GetFloorY();
 								m_Transform->SetLocalPosition(pos);
 								m_OnLadder = false;
 								m_OnPlatform = true;
@@ -126,7 +125,7 @@ void dae::EnemyComponent::HandleMovement(float deltaTime)
 							pos.x -= m_Speed * deltaTime;
 							m_State = State::left;
 						}
-						pos.y = object->GetTransform()->GetWorldPosition().y;
+						pos.y = platcomp->GetFloorY();
 						m_Transform->SetLocalPosition(pos);
 						m_OnLadder = false;
 						m_OnPlatform = true;
@@ -137,42 +136,6 @@ void dae::EnemyComponent::HandleMovement(float deltaTime)
 			}
 
 		}
-	}
-}
-
-void dae::EnemyComponent::HandleCollision(float deltaTime)
-{
-	int platforms = 0;
-
-	for (auto object : SceneManager::GetInstance().GetActiveScene().GetObjects())
-	{
-		auto colcomp = object->GetComponent<CollisionComponent>();
-		if (colcomp)
-		{
-
-			if (m_CollisionComp->IsOverlapping(object.get()))
-			{
-				if (object->GetTag() == Tag::platform)
-				{
-					platforms++;
-				}
-			}
-		}
-	}
-	switch (m_State)
-	{
-	case State::left:
-		if (platforms == 1)
-		{
-			m_Direction.x = -m_Direction.x;
-		}
-		break;
-	case State::right:
-		if (platforms == 1)
-		{
-			m_Direction.x = -m_Direction.x;
-		}
-		break;
 	}
 }
 

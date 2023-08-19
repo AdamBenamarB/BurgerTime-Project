@@ -43,7 +43,6 @@ namespace dae {
     private:
         void Initialize();
         void HandleMovement(float deltaTime);
-        void HandleCollision(float deltaTime);
         void HandleAnim() const;
         void HandleStun(float deltaTime);
         State m_State = State::left;

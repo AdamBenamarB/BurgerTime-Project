@@ -15,7 +15,7 @@
 dae::EnemySpawnComponent::EnemySpawnComponent(GameObject* owner)
 	:Component(owner)
 {
-	//m_ELapsedTime = m_TimePerSpawn;
+	m_ELapsedTime = m_TimePerSpawn;
 }
 
 void dae::EnemySpawnComponent::Update(float deltaTime)

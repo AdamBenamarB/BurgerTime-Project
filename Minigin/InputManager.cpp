@@ -3,6 +3,8 @@
 #include <iostream>
 #include <SDL_events.h>
 
+#include "ServiceLocator.h"
+
 
 dae::InputManager::InputManager()
 {
@@ -10,22 +12,57 @@ dae::InputManager::InputManager()
 }
 
 
-void dae::InputManager::Update(float deltaTime)
+//void dae::InputManager::Update(float deltaTime)
+//{
+//	m_ElapsedControllerCheck += deltaTime;
+//	if (m_ElapsedControllerCheck >= m_ControllerCheckInterval)
+//	{
+//		m_ElapsedControllerCheck = 0.f;
+//	}
+//	
+//}
+
+bool dae::InputManager::HandleInput()
 {
-	m_ElapsedControllerCheck += deltaTime;
-	if (m_ElapsedControllerCheck >= m_ControllerCheckInterval)
-	{
-		m_ElapsedControllerCheck = 0.f;
-		//m_input.CheckControllers();
+	SDL_Event e;
+	while (SDL_PollEvent(&e)) {
+
+		if (e.type == SDL_QUIT) {
+			return false;
+		}
+		if (e.type == SDL_KEYDOWN) {
+			for (const auto& command : m_input.m_keyCommands)
+			{
+				if (command.first.second == Input::KeyState::OnPressed)
+				{
+					if (e.key.keysym.scancode == command.first.first)
+						command.second.get()->Execute();
+				}
+			}
+		}
+		if (e.type == SDL_KEYUP)
+		{
+			for (const auto& command : m_input.m_keyCommands)
+			{
+				if (command.first.second == Input::KeyState::OnReleased)
+				{
+					if (e.key.keysym.scancode == command.first.first)
+						command.second.get()->Execute();
+				}
+			}
+
+			if(e.key.keysym.scancode == SDL_SCANCODE_M)
+			{
+				ServiceLocator::GetSoundSystem().Mute();
+			}
+		}
 	}
+
+
 	for (auto& controller : m_input.m_controllers)
 	{
 		controller->Update();
 	}
-}
-
-bool dae::InputManager::HandleInput()
-{
 	auto it = m_input.m_consoleCommands.begin();
 	while (it != m_input.m_consoleCommands.end())
 	{
@@ -54,18 +91,6 @@ bool dae::InputManager::HandleInput()
 		++it;
 	}
 
-	SDL_Event e;
-	while (SDL_PollEvent(&e)) {
-		if (e.type == SDL_QUIT) {
-			return false;
-		}
-		if (e.type == SDL_KEYDOWN) {
-		}
-		if (e.type == SDL_MOUSEBUTTONDOWN) {
-
-		}
-	}
-
 	return true;
 }
 
@@ -78,6 +103,11 @@ bool dae::InputManager::IsPressed(XBox360Controller::ControllerButton button, in
 void dae::InputManager::AddCommand(Input::ControllerKey controllerKey, std::unique_ptr<Command> command)
 {
 	m_input.m_consoleCommands.insert({ controllerKey, std::move(command) });
+}
+
+void dae::InputManager::AddCommand(Input::KeyCommand keyCommand, std::unique_ptr<Command> command)
+{
+	m_input.m_keyCommands.insert({ keyCommand, std::move(command) });
 }
 
 void dae::InputManager::RemoveCommand(Input::ControllerKey controllerKey)

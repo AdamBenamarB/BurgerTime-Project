@@ -21,6 +21,7 @@ namespace dae {
 		virtual int AddSound(std::string loc);
 		virtual void Play(int id, int volume, bool looping = false);
 		virtual void StopAll();
+		virtual void Mute();
 
 		~SoundSystem();
 
@@ -34,6 +35,7 @@ namespace dae {
 		std::mutex m_Mutex{};
 
 		bool m_Active = true;
+		bool m_Muted = false;
 	};
 
 	class NullSoundSystem : public SoundSystem
@@ -41,5 +43,6 @@ namespace dae {
 		virtual int AddSound(std::string) override { return -1; }
 		virtual void Play(int, int, bool) override {}
 		virtual void StopAll() override {}
+		virtual void Mute() override {}
 	};
 }

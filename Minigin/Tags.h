@@ -13,5 +13,6 @@ enum class Tag
 	bottombun,
 	lettuce,
 	patty,
-	tomato
+	tomato,
+	peterjr
 };

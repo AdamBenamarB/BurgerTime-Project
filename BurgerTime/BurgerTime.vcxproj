@@ -175,6 +175,7 @@
     <ClCompile Include="Lettuce.cpp" />
     <ClCompile Include="LevelLoader.cpp" />
     <ClCompile Include="Main.cpp" />
+    <ClCompile Include="MenuComponent.cpp" />
     <ClCompile Include="MrEgg.cpp" />
     <ClCompile Include="MrHotDog.cpp" />
     <ClCompile Include="MrPickle.cpp" />
@@ -183,6 +184,7 @@
     <ClCompile Include="PepperComponent.cpp" />
     <ClCompile Include="PepperDisplayComponent.cpp" />
     <ClCompile Include="PeterPepper.cpp" />
+    <ClCompile Include="PeterPepperJr.cpp" />
     <ClCompile Include="Plate.cpp" />
     <ClCompile Include="Platform.cpp" />
     <ClCompile Include="PlatformComponent.cpp" />
@@ -206,6 +208,7 @@
     <ClInclude Include="LadderComponent.h" />
     <ClInclude Include="Lettuce.h" />
     <ClInclude Include="LevelLoader.h" />
+    <ClInclude Include="MenuComponent.h" />
     <ClInclude Include="MrEgg.h" />
     <ClInclude Include="MrHotDog.h" />
     <ClInclude Include="MrPickle.h" />
@@ -214,6 +217,7 @@
     <ClInclude Include="PepperComponent.h" />
     <ClInclude Include="PepperDisplayComponent.h" />
     <ClInclude Include="PeterPepper.h" />
+    <ClInclude Include="PeterPepperJr.h" />
     <ClInclude Include="Plate.h" />
     <ClInclude Include="Platform.h" />
     <ClInclude Include="PlatformComponent.h" />

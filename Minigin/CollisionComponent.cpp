@@ -2,12 +2,13 @@
 
 #include <glm/vec3.hpp>
 #include "GameObject.h"
+#include "Tags.h"
 
 bool dae::CollisionComponent::IsOverlapping(GameObject* other)
 {
 	if (GetOwner() == other)
 		return false;
-
+	
 	if (auto othercol = other->GetComponent<CollisionComponent>())
 	{
 		auto pos = GetOwner()->GetTransform()->GetWorldPosition();

@@ -12,13 +12,13 @@ namespace dae
 		InputManager();
 		~InputManager() = default;
 
-		void Update(float deltatime);
+		//void Update(float deltatime);
 		bool HandleInput();
 
 		bool IsPressed(XBox360Controller::ControllerButton button, int controllerIdx);
 
-
 		void AddCommand(Input::ControllerKey controllerKey, std::unique_ptr<Command> command);
+		void AddCommand(Input::KeyCommand keyCommand, std::unique_ptr<Command> command);
 		void RemoveCommand(Input::ControllerKey controllerKey);
 		void RemoveCommands();
 

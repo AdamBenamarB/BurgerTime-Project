@@ -1,5 +1,7 @@
 #include "LadderComponent.h"
 
+#include <iostream>
+
 #include "SceneManager.h"
 #include "Scene.h"
 #include "Tags.h"
@@ -36,6 +38,7 @@ void dae::LadderComponent::CheckPos()
 			}
 		}
 	}
+
 	m_CheckedPos = true;
 }
 

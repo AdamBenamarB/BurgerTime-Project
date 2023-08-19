@@ -53,7 +53,6 @@ namespace dae {
             m_ClimbDown{};
 
         void HandleMovement(float deltaTime);
-        void HandleCollision(float deltaTime);
         void HandleAnim(float deltaTime);
 
         

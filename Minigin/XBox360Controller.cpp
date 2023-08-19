@@ -40,28 +40,7 @@ public:
 	bool IsUpThisFrame(unsigned int button) const { return buttonsReleasedThisFrame & button; }
 	bool IsPressed(unsigned int button) const { return currentState.Gamepad.wButtons & button; }
 
-	/*static int* GetConnectedIds()
-	{
-		int dwResult;
-		for (int i{}; i < XUSER_MAX_COUNT; ++i)
-			connectedIds[i] = -1;
-		int connectedIdIdx = 0;
-		for (int i = 0; i < XUSER_MAX_COUNT; i++)
-		{
-			XINPUT_STATE state;
-			ZeroMemory(&state, sizeof(XINPUT_STATE));
-
-			dwResult = XInputGetState(i, &state);
-
-			if (dwResult == ERROR_SUCCESS)
-			{
-				connectedIds[connectedIdIdx] = i;
-				++connectedIdIdx;
-			}
-		}
-		return connectedIds;
-	}*/
-
+	
 	int GetIndex() { return _controllerIndex; }
 };
 

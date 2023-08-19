@@ -98,6 +98,7 @@ void dae::Minigin::Run()
 	float lag = 0.f;
 
 	InputManager::GetInstance().AddController(0);
+	InputManager::GetInstance().AddController(1);
 
 	while (doContinue)
 	{
@@ -106,7 +107,7 @@ void dae::Minigin::Run()
 		lastTime = std::chrono::high_resolution_clock::now();
 		lag += deltaTime;
 
-		input.Update(deltaTime);
+		//input.Update(deltaTime);
 		doContinue = input.HandleInput();
 
 		while(lag >= m_FixedTimeStep)

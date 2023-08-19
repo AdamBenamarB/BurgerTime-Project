@@ -19,6 +19,7 @@
 #include "PepperComponent.h"
 #include "PepperDisplayComponent.h"
 #include "PeterPepper.h"
+#include "PeterPepperJr.h"
 #include "Plate.h"
 #include "Platform.h"
 #include "PointsComponent.h"
@@ -94,6 +95,33 @@ void LevelLoader::LoadLevel(std::string fileLoc)
 				if (type == "peter")
 				{
 					dae::PeterPepper peter{ scene,{x.GetFloat(),y.GetFloat()} };
+					auto petergo = peter.GetGameObject();
+
+					auto go = std::make_shared<dae::GameObject>();
+					go->GetTransform()->SetLocalPosition(80, 850, 0);
+
+					auto pointsdisp = go->AddComponent<dae::PointsDisplayComponent>();
+					pointsdisp->SetActorToDisplay(petergo);
+					petergo->GetComponent<dae::PointsComponent>()->AddObserver(pointsdisp);
+					scene.Add(go);
+
+					go = std::make_shared<dae::GameObject>();
+					go->GetTransform()->SetLocalPosition(550, 850, 0);
+					auto healthdisp = go->AddComponent<dae::HealthDisplayComponent>();
+					healthdisp->SetActorToDisplay(petergo);
+					petergo->GetComponent<dae::HealthComponent>()->AddObserver(healthdisp);
+					scene.Add(go);
+
+					go = std::make_shared<dae::GameObject>();
+					go->GetTransform()->SetLocalPosition(560, 820, 0);
+					auto pepperdisp = go->AddComponent<dae::PepperDisplayComponent>();
+					pepperdisp->SetActorToDisplay(petergo);
+					petergo->GetComponent<dae::PepperComponent>()->AddObserver(pepperdisp);
+					scene.Add(go);
+				}
+				if (type == "peterjr")
+				{
+					dae::PeterPepperJr peter{ scene,{x.GetFloat(),y.GetFloat()} };
 					auto petergo = peter.GetGameObject();
 
 					auto go = std::make_shared<dae::GameObject>();
