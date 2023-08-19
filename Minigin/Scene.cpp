@@ -29,7 +29,7 @@ void Scene::RemoveAll()
 
 void Scene::FixedUpdate(float deltaTime)
 {
-	for (int i{}; i < m_Objects.size(); ++i)
+	for (int i{}; i < (int)m_Objects.size(); ++i)
 	{
 		m_Objects[i]->FixedUpdate(deltaTime);
 	}
@@ -37,7 +37,7 @@ void Scene::FixedUpdate(float deltaTime)
 
 void Scene::Update(float deltaTime)
 {
-	for(int i{}; i < m_Objects.size(); ++i)
+	for(int i{}; i < (int)m_Objects.size(); ++i)
 	{
 		m_Objects[i]->Update(deltaTime);
 	}
@@ -45,7 +45,7 @@ void Scene::Update(float deltaTime)
 
 void Scene::Render() const
 {
-	for (int i{}; i < m_Objects.size(); ++i)
+	for (int i{}; i < (int)m_Objects.size(); ++i)
 	{
 		m_Objects[i]->Render();
 	}
