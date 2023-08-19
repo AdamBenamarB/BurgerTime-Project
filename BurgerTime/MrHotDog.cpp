@@ -36,8 +36,5 @@ void dae::MrHotDog::Initialize(dae::Scene& scene, Vec2 loc, GameObject* peter)
 
 	go->GetTransform()->SetLocalPosition(loc.x, loc.y, 0);
 	scene.Add(go);
-
-	auto controllerkey = Input::ControllerKey({ 0, dae::XBox360Controller::ControllerButton::Start,Input::KeyState::OnPressed });
-	auto command9 = std::make_unique<dae::Kill>(go);
-	dae::InputManager::GetInstance().AddCommand(controllerkey, std::move(command9));
+	
 }

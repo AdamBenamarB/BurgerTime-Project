@@ -74,6 +74,9 @@ void dae::PeterPepper::Initialize(dae::Scene& scene, Vec2 loc)
 	auto command8 = std::make_unique<dae::Idle>(go);
 	dae::InputManager::GetInstance().AddCommand(controllerkey, std::move(command8));
 
+	controllerkey = Input::ControllerKey({ 0, dae::XBox360Controller::ControllerButton::ButtonA,Input::KeyState::OnPressed });
+	auto command9 = std::make_unique<dae::Pepper>(go);
+	dae::InputManager::GetInstance().AddCommand(controllerkey, std::move(command9));
 	
 
 }

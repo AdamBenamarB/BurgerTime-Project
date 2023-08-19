@@ -9,8 +9,8 @@ namespace dae {
 	{
 	public:
 		PepperComponent(GameObject* owner);
-		void Update(float deltaTime)override;
-		void FixedUpdate(float deltaTime) override{}
+		void Update(float)override;
+		void FixedUpdate(float) override{}
 		void Activate();
 		int GetAmt()const { return m_Amt; }
 	private:

@@ -27,7 +27,7 @@ void dae::EnemyComponent::Update(float deltaTime)
 
 void dae::EnemyComponent::HandleMovement(float deltaTime)
 {
-	if (m_State != State::falling)
+	if (m_State != State::falling && m_State != State::stunned)
 	{
 		glm::vec3 peterPos = m_Peter->GetTransform()->GetWorldPosition();
 		glm::vec3 pos = GetOwner()->GetTransform()->GetWorldPosition();
