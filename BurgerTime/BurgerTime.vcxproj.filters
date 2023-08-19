@@ -117,7 +117,13 @@
       <Filter>Prefabs</Filter>
     </ClCompile>
     <ClCompile Include="LifeLostScreen.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Prefabs</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerHotDog.cpp">
+      <Filter>Prefabs</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerDogComponent.cpp">
+      <Filter>Components</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -217,8 +223,14 @@
     <ClInclude Include="MenuComponent.h">
       <Filter>Components</Filter>
     </ClInclude>
+    <ClInclude Include="PlayerHotDog.h">
+      <Filter>Prefabs</Filter>
+    </ClInclude>
     <ClInclude Include="LifeLostScreen.h">
-      <Filter>Header Files</Filter>
+      <Filter>Prefabs</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerDogComponent.h">
+      <Filter>Components</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

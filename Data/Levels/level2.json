@@ -199,25 +199,21 @@
 			]
 		]
 	},
-  {
-    "type": "peterjr",
-    "positions": [
-      [
-        384,
-        544
-      ]
-    ]
-  },
 	{
-		"type": "bounds",
+		"type": "peterjr",
 		"positions": [
 			[
-				0,
-				30
-			],
+				384,
+				544
+			]
+		]
+	},
+	{
+		"type": "playerdog",
+		"positions": [
 			[
-				800,
-				606
+				384,
+				32
 			]
 		]
 	},

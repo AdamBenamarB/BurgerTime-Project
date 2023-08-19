@@ -6,7 +6,8 @@
 #include "HealthComponent.h"
 #include "PeterPepperComponent.h"
 #include "../BurgerTime/MenuComponent.h"
-#include "..\BurgerTime\PepperComponent.h"
+#include "../BurgerTime/PepperComponent.h"
+#include "../BurgerTime/PlayerDogComponent.h"
 
 namespace dae
 {
@@ -24,20 +25,7 @@ namespace dae
 		std::shared_ptr<GameObject>  object;
 	};
 
-	class FPSTest : public Command
-	{
-	public:
-		FPSTest(std::shared_ptr<GameObject> obj) :Command(obj) {}
-		void Execute() override { GetGameObject()->GetComponent<FPS>()->Test(); }
-	};
-	
-	class RemoveHealth : public Command
-	{
-	public:
-		RemoveHealth(std::shared_ptr<GameObject> obj) : Command(obj){}
-		void Execute() override { GetGameObject()->GetComponent<HealthComponent>()->Hit(); }
-	};
-
+#pragma region //PETER
 	class Idle : public Command
 	{
 	public:
@@ -79,7 +67,8 @@ namespace dae
 		Pepper(std::shared_ptr<GameObject> obj) : Command(obj) {}
 		void Execute() override { GetGameObject()->GetComponent<PepperComponent>()->Activate(); }
 	};
-
+#pragma endregion 
+#pragma region //MENU
 	class MenuNext : public Command
 	{
 	public:
@@ -100,5 +89,40 @@ namespace dae
 		MenuStart(std::shared_ptr<GameObject> obj) : Command(obj) {}
 		void Execute() override { GetGameObject()->GetComponent<MenuComponent>()->Start(); }
 	};
+#pragma endregion
 
+	class DogIdle : public Command
+	{
+	public:
+		DogIdle(std::shared_ptr<GameObject> obj) : Command(obj) {}
+		void Execute() override { GetGameObject()->GetComponent<PlayerDogComponent>()->SetState(PlayerDogComponent::State::idle); }
+	};
+
+	class DogMoveLeft : public Command
+	{
+	public:
+		DogMoveLeft(std::shared_ptr<GameObject> obj) : Command(obj) {}
+		void Execute() override { GetGameObject()->GetComponent<PlayerDogComponent>()->SetState(PlayerDogComponent::State::left); }
+	};
+
+	class DogMoveRight : public Command
+	{
+	public:
+		DogMoveRight(std::shared_ptr<GameObject> obj) : Command(obj) {}
+		void Execute() override { GetGameObject()->GetComponent<PlayerDogComponent>()->SetState(PlayerDogComponent::State::right); }
+	};
+
+	class DogMoveUp : public Command
+	{
+	public:
+		DogMoveUp(std::shared_ptr<GameObject> obj) : Command(obj) {}
+		void Execute() override { GetGameObject()->GetComponent<PlayerDogComponent>()->SetState(PlayerDogComponent::State::up); }
+	};
+
+	class DogMoveDown : public Command
+	{
+	public:
+		DogMoveDown(std::shared_ptr<GameObject> obj) : Command(obj) {}
+		void Execute() override { GetGameObject()->GetComponent<PlayerDogComponent>()->SetState(PlayerDogComponent::State::down); }
+	};
 }

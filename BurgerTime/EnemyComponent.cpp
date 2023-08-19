@@ -143,6 +143,8 @@ void dae::EnemyComponent::SetState(State state)
 {
 	CalcDirection();
 	m_State = state;
+	if (state == State::falling)
+		ServiceLocator::GetSoundSystem().Play(m_Fall, 128);
 	
 }
 

@@ -423,15 +423,11 @@
     ]
   },
   {
-    "type": "bounds",
+    "type": "playerdog",
     "positions": [
       [
-        0,
-        30
-      ],
-      [
-        800,
-        606
+        560,
+        32
       ]
     ]
   },

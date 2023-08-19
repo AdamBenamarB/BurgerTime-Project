@@ -22,6 +22,7 @@
 #include "PeterPepperJr.h"
 #include "Plate.h"
 #include "Platform.h"
+#include "PlayerHotDog.h"
 #include "PointsComponent.h"
 #include "PointsDisplayComponent.h"
 #include "Scene.h"
@@ -176,15 +177,17 @@ void LevelLoader::ReloadLevel(const std::string& fileLoc)
 					}
 
 				}
-				if (type == "bounds")
+				if (type == "playerdog")
 				{
-					bounds.push_back({ x.GetFloat(),y.GetFloat() });
+					if (GameInstance::GetInstance().GetGameMode() == GameMode::versus)
+					{
+						dae::PlayerHotDog{ scene,{x.GetFloat(),y.GetFloat()} };
+					}
 				}
 				if (type == "enemy")
 				{
-					EnemySpawner{ scene,{x.GetFloat(),y.GetFloat()} };
+						EnemySpawner{ scene,{x.GetFloat(),y.GetFloat()} };
 				}
-
 			}
 		}
 		//scene.SetBounds({ bounds[0], bounds[1] });
@@ -330,18 +333,20 @@ void LevelLoader::LoadLevel(const std::string& fileLoc)
 					}
 
 				}
-				if (type == "bounds")
+				if (type == "playerdog")
 				{
-					bounds.push_back({ x.GetFloat(),y.GetFloat() });
+					if (GameInstance::GetInstance().GetGameMode() == GameMode::versus)
+					{
+						dae::PlayerHotDog{ scene,{x.GetFloat(),y.GetFloat()} };
+					}
+
 				}
 				if (type == "enemy")
 				{
 					EnemySpawner{ scene,{x.GetFloat(),y.GetFloat()} };
 				}
-
 			}
 		}
-		//scene.SetBounds({ bounds[0], bounds[1] });
 		GameInstance::GetInstance().SetPlates(plates);
 	}
 }

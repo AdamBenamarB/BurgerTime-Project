@@ -4,6 +4,7 @@
 #include "EnemyComponent.h"
 #include "GameObject.h"
 #include "PeterPepperComponent.h"
+#include "PlayerDogComponent.h"
 #include "SceneManager.h"
 #include "Scene.h"
 #include "ServiceLocator.h"
@@ -21,7 +22,6 @@ void dae::PepperComponent::Initialize()
 	m_RenderComp->SetEnabled(false);
 	m_RenderComp->SetTexture("../Data/Sprites/PeterPepper/pepper.png");
 	m_RenderComp->SetDimensions(32, 32);
-
 
 	m_Sound = dae::ServiceLocator::GetSoundSystem().AddSound("../Data/Sounds/pepper.wav");
 }
@@ -47,6 +47,11 @@ void dae::PepperComponent::Activate()
 					{
 						enemy->Stun();
 					}
+				if(auto playerdog = obj->GetComponent<PlayerDogComponent>())
+					if (obj->GetComponent<CollisionComponent>()->IsOverlapping(rect))
+					{
+						playerdog->Stun();
+					}
 			}
 			--m_Amt;
 			Notify(GetOwner(), Event::ON_PEPPER);
@@ -65,6 +70,11 @@ void dae::PepperComponent::Activate()
 					if (obj->GetComponent<CollisionComponent>()->IsOverlapping(rect))
 					{
 						enemy->Stun();
+					}
+				if (auto playerdog = obj->GetComponent<PlayerDogComponent>())
+					if (obj->GetComponent<CollisionComponent>()->IsOverlapping(rect))
+					{
+						playerdog->Stun();
 					}
 			}
 			--m_Amt;
@@ -85,6 +95,12 @@ void dae::PepperComponent::Activate()
 					{
 						enemy->Stun();
 					}
+				if (auto playerdog = obj->GetComponent<PlayerDogComponent>())
+					if (obj->GetComponent<CollisionComponent>()->IsOverlapping(rect))
+					{
+						playerdog->Stun();
+					}
+
 			}
 			--m_Amt;
 			Notify(GetOwner(), Event::ON_PEPPER);
@@ -103,6 +119,11 @@ void dae::PepperComponent::Activate()
 					if (obj->GetComponent<CollisionComponent>()->IsOverlapping(rect))
 					{
 						enemy->Stun();
+					}
+				if (auto playerdog = obj->GetComponent<PlayerDogComponent>())
+					if (obj->GetComponent<CollisionComponent>()->IsOverlapping(rect))
+					{
+						playerdog->Stun();
 					}
 			}
 			--m_Amt;

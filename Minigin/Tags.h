@@ -14,5 +14,6 @@ enum class Tag
 	lettuce,
 	patty,
 	tomato,
-	peterjr
+	peterjr,
+	playerdog
 };

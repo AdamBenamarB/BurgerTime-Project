@@ -12,6 +12,7 @@
 #include "ServiceLocator.h"
 #include "Tags.h"
 #include "PlatformComponent.h"
+#include "PlayerDogComponent.h"
 
 dae::IngredientComponent::IngredientComponent(GameObject* owner)
 	:Component(owner)
@@ -80,6 +81,10 @@ void dae::IngredientComponent::HandleCollision(float)// deltaTime)
 							if (std::find(m_Enemies.begin(), m_Enemies.end(), obj.get()) == m_Enemies.end())
 								m_Enemies.push_back(obj.get());
 						}
+						if (obj->GetTag() == Tag::playerdog)
+						{
+							m_PlayerDog = obj.get();
+						}
 					}
 				}
 			}
@@ -114,9 +119,35 @@ void dae::IngredientComponent::HandleCollision(float)// deltaTime)
 					enemy->GetComponent<EnemyComponent>()->SetState(EnemyComponent::State::falling);
 					enemy->SetParent(GetOwner(),true);
 				}
+				if (m_PlayerDog)
+				{
+					m_PlayerDog->GetComponent<PlayerDogComponent>()->SetState(PlayerDogComponent::State::falling);
+					m_PlayerDog->SetParent(GetOwner(), true);
+				}
+				m_LevelsToFall = (int)m_Enemies.size();
+				if (m_PlayerDog)
+					++m_LevelsToFall;
+
+				if(m_LevelsToFall == 0)
+					m_Peter->GetComponent<PeterPepperComponent>()->AddPoints(50);
+				if (m_LevelsToFall == 1)
+					m_Peter->GetComponent<PeterPepperComponent>()->AddPoints(500);
+				if (m_LevelsToFall == 2)
+					m_Peter->GetComponent<PeterPepperComponent>()->AddPoints(1000);
+				else if (m_LevelsToFall == 3)
+					m_Peter->GetComponent<PeterPepperComponent>()->AddPoints(2000);
+				else if (m_LevelsToFall == 4)
+					m_Peter->GetComponent<PeterPepperComponent>()->AddPoints(4000);
+				else if (m_LevelsToFall == 5)
+					m_Peter->GetComponent<PeterPepperComponent>()->AddPoints(8000);
+				else if (m_LevelsToFall >= 6)
+					m_Peter->GetComponent<PeterPepperComponent>()->AddPoints(16000);
 			}
 			else
+			{
 				m_Enemies.clear();
+				m_PlayerDog = nullptr;
+			}
 			break;
 		}
 	case State::falling:
@@ -135,17 +166,35 @@ void dae::IngredientComponent::HandleCollision(float)// deltaTime)
 						{
 							if (obj->GetComponent<PlatformComponent>()->OnBottom(GetOwner()))
 							{
-								m_State = State::idle;
-								m_Platform = obj.get();
-								for (int i{}; i < 4; ++i)
+								if(m_LevelsToFall == 0)
 								{
-									m_DropStates[i] = false;
-									m_Sprites[i]->SetOffsetY(0);
+									m_State = State::idle;
+									m_Platform = obj.get();
+									for (int i{}; i < 4; ++i)
+									{
+										m_DropStates[i] = false;
+										m_Sprites[i]->SetOffsetY(0);
+									}
+									
+									for (auto enemy : m_Enemies)
+									{
+										enemy->GetComponent<EnemyComponent>()->SetState(EnemyComponent::State::left);
+										enemy->SetParent(nullptr);
+									}
+									if(m_PlayerDog)
+									{
+										m_PlayerDog->GetComponent<PlayerDogComponent>()->ResetState();
+										m_PlayerDog->SetParent(nullptr);
+										m_PlayerDog = nullptr;
+									}
+									m_Peter->GetComponent<PeterPepperComponent>()->AddPoints(50);
+									ServiceLocator::GetSoundSystem().Play(m_Bounce, 100);
 								}
-								for (auto enemy : m_Enemies)
+								else
 								{
-									enemy->GetComponent<EnemyComponent>()->SetState(EnemyComponent::State::left);
-									enemy->SetParent(nullptr);
+									m_Platform = obj.get();
+									--m_LevelsToFall;
+									m_Peter->GetComponent<PeterPepperComponent>()->AddPoints(50);
 								}
 							}
 						}
@@ -173,8 +222,8 @@ void dae::IngredientComponent::HandleCollision(float)// deltaTime)
 							}
 							m_State = State::plated;
 							m_Enemies.clear();
-							m_Peter->GetComponent<PeterPepperComponent>()->AddPoints(50);
 							ServiceLocator::GetSoundSystem().Play(m_Bounce, 100);
+							m_Peter->GetComponent<PeterPepperComponent>()->AddPoints(50);
 						}
 					}
 
@@ -193,164 +242,6 @@ void dae::IngredientComponent::HandleCollision(float)// deltaTime)
 		}
 		}
 	}
-
-
-	/*if (m_State == State::idle)
-	{
-		m_Next = false;
-		m_Enemies.clear();
-		bool onPlatform = false;
-		for (auto& obj : SceneManager::GetInstance().GetActiveScene().GetObjects())
-		{
-			int amtDropped{};
-			for (int i{}; i < 4; ++i)
-			{
-				if (m_DropStates[i] == true)
-					++amtDropped;
-			}
-
-			for (int i{}; i < m_Collisions.size(); ++i)
-			{
-				if (m_Collisions[i]->IsOverlapping(obj.get()))
-					if (obj->GetTag() == Tag::peter)
-					{
-						m_Peter = obj.get();
-						m_DropStates[i] = true;
-						m_Sprites[i]->SetOffsetY(5);
-					}
-					else if (obj->GetComponent<EnemyComponent>())
-					{
-						bool exists = false;
-						for (auto& enemy : m_Enemies)
-							if (enemy == obj.get())
-								exists = true;
-						if (!exists)
-							m_Enemies.push_back(obj.get());
-					}
-					else if (i == 1)
-					{
-						if (obj->GetTag() == Tag::platform)
-						{
-							onPlatform = true;
-						}
-					}
-			}
-
-			int after{};
-			for (int i{}; i < 4; ++i)
-			{
-				if (m_DropStates[i] == true)
-					++after;
-			}
-			if (after > amtDropped)
-				ServiceLocator::GetSoundSystem().Play(m_Walk, 100);
-		}
-		if (!onPlatform)
-			m_State = State::falling;
-
-		for (int i{}; i < 4; ++i)
-		{
-			if (m_DropStates[i] == false)
-				return;
-		}
-		SetState(State::falling);
-		m_CollidedIngredient = nullptr;
-		for (int i{}; i < 4; ++i)
-		{
-			m_DropStates[i] = false;
-			m_Sprites[i]->SetOffsetY(0);
-		}
-		m_LevelsToFall = (int)m_Enemies.size();
-		if (m_LevelsToFall == 1)
-			m_Peter->GetComponent<PeterPepperComponent>()->AddPoints(500);
-		if (m_LevelsToFall == 2)
-			m_Peter->GetComponent<PeterPepperComponent>()->AddPoints(1000);
-		else if (m_LevelsToFall == 3)
-			m_Peter->GetComponent<PeterPepperComponent>()->AddPoints(2000);
-		else if (m_LevelsToFall == 4)
-			m_Peter->GetComponent<PeterPepperComponent>()->AddPoints(4000);
-		else if (m_LevelsToFall == 5)
-			m_Peter->GetComponent<PeterPepperComponent>()->AddPoints(8000);
-		else if (m_LevelsToFall == 6)
-			m_Peter->GetComponent<PeterPepperComponent>()->AddPoints(1600);
-		for (auto& enemy : m_Enemies)
-		{
-			enemy->GetComponent<EnemyComponent>()->SetState(EnemyComponent::State::falling);
-		}
-	}
-	else if (m_State == State::falling)
-	{
-		for (auto& obj : SceneManager::GetInstance().GetActiveScene().GetObjects())
-		{
-
-			if (m_Collisions[1]->IsOverlapping(obj.get()))
-			{
-				if (obj.get() != m_Platform)
-					if (obj->GetTag() == Tag::platform)
-					{
-						auto platcomp = obj->GetComponent<PlatformComponent>();
-						if (!m_Collisions[1]->IsUnder(obj.get()))
-						{
-							if (m_LevelsToFall == 0)
-							{
-								m_Platform = nullptr;
-								m_State = State::idle;
-								m_CollidedIngredient = nullptr;
-
-								m_Peter->GetComponent<PeterPepperComponent>()->AddPoints(50);
-								ServiceLocator::GetSoundSystem().Play(m_Bounce, 100);
-							}
-							else
-							{
-								m_Platform = obj.get();
-								--m_LevelsToFall;
-								m_Peter->GetComponent<PeterPepperComponent>()->AddPoints(50);
-							}
-						}
-					}
-
-				if (auto enemy = obj->GetComponent<EnemyComponent>())
-				{
-					bool enemyOn = false;
-					for (auto enemyon : m_Enemies)
-						if (enemyon == obj.get())
-							enemyOn = true;
-
-					if (!enemyOn)
-						enemy->Kill();
-				}
-
-
-				if (auto comp = obj->GetComponent<IngredientComponent>())
-				{
-					if (comp->m_State == State::plated)
-					{
-						m_State = State::plated;
-
-						if (GetOwner()->GetTag() == Tag::bun)
-							GameInstance::GetInstance().FillPlate();
-						ServiceLocator::GetSoundSystem().Play(m_Bounce, 100);
-					}
-					else {
-						m_CollidedIngredient = obj.get();
-						comp->SetState(State::falling);
-						m_Next = true;
-					}
-				}
-
-
-				if (obj->GetTag() == Tag::plate)
-				{
-					m_State = State::plated;
-					m_Enemies.clear();
-					m_Peter->GetComponent<PeterPepperComponent>()->AddPoints(50);
-					ServiceLocator::GetSoundSystem().Play(m_Bounce, 100);
-				}
-
-			}
-		}
-
-	}*/
 }
 
 void dae::IngredientComponent::SetCollisions(std::vector<CollisionComponent*>& cols)
@@ -391,8 +282,6 @@ void dae::IngredientComponent::SetState(State state)
 
 void dae::IngredientComponent::Initialize()
 {
-
-	//m_Walk = dae::ServiceLocator::GetSoundSystem().AddSound("C:/School/Prog4/Retake/minigin-main/Data/Sounds/ingredientwalk.wav");
 	m_Walk = dae::ServiceLocator::GetSoundSystem().AddSound("../Data/Sounds/ingredientwalk.wav");
 	m_Bounce = dae::ServiceLocator::GetSoundSystem().AddSound("../Data/Sounds/bounce.wav");
 }

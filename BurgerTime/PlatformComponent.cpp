@@ -56,7 +56,7 @@ bool dae::PlatformComponent::OnBottom(GameObject* go)
 
 bool dae::PlatformComponent::InRange(GameObject* go) const
 {
-	return abs(go->GetTransform()->GetWorldPosition().y - (GetOwner()->GetTransform()->GetWorldPosition().y + 32)) < 4;
+	return abs(go->GetTransform()->GetWorldPosition().y - (GetOwner()->GetTransform()->GetWorldPosition().y + 32)) < 12;
 }
 
 float dae::PlatformComponent::GetFloorY() const

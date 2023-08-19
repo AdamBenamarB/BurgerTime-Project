@@ -43,8 +43,8 @@ namespace dae {
             * m_Platform{ nullptr };
 
         std::vector<GameObject*> m_Enemies{};
-
-        int m_LevelsToFall{};
+        GameObject* m_PlayerDog = nullptr;
+        int m_LevelsToFall = 0;
 
 
         bool m_Next = false;

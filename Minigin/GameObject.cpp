@@ -75,6 +75,6 @@ void dae::GameObject::AddChild(GameObject* child)
 void dae::GameObject::RemoveChild(GameObject* child)
 {
 	m_Children.erase(std::find(m_Children.begin(), m_Children.end(), child));
-	child->GetTransform()->SetLocalPosition(GetTransform()->GetWorldPosition());
+	child->GetTransform()->SetLocalPosition(GetTransform()->GetWorldPosition() + child->GetTransform()->GetLocalPosition());
 	child->m_Parent = nullptr;
 }

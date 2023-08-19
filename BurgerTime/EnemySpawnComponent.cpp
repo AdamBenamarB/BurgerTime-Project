@@ -4,6 +4,7 @@
 
 #include "CollisionComponent.h"
 #include "EnemyComponent.h"
+#include "GameInstance.h"
 #include "GameObject.h"
 #include "MrEgg.h"
 #include "MrHotDog.h"
@@ -20,11 +21,10 @@ dae::EnemySpawnComponent::EnemySpawnComponent(GameObject* owner)
 
 void dae::EnemySpawnComponent::Update(float deltaTime)
 {
-	//m_ELapsedTime += deltaTime;
+	m_ELapsedTime += deltaTime;
 	if(m_ELapsedTime >= m_TimePerSpawn)
 	{
 		m_ELapsedTime = 0;
-		int random = rand() % 4;
 
 		auto& scene = SceneManager::GetInstance().GetActiveScene();
 		if(!m_Peter)
@@ -37,20 +37,32 @@ void dae::EnemySpawnComponent::Update(float deltaTime)
 			
 		}
 
-		auto& pos = GetOwner()->GetTransform()->GetWorldPosition();
+		if (m_Peter)
+		{
 
-		if(random <2)
-		{
-			MrHotDog{ scene,{pos.x,pos.y},m_Peter };
+			int random = 0;
+			auto& pos = GetOwner()->GetTransform()->GetWorldPosition();
+
+			if (GameInstance::GetInstance().GetGameMode() != GameMode::versus)
+				random = rand() % 3;
+			else
+				random = rand() % 2;
+			
+			if (random == 0)
+			{
+				MrEgg{ scene,{pos.x,pos.y},m_Peter };
+			}
+			else if (random == 1)
+			{
+				MrPickle{ scene,{pos.x,pos.y},m_Peter };
+			}
+			else if (random == 2)
+			{
+				MrHotDog{ scene,{pos.x,pos.y},m_Peter };
+			}
 		}
-		else if (random == 2)
-		{
-			MrEgg{ scene,{pos.x,pos.y},m_Peter };
-		}
-		else if (random == 3)
-		{
-			MrPickle{ scene,{pos.x,pos.y},m_Peter };
-		}
+		else
+			m_ELapsedTime = m_TimePerSpawn;
 	}
 
 }

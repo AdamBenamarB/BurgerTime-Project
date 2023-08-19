@@ -20,7 +20,7 @@ namespace dae {
 		bool m_CheckedPos = false;
 		bool m_IsBottom = true;
 		bool m_IsTop = true;
-		float m_ClimbRange = 8.f;
+		float m_ClimbRange = 12.f;
 	};
 
 }
