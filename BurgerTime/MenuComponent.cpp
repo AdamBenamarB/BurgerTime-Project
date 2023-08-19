@@ -1,5 +1,8 @@
 #include "MenuComponent.h"
 
+#include <iostream>
+#include <thread>
+
 #include "GameInstance.h"
 #include "NextScreen.h"
 #include "TextComponent.h"
@@ -9,6 +12,8 @@ void dae::MenuComponent::SetTextComps(const std::vector<TextComponent*>& textCom
 	m_SinglePlayer = textComps.at(0);
 	m_Coop = textComps.at(1);
 	m_Versus = textComps.at(2);
+	m_Name = textComps.at(3);
+	
 }
 
 void dae::MenuComponent::NextSelection()
@@ -55,8 +60,13 @@ void dae::MenuComponent::PreviousSelection()
 	}
 }
 
+
 void dae::MenuComponent::Start()
 {
+	m_Name->SetText("enter name");
+	std::cin >> m_NameStr;
+	GameInstance::GetInstance().SetName(m_NameStr);
+
 	if (!m_Started)
 	{
 		switch (m_Selection)

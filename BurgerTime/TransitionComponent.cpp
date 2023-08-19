@@ -3,11 +3,8 @@
 #include <iostream>
 
 #include "CollisionComponent.h"
-#include "EnemyComponent.h"
 #include "GameInstance.h"
 #include "GameObject.h"
-#include "MrEgg.h"
-#include "Scene.h"
 #include "SceneManager.h"
 
 dae::TransitionComponent::TransitionComponent(GameObject* owner)
@@ -20,10 +17,13 @@ void dae::TransitionComponent::Update(float deltaTime)
 	m_ELapsedTime += deltaTime;
 	if (m_ELapsedTime >= m_TransitionTime)
 	{
-		if(m_Reload)
+
+		if (m_Reload)
 			GameInstance::GetInstance().ReloadLevel();
-		else
+		else if (!m_End)
 			GameInstance::GetInstance().LoadNextLevel();
+		else
+			GameInstance::GetInstance().EndGame();
 	}
 
 }

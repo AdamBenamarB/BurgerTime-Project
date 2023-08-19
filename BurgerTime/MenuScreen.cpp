@@ -25,11 +25,14 @@ void MenuScreen::Initialize()
 	auto sptext = go->AddComponent<dae::TextComponent>();
 	auto cooptext = go->AddComponent<dae::TextComponent>();
 	auto vstext = go->AddComponent<dae::TextComponent>();
+	auto nametext = go->AddComponent<dae::TextComponent>();
 	std::vector<dae::TextComponent*> textcomps;
 	textcomps.push_back(sptext);
 	textcomps.push_back(cooptext);
 	textcomps.push_back(vstext);
-
+	textcomps.push_back(nametext);
+	
+	nametext->SetFont(font);
 	title->SetFont(fontbig);
 	sptext->SetFont(font);
 	cooptext->SetFont(font);
@@ -49,6 +52,11 @@ void MenuScreen::Initialize()
 	vstext->SetText("VERSUS");
 	vstext->SetColor(1, 1, 1, 1);
 	vstext->SetOffset(0, 140);
+	
+
+	nametext->SetText("enter name");
+	nametext->SetColor(1, 1, 1, 1);
+	nametext->SetOffset(0, 270);
 
 	auto menu = go->AddComponent<dae::MenuComponent>();
 	menu->SetTextComps(textcomps);

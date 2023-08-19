@@ -17,10 +17,12 @@ namespace dae {
         void FixedUpdate(float deltaTime) override{}
         void SetTransitionTime(float time) { m_TransitionTime = time; }
         void SetReload(bool reload) { m_Reload = reload; }
+        void SetEnd(bool end) { m_End = end; }
     private:
         float m_TransitionTime{ 5.f },
             m_ELapsedTime{};
 
         bool m_Reload = false;
+        bool m_End = false;
     };
 }

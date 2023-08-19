@@ -1,5 +1,10 @@
 #pragma once
+#include <string>
+#include <vector>
+
 #include "Singleton.h"
+
+
 
 enum class GameMode
 {
@@ -7,6 +12,12 @@ enum class GameMode
 	coop,
 	versus
 };
+
+struct Player {
+	std::string name;
+	int score;
+};
+
 
 class GameInstance : public dae::Singleton<GameInstance>
 {
@@ -33,7 +44,16 @@ public:
 	void SetGameMode(GameMode gamemode) { m_Gamemode = gamemode; }
 	GameMode GetGameMode() const { return m_Gamemode; }
 
+	void SetName(const std::string& name) { m_Name = name; }
+	const std::string& GetName() const { return m_Name; }
+
+	const std::vector<Player>& GetPlayers() const { return m_Players; }
+
 private:
+	void SavePlayerToFile();
+	void LoadPlayersFromFile();
+	
+
 	int m_LevelIdx{ 1 };
 
 	int m_Plates{},
@@ -43,6 +63,9 @@ private:
 	int m_HighScore{};
 
 	int m_Lives{};
+
+	std::string m_Name{};
+	std::vector<Player> m_Players;
 
 	GameMode m_Gamemode = GameMode::coop;
 };
