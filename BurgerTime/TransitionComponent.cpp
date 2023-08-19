@@ -20,7 +20,10 @@ void dae::TransitionComponent::Update(float deltaTime)
 	m_ELapsedTime += deltaTime;
 	if (m_ELapsedTime >= m_TransitionTime)
 	{
-		GameInstance::GetInstance().LoadNextLevel();
+		if(m_Reload)
+			GameInstance::GetInstance().ReloadLevel();
+		else
+			GameInstance::GetInstance().LoadNextLevel();
 	}
 
 }

@@ -43,13 +43,13 @@ void dae::PeterPepperJr::Initialize(dae::Scene& scene, Vec2 loc, bool keyboardCo
 	{
 
 		auto keyBoardKey = Input::KeyCommand(SDL_SCANCODE_LEFT, Input::KeyState::OnPressed);
-		auto controllerkey = Input::ControllerKey({ 0, dae::XBox360Controller::ControllerButton::DpadLeft,Input::KeyState::OnPressed });
+		auto controllerkey = Input::ControllerKey({ 1, dae::XBox360Controller::ControllerButton::DpadLeft,Input::KeyState::OnPressed });
 		auto command = std::make_shared<dae::MoveLeft>(go);
 		dae::InputManager::GetInstance().AddCommand(controllerkey, command);
 		dae::InputManager::GetInstance().AddCommand(keyBoardKey, command);
 
 		keyBoardKey = Input::KeyCommand(SDL_SCANCODE_LEFT, Input::KeyState::OnReleased);
-		controllerkey = Input::ControllerKey({ 0, dae::XBox360Controller::ControllerButton::DpadLeft,Input::KeyState::OnReleased });
+		controllerkey = Input::ControllerKey({ 1, dae::XBox360Controller::ControllerButton::DpadLeft,Input::KeyState::OnReleased });
 		auto idlecommand = std::make_shared<dae::Idle>(go);
 		dae::InputManager::GetInstance().AddCommand(controllerkey, idlecommand);
 		dae::InputManager::GetInstance().AddCommand(keyBoardKey, idlecommand);

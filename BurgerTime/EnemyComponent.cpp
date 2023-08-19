@@ -6,6 +6,7 @@
 #include "CollisionComponent.h"
 #include "GameObject.h"
 #include "LadderComponent.h"
+#include "PeterPepperComponent.h"
 #include "PlatformComponent.h"
 #include "Scene.h"
 #include "SceneManager.h"
@@ -43,6 +44,10 @@ void dae::EnemyComponent::HandleMovement(float deltaTime)
 			{
 				if (m_CollisionComp->IsOverlapping(object.get()))
 				{
+					if(object->GetTag() == Tag::peter || object->GetTag() == Tag::peterjr)
+					{
+						object->GetComponent<PeterPepperComponent>()->Hit();
+					}
 					if (object->GetTag() == Tag::ladder)
 					{
 						
@@ -63,7 +68,6 @@ void dae::EnemyComponent::HandleMovement(float deltaTime)
 										m_Transform->SetLocalPosition(pos);
 										m_OnLadder = true;
 										m_OnPlatform = false;
-										break;
 									}
 									else
 										CalcDirection();
@@ -79,7 +83,6 @@ void dae::EnemyComponent::HandleMovement(float deltaTime)
 										m_Transform->SetLocalPosition(pos);
 										m_OnLadder = true;
 										m_OnPlatform = false;
-										break;
 									}
 									else
 										CalcDirection();
@@ -104,7 +107,6 @@ void dae::EnemyComponent::HandleMovement(float deltaTime)
 								m_OnLadder = false;
 								m_OnPlatform = true;
 								CalcDirection();
-								break;
 							}
 							pos.x += m_Speed * deltaTime;
 							m_State = State::right;
@@ -120,7 +122,6 @@ void dae::EnemyComponent::HandleMovement(float deltaTime)
 								m_OnLadder = false;
 								m_OnPlatform = true;
 								CalcDirection();
-								break;
 							}
 							pos.x -= m_Speed * deltaTime;
 							m_State = State::left;
@@ -129,7 +130,6 @@ void dae::EnemyComponent::HandleMovement(float deltaTime)
 						m_Transform->SetLocalPosition(pos);
 						m_OnLadder = false;
 						m_OnPlatform = true;
-						break;
 					}
 					
 				}

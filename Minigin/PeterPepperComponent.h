@@ -24,11 +24,12 @@ namespace dae {
         void Update(float deltaTime) override;
         void FixedUpdate(float) override{}
 
-        void SetState(State state) { m_State = state; }//DO CHECK FOR LADDER WHEN UP DOWN, CHECK FOR FLOOR LEFT RIGHT
+        void SetState(State state) { m_State = state; }
         State GetState() const { return m_State; }
         void InitAnimation(AnimatedRenderComponent* comp);
+        void SetOtherPeter(GameObject* peter) { m_OtherPeter = peter; }
 
-        void Hit(){};
+        void Hit();
 
         void AddPoints(GameObject* go);
         void AddPoints(int amt);
@@ -41,6 +42,12 @@ namespace dae {
 
         bool m_OnPlatform = false;
         bool m_OnLadder = false;
+        bool m_Hit = false;
+
+        float m_ElapsedInv{}
+        , m_InvTime{ 2.f };
+
+        GameObject* m_OtherPeter = nullptr;
 
         //ANIM
         AnimatedRenderComponent* m_Anim{};

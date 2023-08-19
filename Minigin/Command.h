@@ -5,10 +5,12 @@
 #include "GameObject.h"
 #include "HealthComponent.h"
 #include "PeterPepperComponent.h"
+#include "../BurgerTime/MenuComponent.h"
 #include "..\BurgerTime\PepperComponent.h"
 
 namespace dae
 {
+	class MenuComponent;
 
 	class Command
 	{
@@ -76,6 +78,27 @@ namespace dae
 	public:
 		Pepper(std::shared_ptr<GameObject> obj) : Command(obj) {}
 		void Execute() override { GetGameObject()->GetComponent<PepperComponent>()->Activate(); }
+	};
+
+	class MenuNext : public Command
+	{
+	public:
+		MenuNext(std::shared_ptr<GameObject> obj) : Command(obj) {}
+		void Execute() override { GetGameObject()->GetComponent<MenuComponent>()->NextSelection(); }
+	};
+
+	class MenuPrevious : public Command
+	{
+	public:
+		MenuPrevious(std::shared_ptr<GameObject> obj) : Command(obj) {}
+		void Execute() override { GetGameObject()->GetComponent<MenuComponent>()->PreviousSelection(); }
+	};
+
+	class MenuStart : public Command
+	{
+	public:
+		MenuStart(std::shared_ptr<GameObject> obj) : Command(obj) {}
+		void Execute() override { GetGameObject()->GetComponent<MenuComponent>()->Start(); }
 	};
 
 }

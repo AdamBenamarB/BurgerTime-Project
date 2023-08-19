@@ -1,1 +1,77 @@
 #include "MenuScreen.h"
+
+#include "GameObject.h"
+#include "InputManager.h"
+#include "MenuComponent.h"
+#include "ResourceManager.h"
+#include "Scene.h"
+#include "SceneManager.h"
+#include "TextComponent.h"
+
+MenuScreen::MenuScreen()
+{
+	Initialize();
+}
+
+void MenuScreen::Initialize()
+{
+	auto go = std::make_shared<dae::GameObject>();
+	go->GetTransform()->SetLocalPosition(100, 200, 0);
+	auto font = dae::ResourceManager::GetInstance().LoadFont("Burgertime.otf", 60);
+	auto fontbig = dae::ResourceManager::GetInstance().LoadFont("Burgertime.otf", 100);
+
+
+	auto title = go->AddComponent<dae::TextComponent>();
+	auto sptext = go->AddComponent<dae::TextComponent>();
+	auto cooptext = go->AddComponent<dae::TextComponent>();
+	auto vstext = go->AddComponent<dae::TextComponent>();
+	std::vector<dae::TextComponent*> textcomps;
+	textcomps.push_back(sptext);
+	textcomps.push_back(cooptext);
+	textcomps.push_back(vstext);
+
+	title->SetFont(fontbig);
+	sptext->SetFont(font);
+	cooptext->SetFont(font);
+	vstext->SetFont(font);
+
+	title->SetText("BurgerTime");
+	title->SetColor(1, 1, 1, 1);
+	title->SetOffset(-50, -150);
+
+	sptext->SetText("SINGLEPLAYER");
+	sptext->SetColor(1, 0, 0, 1);
+
+	cooptext->SetText("CO-OP");
+	cooptext->SetColor(1, 1, 1, 1);
+	cooptext->SetOffset(0, 70);
+
+	vstext->SetText("VERSUS");
+	vstext->SetColor(1, 1, 1, 1);
+	vstext->SetOffset(0, 140);
+
+	auto menu = go->AddComponent<dae::MenuComponent>();
+	menu->SetTextComps(textcomps);
+
+	auto keyBoardKey = Input::KeyCommand(SDL_SCANCODE_DOWN, Input::KeyState::OnReleased);
+	auto controllerkey = Input::ControllerKey({ 0, dae::XBox360Controller::ControllerButton::DpadDown,Input::KeyState::OnReleased });
+	auto command = std::make_shared<dae::MenuNext>(go);
+	dae::InputManager::GetInstance().AddCommand(controllerkey, command);
+	dae::InputManager::GetInstance().AddCommand(keyBoardKey, command);
+
+	keyBoardKey = Input::KeyCommand(SDL_SCANCODE_UP, Input::KeyState::OnReleased);
+	controllerkey = Input::ControllerKey({ 0, dae::XBox360Controller::ControllerButton::DpadUp,Input::KeyState::OnReleased });
+	auto command2 = std::make_shared<dae::MenuPrevious>(go);
+	dae::InputManager::GetInstance().AddCommand(controllerkey, command2);
+	dae::InputManager::GetInstance().AddCommand(keyBoardKey, command2);
+
+	keyBoardKey = Input::KeyCommand(SDL_SCANCODE_SPACE, Input::KeyState::OnReleased);
+	controllerkey = Input::ControllerKey({ 0, dae::XBox360Controller::ControllerButton::ButtonA,Input::KeyState::OnReleased });
+	auto command3 = std::make_shared<dae::MenuStart>(go);
+	dae::InputManager::GetInstance().AddCommand(controllerkey, command3);
+	dae::InputManager::GetInstance().AddCommand(keyBoardKey, command3);
+
+
+	auto& scene = dae::SceneManager::GetInstance().CreateScene("MENU");
+	scene.Add(go);
+}

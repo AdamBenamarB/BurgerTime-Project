@@ -11,8 +11,9 @@ namespace dae {
         void FixedUpdate(float) override {}
         HealthComponent(GameObject* owner) : Component(owner) {}
         int GetLives() { return m_Lives; }
+        void SetLives(int lives) { m_Lives = lives; }
         void Hit(int amt = 1);
     private:
-        int m_Lives = 3;
+        int m_Lives = 4;
     };
 }

@@ -65,12 +65,10 @@ void dae::IngredientComponent::HandleCollision(float)// deltaTime)
 				{
 					if (m_Collisions[i]->IsOverlapping(obj.get()))
 					{
-						if (obj->GetTag() == Tag::peter)
+						if (obj->GetTag() == Tag::peter || obj->GetTag() == Tag::peterjr)
 						{
 							m_DropStates[i] = true;
 							m_Sprites[i]->SetOffsetY(5);
-
-							//ServiceLocator::GetSoundSystem().Play(m_Walk, 100);
 
 						}
 						if (i == 0 && obj.get() != m_Platform && obj->GetTag() == Tag::platform )

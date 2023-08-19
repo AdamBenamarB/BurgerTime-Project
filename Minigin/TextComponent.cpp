@@ -57,4 +57,12 @@ dae::TextComponent::TextComponent(GameObject* owner)
 		m_Color.green = uint8_t(g * 255);
 		m_Color.blue = uint8_t(b * 255);
 		m_Color.alpha = uint8_t(a * 255);
+
+		m_NeedsUpdate = true;
 	}
+
+void dae::TextComponent::SetOffset(float x, float y)
+{
+	m_RenderComponent->SetOffsetX(x);
+	m_RenderComponent->SetOffsetY(y);
+}

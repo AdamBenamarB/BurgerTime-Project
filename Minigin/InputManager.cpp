@@ -57,7 +57,7 @@ bool dae::InputManager::HandleInput()
 			}
 			if (e.key.keysym.scancode == SDL_SCANCODE_F1)
 			{
-				GameInstance::GetInstance().LoadNextLevel();
+				GameInstance::GetInstance().SkipLevel();
 			}
 		}
 	}
@@ -122,4 +122,5 @@ void dae::InputManager::RemoveCommand(Input::ControllerKey controllerKey)
 void dae::InputManager::RemoveCommands()
 {
 	m_input.m_consoleCommands.clear();
+	m_input.m_keyCommands.clear();
 }

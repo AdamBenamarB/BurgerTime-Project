@@ -15,14 +15,18 @@ public:
 
 	void FillPlate();
 
+	void Hit(int lives);
 	void Died(int points);
 
 	int GetScore()const { return m_Score; }
 	int GetHighScore()const { return m_HighScore; }
+
+	void ReloadLevel();
 	void LoadNextLevel();
+	void SkipLevel();
 
 	int GetLevelNr()const { return m_LevelIdx; }
-
+	int GetLives() const { return m_Lives; }
 	void StartGame();
 	void EndGame();
 
@@ -38,5 +42,7 @@ private:
 	int m_Score{};
 	int m_HighScore{};
 
-	GameMode m_Gamemode = GameMode::singleplayer;
+	int m_Lives{};
+
+	GameMode m_Gamemode = GameMode::coop;
 };

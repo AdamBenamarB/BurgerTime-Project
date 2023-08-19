@@ -1,12 +1,14 @@
 #include "Game.h"
 
 #include "GameInstance.h"
+#include "MenuScreen.h"
 #include "NextScreen.h"
 
 void Game::LoadGame()
 {
 	GameInstance::GetInstance().StartGame();
-	NextScreen{};
+	MenuScreen{};
+	//NextScreen{};
 }
 
 

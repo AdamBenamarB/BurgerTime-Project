@@ -111,9 +111,12 @@
       <Filter>Prefabs</Filter>
     </ClCompile>
     <ClCompile Include="MenuComponent.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Components</Filter>
     </ClCompile>
     <ClCompile Include="MenuScreen.cpp">
+      <Filter>Prefabs</Filter>
+    </ClCompile>
+    <ClCompile Include="LifeLostScreen.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -208,10 +211,13 @@
     <ClInclude Include="PeterPepperJr.h">
       <Filter>Prefabs</Filter>
     </ClInclude>
-    <ClInclude Include="MenuComponent.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="MenuScreen.h">
+      <Filter>Prefabs</Filter>
+    </ClInclude>
+    <ClInclude Include="MenuComponent.h">
+      <Filter>Components</Filter>
+    </ClInclude>
+    <ClInclude Include="LifeLostScreen.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -26,7 +26,7 @@ namespace dae
 		void SetText(const std::string& text);
 		void SetFont(const std::shared_ptr<Font>& font);
 		void SetColor(float r, float g, float b, float a = 1);
-
+		void SetOffset(float x, float y);
 		TextComponent(GameObject* owner);
 		virtual ~TextComponent() = default;
 		TextComponent(const TextComponent & other) = delete;

@@ -11,6 +11,7 @@ public:
 	LevelLoader& operator=(const LevelLoader& other) = delete;
 	LevelLoader& operator=(LevelLoader&& other) noexcept = delete;
 
-	static void LoadLevel(std::string fileLoc);
+	static void LoadLevel(const std::string& fileLoc);
+	static void ReloadLevel(const std::string& fileLoc);
 };
 

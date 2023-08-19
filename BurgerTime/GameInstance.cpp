@@ -10,6 +10,8 @@
 #include "ServiceLocator.h"
 #include <fstream>
 
+#include "LifeLostScreen.h"
+
 void GameInstance::FillPlate()
 {
 	++m_FullPlates;
@@ -30,6 +32,22 @@ void GameInstance::SetPlates(int amt)
 	m_FullPlates = 0;
 }
 
+void GameInstance::Hit(int lives)
+{
+	m_Lives = lives;
+	LifeLostScreen{};
+}
+
+void GameInstance::ReloadLevel()
+{
+	if (m_LevelIdx == 1)
+		LevelLoader::ReloadLevel("../Data/Levels/level1.json");
+	else if (m_LevelIdx == 2)
+		LevelLoader::ReloadLevel("../Data/Levels/level2.json");
+	else if (m_LevelIdx == 3)
+		LevelLoader::ReloadLevel("../Data/Levels/level3.json");
+}
+
 void GameInstance::Died(int points)
 {
 	m_Score = 0;
@@ -40,10 +58,10 @@ void GameInstance::Died(int points)
 	DeathScreen{};
 }
 
+
 void GameInstance::LoadNextLevel()
 {
-	auto& scene = dae::SceneManager::GetInstance().GetActiveScene();
-	dae::SceneManager::GetInstance().RemoveScene(scene);
+	
 	if (m_LevelIdx == 1)
 		LevelLoader::LoadLevel("../Data/Levels/level1.json");
 	else if (m_LevelIdx == 2)
@@ -70,4 +88,15 @@ void GameInstance::StartGame()
 		m_HighScore = k;
 	}
 	fs.close();
+}
+
+void GameInstance::SkipLevel()
+{
+		dae::ServiceLocator::GetSoundSystem().StopAll();
+		auto& scene = dae::SceneManager::GetInstance().GetActiveScene();
+		dae::SceneManager::GetInstance().RemoveScene(scene);
+		++m_LevelIdx;
+		if (m_LevelIdx > 3)
+			m_LevelIdx = 1;
+		LoadNextLevel();
 }
