@@ -1,6 +1,13 @@
 #pragma once
 #include "Singleton.h"
 
+enum class GameMode
+{
+	singleplayer,
+	coop,
+	versus
+};
+
 class GameInstance : public dae::Singleton<GameInstance>
 {
 public:
@@ -14,10 +21,14 @@ public:
 	int GetHighScore()const { return m_HighScore; }
 	void LoadNextLevel();
 
-	int GetLevelNr() { return m_LevelIdx; }
+	int GetLevelNr()const { return m_LevelIdx; }
 
 	void StartGame();
 	void EndGame();
+
+	void SetGameMode(GameMode gamemode) { m_Gamemode = gamemode; }
+	GameMode GetGameMode() const { return m_Gamemode; }
+
 private:
 	int m_LevelIdx{ 1 };
 
@@ -26,4 +37,6 @@ private:
 
 	int m_Score{};
 	int m_HighScore{};
+
+	GameMode m_Gamemode = GameMode::singleplayer;
 };

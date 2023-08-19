@@ -12,12 +12,12 @@
 #include "Scene.h"
 #include "Tags.h"
 
-dae::PeterPepper::PeterPepper(dae::Scene& scene, Vec2 loc)
+dae::PeterPepper::PeterPepper(dae::Scene& scene, Vec2 loc, bool keyboardControls)
 {
-	Initialize(scene, loc);
+	Initialize(scene, loc, keyboardControls);
 }
 
-void dae::PeterPepper::Initialize(dae::Scene& scene, Vec2 loc)
+void dae::PeterPepper::Initialize(dae::Scene& scene, Vec2 loc, bool keyboardControls)
 {
 	auto go = std::make_shared<dae::GameObject>();
 	m_Peter = go.get();
@@ -39,45 +39,103 @@ void dae::PeterPepper::Initialize(dae::Scene& scene, Vec2 loc)
 
 	scene.Add(go);
 
-	auto controllerkey = Input::ControllerKey({ 0, dae::XBox360Controller::ControllerButton::DpadLeft,Input::KeyState::OnPressed });
-	auto command = std::make_unique<dae::MoveLeft>(go);
-	dae::InputManager::GetInstance().AddCommand(controllerkey, std::move(command));
+	if(keyboardControls)
+	{
 
-	controllerkey = Input::ControllerKey({ 0, dae::XBox360Controller::ControllerButton::DpadLeft,Input::KeyState::OnReleased });
-	auto command2 = std::make_unique<dae::Idle>(go);
-	dae::InputManager::GetInstance().AddCommand(controllerkey, std::move(command2));
+		auto keyBoardKey = Input::KeyCommand(SDL_SCANCODE_LEFT, Input::KeyState::OnPressed);
+		auto controllerkey = Input::ControllerKey({ 0, dae::XBox360Controller::ControllerButton::DpadLeft,Input::KeyState::OnPressed });
+		auto command = std::make_shared<dae::MoveLeft>(go);
+		dae::InputManager::GetInstance().AddCommand(controllerkey, command);
+		dae::InputManager::GetInstance().AddCommand(keyBoardKey, command);
 
-	//RIGHT
-	controllerkey = Input::ControllerKey({ 0, dae::XBox360Controller::ControllerButton::DpadRight,Input::KeyState::OnPressed });
-	auto command3 = std::make_unique<dae::MoveRight>(go);
-	dae::InputManager::GetInstance().AddCommand(controllerkey, std::move(command3));
+		keyBoardKey = Input::KeyCommand(SDL_SCANCODE_LEFT, Input::KeyState::OnReleased);
+		controllerkey = Input::ControllerKey({ 0, dae::XBox360Controller::ControllerButton::DpadLeft,Input::KeyState::OnReleased });
+		auto idlecommand = std::make_shared<dae::Idle>(go);
+		dae::InputManager::GetInstance().AddCommand(controllerkey, idlecommand);
+		dae::InputManager::GetInstance().AddCommand(keyBoardKey, idlecommand);
 
-	controllerkey = Input::ControllerKey({ 0, dae::XBox360Controller::ControllerButton::DpadRight,Input::KeyState::OnReleased });
-	auto command4 = std::make_unique<dae::Idle>(go);
-	dae::InputManager::GetInstance().AddCommand(controllerkey, std::move(command4));
+		//RIGHT
 
-	//UP
-	controllerkey = Input::ControllerKey({ 0, dae::XBox360Controller::ControllerButton::DpadUp,Input::KeyState::OnPressed });
-	auto command5 = std::make_unique<dae::MoveUp>(go);
-	dae::InputManager::GetInstance().AddCommand(controllerkey, std::move(command5));
+		keyBoardKey = Input::KeyCommand(SDL_SCANCODE_RIGHT, Input::KeyState::OnPressed);
+		controllerkey = Input::ControllerKey({ 0, dae::XBox360Controller::ControllerButton::DpadRight,Input::KeyState::OnPressed });
+		auto command2 = std::make_shared<dae::MoveRight>(go);
+		dae::InputManager::GetInstance().AddCommand(controllerkey, command2);
+		dae::InputManager::GetInstance().AddCommand(keyBoardKey, command2);
 
-	controllerkey = Input::ControllerKey({ 0, dae::XBox360Controller::ControllerButton::DpadUp,Input::KeyState::OnReleased });
-	auto command6 = std::make_unique<dae::Idle>(go);
-	dae::InputManager::GetInstance().AddCommand(controllerkey, std::move(command6));
+		keyBoardKey = Input::KeyCommand(SDL_SCANCODE_RIGHT, Input::KeyState::OnReleased);
+		controllerkey = Input::ControllerKey({ 0, dae::XBox360Controller::ControllerButton::DpadRight,Input::KeyState::OnReleased });
+		dae::InputManager::GetInstance().AddCommand(controllerkey, idlecommand);
+		dae::InputManager::GetInstance().AddCommand(keyBoardKey, idlecommand);
 
-	//DOWN
-	controllerkey = Input::ControllerKey({ 0, dae::XBox360Controller::ControllerButton::DpadDown,Input::KeyState::OnPressed });
-	auto command7 = std::make_unique<dae::MoveDown>(go);
-	dae::InputManager::GetInstance().AddCommand(controllerkey, std::move(command7));
+		//UP
+		keyBoardKey = Input::KeyCommand(SDL_SCANCODE_UP, Input::KeyState::OnPressed);
+		controllerkey = Input::ControllerKey({ 0, dae::XBox360Controller::ControllerButton::DpadUp,Input::KeyState::OnPressed });
+		auto command3 = std::make_shared<dae::MoveUp>(go);
+		dae::InputManager::GetInstance().AddCommand(controllerkey, command3);
+		dae::InputManager::GetInstance().AddCommand(keyBoardKey, command3);
 
-	controllerkey = Input::ControllerKey({ 0, dae::XBox360Controller::ControllerButton::DpadDown,Input::KeyState::OnReleased });
-	auto command8 = std::make_unique<dae::Idle>(go);
-	dae::InputManager::GetInstance().AddCommand(controllerkey, std::move(command8));
+		keyBoardKey = Input::KeyCommand(SDL_SCANCODE_UP, Input::KeyState::OnReleased);
+		controllerkey = Input::ControllerKey({ 0, dae::XBox360Controller::ControllerButton::DpadUp,Input::KeyState::OnReleased });
+		dae::InputManager::GetInstance().AddCommand(controllerkey, idlecommand);
+		dae::InputManager::GetInstance().AddCommand(keyBoardKey, idlecommand);
 
-	controllerkey = Input::ControllerKey({ 0, dae::XBox360Controller::ControllerButton::ButtonA,Input::KeyState::OnPressed });
-	auto command9 = std::make_unique<dae::Pepper>(go);
-	dae::InputManager::GetInstance().AddCommand(controllerkey, std::move(command9));
-	
+		//DOWN
+		keyBoardKey = Input::KeyCommand(SDL_SCANCODE_DOWN, Input::KeyState::OnPressed);
+		controllerkey = Input::ControllerKey({ 0, dae::XBox360Controller::ControllerButton::DpadDown,Input::KeyState::OnPressed });
+		auto command4 = std::make_shared<dae::MoveDown>(go);
+		dae::InputManager::GetInstance().AddCommand(controllerkey, command4);
+		dae::InputManager::GetInstance().AddCommand(keyBoardKey, command4);
+
+		keyBoardKey = Input::KeyCommand(SDL_SCANCODE_DOWN, Input::KeyState::OnReleased);
+		controllerkey = Input::ControllerKey({ 0, dae::XBox360Controller::ControllerButton::DpadDown,Input::KeyState::OnReleased });
+		dae::InputManager::GetInstance().AddCommand(controllerkey, idlecommand);
+		dae::InputManager::GetInstance().AddCommand(keyBoardKey, idlecommand);
+
+		//PEPPER
+		keyBoardKey = Input::KeyCommand(SDL_SCANCODE_SPACE, Input::KeyState::OnPressed);
+		controllerkey = Input::ControllerKey({ 0, dae::XBox360Controller::ControllerButton::ButtonA,Input::KeyState::OnPressed });
+		auto command5 = std::make_shared<dae::Pepper>(go);
+		dae::InputManager::GetInstance().AddCommand(controllerkey, command5);
+		dae::InputManager::GetInstance().AddCommand(keyBoardKey, command5);
+	}
+	else
+	{
+		auto controllerkey = Input::ControllerKey({ 0, dae::XBox360Controller::ControllerButton::DpadLeft,Input::KeyState::OnPressed });
+		auto command = std::make_shared<dae::MoveLeft>(go);
+		dae::InputManager::GetInstance().AddCommand(controllerkey, command);
+
+		controllerkey = Input::ControllerKey({ 0, dae::XBox360Controller::ControllerButton::DpadLeft,Input::KeyState::OnReleased });
+		auto idlecommand = std::make_shared<dae::Idle>(go);
+		dae::InputManager::GetInstance().AddCommand(controllerkey, idlecommand);
+
+		//RIGHT
+		controllerkey = Input::ControllerKey({ 0, dae::XBox360Controller::ControllerButton::DpadRight,Input::KeyState::OnPressed });
+		auto command2 = std::make_shared<dae::MoveRight>(go);
+		dae::InputManager::GetInstance().AddCommand(controllerkey, command2);
+
+		controllerkey = Input::ControllerKey({ 0, dae::XBox360Controller::ControllerButton::DpadRight,Input::KeyState::OnReleased });
+		dae::InputManager::GetInstance().AddCommand(controllerkey, idlecommand);
+
+		//UP
+		controllerkey = Input::ControllerKey({ 0, dae::XBox360Controller::ControllerButton::DpadUp,Input::KeyState::OnPressed });
+		auto command3 = std::make_shared<dae::MoveUp>(go);
+		dae::InputManager::GetInstance().AddCommand(controllerkey, command3);
+
+		controllerkey = Input::ControllerKey({ 0, dae::XBox360Controller::ControllerButton::DpadUp,Input::KeyState::OnReleased });
+		dae::InputManager::GetInstance().AddCommand(controllerkey, idlecommand);
+
+		//DOWN
+		controllerkey = Input::ControllerKey({ 0, dae::XBox360Controller::ControllerButton::DpadDown,Input::KeyState::OnPressed });
+		auto command4 = std::make_shared<dae::MoveDown>(go);
+		dae::InputManager::GetInstance().AddCommand(controllerkey, command4);
+
+		controllerkey = Input::ControllerKey({ 0, dae::XBox360Controller::ControllerButton::DpadDown,Input::KeyState::OnReleased });
+		dae::InputManager::GetInstance().AddCommand(controllerkey, idlecommand);
+
+		controllerkey = Input::ControllerKey({ 0, dae::XBox360Controller::ControllerButton::ButtonA,Input::KeyState::OnPressed });
+		auto command5 = std::make_shared<dae::Pepper>(go);
+		dae::InputManager::GetInstance().AddCommand(controllerkey, command5);
+	}
 
 }
 

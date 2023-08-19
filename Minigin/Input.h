@@ -24,9 +24,9 @@ public:
 	void CheckControllers();
 
 	using ControllerKey = std::tuple<unsigned, dae::XBox360Controller::ControllerButton, KeyState>;
-	using ControllerCommandsMap = std::map<ControllerKey, std::unique_ptr<dae::Command>>;
+	using ControllerCommandsMap = std::map<ControllerKey, std::shared_ptr<dae::Command>>;
 	using KeyCommand = std::pair<SDL_Scancode, KeyState>;
-	using KeyboardCommandsMap = std::map<KeyCommand, std::unique_ptr<dae::Command>>;
+	using KeyboardCommandsMap = std::map<KeyCommand, std::shared_ptr<dae::Command>>;
 	KeyboardCommandsMap m_keyCommands{};
 	ControllerCommandsMap m_consoleCommands{};
 	std::vector<std::unique_ptr<dae::XBox360Controller>> m_controllers{};

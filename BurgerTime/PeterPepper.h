@@ -11,7 +11,7 @@ namespace dae
 	class PeterPepper
 	{
 	public:
-		PeterPepper(dae::Scene& scene, Vec2 loc);
+		PeterPepper(dae::Scene& scene, Vec2 loc, bool keyboardControls = true);
 		~PeterPepper() = default;
 		PeterPepper(const PeterPepper& other) = delete;
 		PeterPepper(PeterPepper&& other) noexcept = delete;
@@ -21,7 +21,7 @@ namespace dae
 		GameObject* GetGameObject();
 
 	private:
-		void Initialize(dae::Scene& scene, Vec2 loc);
+		void Initialize(dae::Scene& scene, Vec2 loc, bool keyboardControls);
 
 		float m_Height{ 32 },
 			m_Width{ 32 };

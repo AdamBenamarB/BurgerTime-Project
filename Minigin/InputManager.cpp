@@ -100,14 +100,14 @@ bool dae::InputManager::IsPressed(XBox360Controller::ControllerButton button, in
 }
 
 
-void dae::InputManager::AddCommand(Input::ControllerKey controllerKey, std::unique_ptr<Command> command)
+void dae::InputManager::AddCommand(Input::ControllerKey controllerKey, std::shared_ptr<Command> command)
 {
-	m_input.m_consoleCommands.insert({ controllerKey, std::move(command) });
+	m_input.m_consoleCommands.insert({ controllerKey, command });
 }
 
-void dae::InputManager::AddCommand(Input::KeyCommand keyCommand, std::unique_ptr<Command> command)
+void dae::InputManager::AddCommand(Input::KeyCommand keyCommand, std::shared_ptr<Command> command)
 {
-	m_input.m_keyCommands.insert({ keyCommand, std::move(command) });
+	m_input.m_keyCommands.insert({ keyCommand, command});
 }
 
 void dae::InputManager::RemoveCommand(Input::ControllerKey controllerKey)
