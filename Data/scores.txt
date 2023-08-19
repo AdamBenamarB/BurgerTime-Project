@@ -13,3 +13,4 @@ luvou,700
 poopy,100
 egggg,0
 chwia,0
+eggstar,200

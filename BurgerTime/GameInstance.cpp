@@ -52,12 +52,12 @@ void GameInstance::ReloadLevel()
 
 void GameInstance::Died(int points)
 {
-	SavePlayerToFile();
-	std::sort(m_Players.begin(), m_Players.end(), [](const Player& a, const Player& b) {
-		return a.score > b.score; });
 	m_Score = 0;
 	if (m_HighScore < points)
 		m_HighScore = points;
+	SavePlayerToFile();
+	std::sort(m_Players.begin(), m_Players.end(), [](const Player& a, const Player& b) {
+		return a.score > b.score; });
 	auto& scene = dae::SceneManager::GetInstance().GetActiveScene();
 	dae::SceneManager::GetInstance().RemoveScene(scene);
 	DeathScreen{};
@@ -102,7 +102,7 @@ void GameInstance::SavePlayerToFile() {
 	std::ofstream outputFile("../Data/scores.txt", std::ios::app);
 
 	if (outputFile.is_open()) {
-		outputFile << m_Name << "," << m_Score << std::endl;
+		outputFile << m_Name << "," << m_HighScore << std::endl;
 		outputFile.close();
 	}
 	else {

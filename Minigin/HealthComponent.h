@@ -14,6 +14,6 @@ namespace dae {
         void SetLives(int lives) { m_Lives = lives; }
         void Hit(int amt = 1);
     private:
-        int m_Lives = 1;
+        int m_Lives = 3;
     };
 }
