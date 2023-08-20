@@ -127,9 +127,7 @@ void dae::IngredientComponent::HandleCollision(float)// deltaTime)
 				m_LevelsToFall = (int)m_Enemies.size();
 				if (m_PlayerDog)
 					++m_LevelsToFall;
-
-				if(m_LevelsToFall == 0)
-					m_Peter->GetComponent<PeterPepperComponent>()->AddPoints(50);
+				
 				if (m_LevelsToFall == 1)
 					m_Peter->GetComponent<PeterPepperComponent>()->AddPoints(500);
 				if (m_LevelsToFall == 2)

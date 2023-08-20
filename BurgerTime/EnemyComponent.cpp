@@ -28,16 +28,6 @@ void dae::EnemyComponent::Update(float deltaTime)
 
 void dae::EnemyComponent::HandleMovement(float deltaTime)
 {
-	//GO ON LADDER IF Y IS BIG
-	//IF Y IS SAME AND ON PLATFORM GO ON PLATFORM
-	//GO IN X DIRECTION ON PLATFORM
-	//IF DIRECTION CHANGE BECAUSE PLATFORM DOESNT GET TO PETER TAKE NEXT LADDER (directionChanged bool)
-	//IF PLATFORM AND X BIG GO IN X DIRECTION ON PLATFORM AND RESET directionChanged
-
-	//TAKE LADDER IF: direction changed or y > x
-	//TAKE PLATFORM IF: x > y
-	//reset direction changed when ladder top or bottom
-
 	if (m_State != State::falling && m_State != State::stunned)
 	{
 		CalcDirection();
@@ -56,6 +46,8 @@ void dae::EnemyComponent::HandleMovement(float deltaTime)
 			{
 				if (m_CollisionComp->IsOverlapping(object.get()))
 				{
+					if (object->GetTag() == Tag::peter || object->GetTag() == Tag::peterjr)
+						object->GetComponent<PeterPepperComponent>()->Hit();
 					if(object->GetTag() == Tag::ladder)
 					{
 						auto laddercomp = object->GetComponent<LadderComponent>();
@@ -117,6 +109,7 @@ void dae::EnemyComponent::HandleMovement(float deltaTime)
 								{
 									m_DirChanged = true;
 									m_MovementDir.x = -m_MovementDir.x;
+									m_MovementDir.y = m_Direction.y;
 								}
 							}
 							if (m_MovementDir.x > 0)
@@ -133,6 +126,7 @@ void dae::EnemyComponent::HandleMovement(float deltaTime)
 								{
 									m_DirChanged = true;
 									m_MovementDir.x = -m_MovementDir.x;
+									m_MovementDir.y = m_Direction.y;
 								}
 							}
 
@@ -155,7 +149,21 @@ void dae::EnemyComponent::HandleMovement(float deltaTime)
 					pos.x = ladder->GetTransform()->GetWorldPosition().x;
 					m_Transform->SetLocalPosition(pos);
 				}
-				if (m_MovementDir.y < 0)
+				else if (m_MovementDir.y < 0)
+				{
+					pos.y -= m_ClimbSpeed * deltaTime;
+					m_State = State::up;
+					pos.x = ladder->GetTransform()->GetWorldPosition().x;
+					m_Transform->SetLocalPosition(pos);
+				}
+				else if(ladder->GetComponent<LadderComponent>()->OnTop(GetOwner()))
+				{
+					pos.y += m_ClimbSpeed * deltaTime;
+					m_State = State::down;
+					pos.x = ladder->GetTransform()->GetWorldPosition().x;
+					m_Transform->SetLocalPosition(pos);
+				}
+				else
 				{
 					pos.y -= m_ClimbSpeed * deltaTime;
 					m_State = State::up;
@@ -237,178 +245,6 @@ void dae::EnemyComponent::HandleMovement(float deltaTime)
 				m_Transform->SetLocalPosition(pos);
 			}
 		}
-
-		std::cout << "X: " << m_MovementDir.x << " Y: " << m_MovementDir.y << std::endl;
-		
-		/*if (platform)
-		{
-			if (m_DirChanged && lastPlatform)
-			{
-				if (platform->GetTransform()->GetWorldPosition().y != lastPlatform->GetTransform()->GetWorldPosition().y)
-				{
-					m_MovementDir.y = m_Direction.y;
-					lastPlatform = nullptr;
-					m_DirChanged = false;
-				}
-			}
-			else
-				m_MovementDir.y = m_Direction.y;
-		}
-		if (!(platform && abs(m_Direction.x) > 2) && ladder)
-		{
-			if ((abs(m_MovementDir.y) > 4 && !m_DirChanged) && ladder || (m_DirChanged && ladder))
-			{
-				if (m_MovementDir.y > 0)
-				{
-					pos.y += m_ClimbSpeed * deltaTime;
-					m_State = State::down;
-					pos.x = ladder->GetTransform()->GetWorldPosition().x;
-					m_Transform->SetLocalPosition(pos);
-				}
-				if (m_MovementDir.y < 0)
-				{
-					pos.y -= m_ClimbSpeed * deltaTime;
-					m_State = State::up;
-					pos.x = ladder->GetTransform()->GetWorldPosition().x;
-					m_Transform->SetLocalPosition(pos);
-				}
-
-
-			}
-		}
-		else if(abs(m_MovementDir.x) > 0)
-		{
-			if(platform)
-			{
-				if(m_MovementDir.x < 0)
-				{
-					pos.x -= m_Speed * deltaTime;
-					m_State = State::left;
-					pos.y = platform->GetComponent<PlatformComponent>()->GetFloorY();
-					m_Transform->SetLocalPosition(pos);
-					m_OnLadder = false;
-					m_OnPlatform = true;
-				}
-				if (m_MovementDir.x > 0)
-				{
-					pos.x += m_Speed * deltaTime;
-					m_State = State::right;
-					pos.y = platform->GetComponent<PlatformComponent>()->GetFloorY();
-					m_Transform->SetLocalPosition(pos);
-					m_OnLadder = false;
-					m_OnPlatform = true;
-				}
-			}
-		}*/
-
-		//std::cout << int(m_State) << '\n' << " Dir X: " << m_MovementDir.x << " Y: " << m_MovementDir.y << std::endl;
-
-		//glm::vec3 peterPos = m_Peter->GetTransform()->GetWorldPosition();
-		//glm::vec3 pos = GetOwner()->GetTransform()->GetWorldPosition();
-
-		//if (m_OnPlatform)
-		//	m_Direction.y = peterPos.y - pos.y;
-
-		////std::cout << "X: " << m_Direction.x << " Y: " << m_Direction.y << std::endl;
-
-		//for (auto& object : SceneManager::GetInstance().GetActiveScene().GetObjects())
-		//{
-		//	if (object->GetComponent<CollisionComponent>())
-		//	{
-		//		if (m_CollisionComp->IsOverlapping(object.get()))
-		//		{
-		//			if(object->GetTag() == Tag::peter || object->GetTag() == Tag::peterjr)
-		//			{
-		//				object->GetComponent<PeterPepperComponent>()->Hit();
-		//			}
-		//			if (object->GetTag() == Tag::ladder)
-		//			{
-		//				
-		//				auto laddercomp = object->GetComponent<LadderComponent>();
-		//				if (laddercomp->InRange(GetOwner()))
-		//				{
-		//					if (abs(m_Direction.y) > 8)
-		//					{
-		//						auto pos = m_Transform->GetWorldPosition();
-
-		//						if (m_Direction.y > 0)
-		//						{
-		//							if (!laddercomp->OnBottom(GetOwner()))
-		//							{
-		//								pos.y += m_ClimbSpeed * deltaTime;
-		//								m_State = State::down;
-		//								pos.x = object->GetTransform()->GetWorldPosition().x;
-		//								m_Transform->SetLocalPosition(pos);
-		//								m_OnLadder = true;
-		//								m_OnPlatform = false;
-		//							}
-		//							else
-		//								CalcDirection();
-
-		//						}
-		//						if (m_Direction.y < 0)
-		//						{
-		//							if (!laddercomp->OnTop(GetOwner()))
-		//							{
-		//								pos.y -= m_ClimbSpeed * deltaTime;
-		//								m_State = State::up;
-		//								pos.x = object->GetTransform()->GetWorldPosition().x;
-		//								m_Transform->SetLocalPosition(pos);
-		//								m_OnLadder = true;
-		//								m_OnPlatform = false;
-		//							}
-		//							else
-		//								CalcDirection();
-		//						}
-
-		//					}
-		//				}
-
-		//			}
-		//			if (object->GetTag() == Tag::platform)
-		//			{
-		//				auto pos = m_Transform->GetWorldPosition();
-		//				auto platcomp = object->GetComponent<PlatformComponent>();
-		//				if (m_Direction.x > 1)
-		//				{
-		//					if (platcomp->OnRight(GetOwner()))
-		//					{
-		//						pos.x -= m_Speed * deltaTime;
-		//						m_State = State::left;
-		//						pos.y = platcomp->GetFloorY();
-		//						m_Transform->SetLocalPosition(pos);
-		//						m_OnLadder = false;
-		//						m_OnPlatform = true;
-		//						CalcDirection();
-		//					}
-		//					pos.x += m_Speed * deltaTime;
-		//					m_State = State::right;
-		//				}
-		//				if (m_Direction.x < -1)
-		//				{
-		//					if (platcomp->OnLeft(GetOwner()))
-		//					{
-		//						pos.x -= m_Speed * deltaTime;
-		//						m_State = State::left;
-		//						pos.y = platcomp->GetFloorY();
-		//						m_Transform->SetLocalPosition(pos);
-		//						m_OnLadder = false;
-		//						m_OnPlatform = true;
-		//						CalcDirection();
-		//					}
-		//					pos.x -= m_Speed * deltaTime;
-		//					m_State = State::left;
-		//				}
-		//				pos.y = platcomp->GetFloorY();
-		//				m_Transform->SetLocalPosition(pos);
-		//				m_OnLadder = false;
-		//				m_OnPlatform = true;
-		//			}
-		//			
-		//		}
-		//	}
-
-		//}
 	}
 }
 
@@ -475,6 +311,7 @@ void dae::EnemyComponent::Kill()
 	
 	ServiceLocator::GetSoundSystem().Play(m_Hit, 100);
 	m_State = State::dead;
+	SceneManager::GetInstance().GetActiveScene().Remove(GetOwner());
 }
 
 void dae::EnemyComponent::Initialize()

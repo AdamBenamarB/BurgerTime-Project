@@ -8,7 +8,6 @@ void Game::LoadGame()
 {
 	GameInstance::GetInstance().StartGame();
 	MenuScreen{};
-	//NextScreen{};
 }
 
 

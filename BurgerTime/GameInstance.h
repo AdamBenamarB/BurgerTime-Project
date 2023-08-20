@@ -26,11 +26,11 @@ public:
 
 	void FillPlate();
 
-	void Hit(int lives);
+	void Hit(int lives,int points);
 	void Died(int points);
-
-	int GetScore()const { return m_Score; }
+	
 	int GetHighScore()const { return m_HighScore; }
+	int GetScore()const { return m_Score; }
 
 	void ReloadLevel();
 	void LoadNextLevel();
@@ -58,9 +58,9 @@ private:
 
 	int m_Plates{},
 		m_FullPlates{};
-
-	int m_Score{};
+	
 	int m_HighScore{};
+	int m_Score{};
 
 	int m_Lives{};
 

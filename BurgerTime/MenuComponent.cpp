@@ -67,7 +67,7 @@ void dae::MenuComponent::Update(float)
 	if(m_Started)
 	{
 		char ch = GetPressedKey();
-		if(ch == '\n')
+		if (ch == '\n')
 		{
 			switch (m_Selection)
 			{
@@ -81,15 +81,20 @@ void dae::MenuComponent::Update(float)
 				GameInstance::GetInstance().SetGameMode(GameMode::versus);
 				break;
 			}
+			GameInstance::GetInstance().SetName(m_NameStr);
 			NextScreen{};
 		}
 		else if (ch != '\0')
-		if (ch != m_LastKey)
 		{
-			m_LastKey = ch;
-			m_NameStr.push_back(ch);
-			m_Name->SetText(m_NameStr);
+			if (ch != m_LastKey)
+			{
+				m_LastKey = ch;
+				m_NameStr.push_back(ch);
+				m_Name->SetText(m_NameStr);
+			}
 		}
+		else
+			m_LastKey = ch;
 		
 	}
 }

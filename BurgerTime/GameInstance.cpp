@@ -13,6 +13,9 @@
 #include "InputManager.h"
 #include "LifeLostScreen.h"
 #include "MenuScreen.h"
+#include "PointsComponent.h"
+#include "Scene.h"
+#include "Tags.h"
 
 void GameInstance::FillPlate()
 {
@@ -34,9 +37,12 @@ void GameInstance::SetPlates(int amt)
 	m_FullPlates = 0;
 }
 
-void GameInstance::Hit(int lives)
+void GameInstance::Hit(int lives, int points)
 {
 	m_Lives = lives;
+	if (points > m_HighScore)
+		m_HighScore = points;
+	m_Score = 0;
 	LifeLostScreen{};
 }
 
@@ -52,12 +58,13 @@ void GameInstance::ReloadLevel()
 
 void GameInstance::Died(int points)
 {
-	m_Score = 0;
-	if (m_HighScore < points)
+	if (points > m_HighScore)
 		m_HighScore = points;
+	m_HighScore = points;
 	SavePlayerToFile();
-	std::sort(m_Players.begin(), m_Players.end(), [](const Player& a, const Player& b) {
-		return a.score > b.score; });
+	LoadPlayersFromFile();
+	m_HighScore = 0;
+	m_Score = 0;
 	auto& scene = dae::SceneManager::GetInstance().GetActiveScene();
 	dae::SceneManager::GetInstance().RemoveScene(scene);
 	DeathScreen{};
@@ -66,6 +73,11 @@ void GameInstance::Died(int points)
 
 void GameInstance::LoadNextLevel()
 {
+	for(auto object: dae::SceneManager::GetInstance().GetActiveScene().GetObjects())
+	{
+		if (object->GetTag() == Tag::peter)
+			m_Score = object->GetComponent<dae::PointsComponent>()->GetPoints();
+	}
 	if (m_LevelIdx == 1)
 		LevelLoader::LoadLevel("../Data/Levels/level1.json");
 	else if (m_LevelIdx == 2)
@@ -79,6 +91,10 @@ void GameInstance::EndGame()
 	auto& scene = dae::SceneManager::GetInstance().GetActiveScene();
 	dae::SceneManager::GetInstance().RemoveScene(scene);
 	dae::InputManager::GetInstance().RemoveCommands();
+	if (m_Score > m_HighScore)
+		m_HighScore = m_Score;
+	m_HighScore = m_Score;
+	SavePlayerToFile();
 	MenuScreen{};
 }
 
@@ -120,6 +136,8 @@ void GameInstance::LoadPlayersFromFile() {
 			inputFile.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
 			m_Players.push_back(player);
 		}
+		std::sort(m_Players.begin(), m_Players.end(), [](const Player& a, const Player& b) {
+			return a.score > b.score; });
 	}
 	else {
 		std::cerr << "Unable to open the file for reading." << std::endl;
