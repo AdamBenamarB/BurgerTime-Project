@@ -14,7 +14,7 @@ namespace dae {
     public:
         EnemySpawnComponent(GameObject* owner);
         void Update(float deltaTime) override;
-        void FixedUpdate(float deltaTime) override{}
+        void FixedUpdate(float) override{}
 
     private:
         float m_TimePerSpawn{ 10.f },

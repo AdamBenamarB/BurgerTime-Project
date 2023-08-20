@@ -181,7 +181,7 @@ void dae::PlayerDogComponent::InitAnimation(AnimatedRenderComponent* comp)
 	m_Stunned = m_Anim->AddClip(2, false);
 }
 
-void dae::PlayerDogComponent::HandleAnim(float deltaTime)
+void dae::PlayerDogComponent::HandleAnim(float)
 {
 	switch (m_State)
 	{

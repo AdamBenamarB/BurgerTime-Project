@@ -6,8 +6,8 @@ namespace dae {
 	{
 	public:
 		LadderComponent(GameObject* owner) :Component{ owner } {}
-		void Update(float deltaTime) override{}
-		void FixedUpdate(float deltaTime) override{}
+		void Update(float) override{}
+		void FixedUpdate(float) override{}
 
 		bool OnTop(GameObject* go);
 		bool OnBottom(GameObject* go);

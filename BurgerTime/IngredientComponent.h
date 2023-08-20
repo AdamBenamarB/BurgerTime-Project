@@ -19,7 +19,7 @@ namespace dae {
         IngredientComponent(GameObject* owner);
 
         void Update(float deltaTime) override;
-        void FixedUpdate(float deltaTime) override{}
+        void FixedUpdate(float) override{}
 
         void SetCollisions(std::vector<CollisionComponent*>& cols);
         void SetSprites(std::vector<RenderComponent*>& sprites);

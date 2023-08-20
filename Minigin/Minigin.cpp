@@ -53,7 +53,7 @@ void dae::Minigin::Initialize()
 	}
 	
 	g_window = SDL_CreateWindow(
-		"Programming 4 assignment",
+		"BurgerTime",
 		SDL_WINDOWPOS_CENTERED,
 		SDL_WINDOWPOS_CENTERED,
 		704,

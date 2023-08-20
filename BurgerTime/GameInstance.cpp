@@ -126,9 +126,6 @@ void GameInstance::SavePlayerToFile() {
 		outputFile << m_Name << "," << m_HighScore << std::endl;
 		outputFile.close();
 	}
-	else {
-		std::cerr << "Unable to open the file for writing." << std::endl;
-	}
 }
 
 void GameInstance::LoadPlayersFromFile() {
@@ -143,9 +140,6 @@ void GameInstance::LoadPlayersFromFile() {
 		}
 		std::sort(m_Players.begin(), m_Players.end(), [](const Player& a, const Player& b) {
 			return a.score > b.score; });
-	}
-	else {
-		std::cerr << "Unable to open the file for reading." << std::endl;
 	}
 }
 

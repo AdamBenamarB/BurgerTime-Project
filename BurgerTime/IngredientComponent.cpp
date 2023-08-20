@@ -62,7 +62,7 @@ void dae::IngredientComponent::HandleCollision(float)// deltaTime)
 		}
 			for (auto& obj : SceneManager::GetInstance().GetActiveScene().GetObjects())
 			{
-				for (int i{}; i < m_Collisions.size(); ++i)
+				for (int i{}; i < (int)m_Collisions.size(); ++i)
 				{
 					if (m_Collisions[i]->IsOverlapping(obj.get()))
 					{
@@ -152,7 +152,7 @@ void dae::IngredientComponent::HandleCollision(float)// deltaTime)
 		{
 		for (auto& obj : SceneManager::GetInstance().GetActiveScene().GetObjects())
 		{
-			for (int i{}; i < m_Collisions.size(); ++i)
+			for (int i{}; i < (int)m_Collisions.size(); ++i)
 			{
 				if (m_Collisions[i]->IsOverlapping(obj.get()))
 				{
@@ -168,10 +168,10 @@ void dae::IngredientComponent::HandleCollision(float)// deltaTime)
 								{
 									m_State = State::idle;
 									m_Platform = obj.get();
-									for (int i{}; i < 4; ++i)
+									for (int j{}; j < 4; ++j)
 									{
-										m_DropStates[i] = false;
-										m_Sprites[i]->SetOffsetY(0);
+										m_DropStates[j] = false;
+										m_Sprites[j]->SetOffsetY(0);
 									}
 									
 									for (auto enemy : m_Enemies)
@@ -213,10 +213,10 @@ void dae::IngredientComponent::HandleCollision(float)// deltaTime)
 						}
 						else if (obj->GetTag() == Tag::plate)
 						{
-							for (int i{}; i < 4; ++i)
+							for (int j{}; j < 4; ++j)
 							{
-								m_DropStates[i] = false;
-								m_Sprites[i]->SetOffsetY(0);
+								m_DropStates[j] = false;
+								m_Sprites[j]->SetOffsetY(0);
 							}
 							m_State = State::plated;
 							m_Enemies.clear();

@@ -14,7 +14,7 @@ namespace dae {
     public:
         TransitionComponent(GameObject* owner);
         void Update(float deltaTime) override;
-        void FixedUpdate(float deltaTime) override{}
+        void FixedUpdate(float) override{}
         void SetTransitionTime(float time) { m_TransitionTime = time; }
         void SetReload(bool reload) { m_Reload = reload; }
         void SetEnd(bool end) { m_End = end; }

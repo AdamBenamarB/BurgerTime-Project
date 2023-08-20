@@ -7,8 +7,8 @@ namespace dae {
     public:
         PlatformComponent(GameObject* owner):Component{owner}{}
 
-        void Update(float deltaTime) override{}
-        void FixedUpdate(float deltaTime) override{}
+        void Update(float) override{}
+        void FixedUpdate(float) override{}
 
         bool OnLeft(GameObject* go);
         bool OnRight(GameObject* go);

@@ -170,7 +170,7 @@ void dae::PeterPepperComponent::InitAnimation(AnimatedRenderComponent* comp)
 	m_ClimbDown = m_Anim->AddClip(3, true);
 }
 
-void dae::PeterPepperComponent::HandleAnim(float deltaTime)
+void dae::PeterPepperComponent::HandleAnim(float)
 {
 	switch (m_State)
 	{
