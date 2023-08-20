@@ -14,8 +14,8 @@ enum class GameMode
 };
 
 struct Player {
-	std::string name;
-	int score;
+	std::string name{};
+	int score{};
 };
 
 

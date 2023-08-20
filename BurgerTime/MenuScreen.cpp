@@ -17,6 +17,7 @@ void MenuScreen::Initialize()
 {
 	auto go = std::make_shared<dae::GameObject>();
 	go->GetTransform()->SetLocalPosition(100, 200, 0);
+	auto fontsmall = dae::ResourceManager::GetInstance().LoadFont("Burgertime.otf", 40);
 	auto font = dae::ResourceManager::GetInstance().LoadFont("Burgertime.otf", 60);
 	auto fontbig = dae::ResourceManager::GetInstance().LoadFont("Burgertime.otf", 100);
 
@@ -26,13 +27,14 @@ void MenuScreen::Initialize()
 	auto cooptext = go->AddComponent<dae::TextComponent>();
 	auto vstext = go->AddComponent<dae::TextComponent>();
 	auto nametext = go->AddComponent<dae::TextComponent>();
+
 	std::vector<dae::TextComponent*> textcomps;
 	textcomps.push_back(sptext);
 	textcomps.push_back(cooptext);
 	textcomps.push_back(vstext);
 	textcomps.push_back(nametext);
 	
-	nametext->SetFont(font);
+	nametext->SetFont(fontsmall);
 	title->SetFont(fontbig);
 	sptext->SetFont(font);
 	cooptext->SetFont(font);
@@ -52,9 +54,8 @@ void MenuScreen::Initialize()
 	vstext->SetText("VERSUS");
 	vstext->SetColor(1, 1, 1, 1);
 	vstext->SetOffset(0, 140);
-	
 
-	nametext->SetText("enter name");
+	nametext->SetText("SELECT GAMEMODE");
 	nametext->SetColor(1, 1, 1, 1);
 	nametext->SetOffset(0, 270);
 
@@ -77,6 +78,9 @@ void MenuScreen::Initialize()
 	controllerkey = Input::ControllerKey({ 0, dae::XBox360Controller::ControllerButton::ButtonA,Input::KeyState::OnReleased });
 	auto command3 = std::make_shared<dae::MenuStart>(go);
 	dae::InputManager::GetInstance().AddCommand(controllerkey, command3);
+	dae::InputManager::GetInstance().AddCommand(keyBoardKey, command3);
+
+	keyBoardKey = Input::KeyCommand(SDL_SCANCODE_RETURN, Input::KeyState::OnReleased);
 	dae::InputManager::GetInstance().AddCommand(keyBoardKey, command3);
 
 

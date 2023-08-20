@@ -1,4 +1,5 @@
 #pragma once
+#include <SDL_stdinc.h>
 #include <string>
 #include <vector>
 
@@ -19,7 +20,7 @@ namespace dae
 	public:
 		MenuComponent(GameObject* owner):Component(owner){}
 
-		void Update(float) override{}
+		void Update(float) override;
 		void FixedUpdate(float) override{}
 
 		void SetTextComps(const std::vector<TextComponent*>& textComps);
@@ -29,6 +30,7 @@ namespace dae
 		void Start();
 		
 	private:
+		char GetPressedKey();
 		TextComponent* m_SinglePlayer = nullptr;
 		TextComponent* m_Coop = nullptr;
 		TextComponent* m_Versus = nullptr;
@@ -37,6 +39,8 @@ namespace dae
 		std::string m_NameStr;
 		Selection m_Selection = Selection::singleplayer;
 		bool m_Started = false;
+
+		char m_LastKey = ';';
 	};
 }
 

@@ -1,6 +1,8 @@
 #include "MenuComponent.h"
 
 #include <iostream>
+#include <SDL_events.h>
+#include <SDL_keyboard.h>
 #include <thread>
 
 #include "GameInstance.h"
@@ -60,29 +62,56 @@ void dae::MenuComponent::PreviousSelection()
 	}
 }
 
+void dae::MenuComponent::Update(float)
+{
+	if(m_Started)
+	{
+		char ch = GetPressedKey();
+		if(ch == '\n')
+		{
+			switch (m_Selection)
+			{
+			case Selection::singleplayer:
+				GameInstance::GetInstance().SetGameMode(GameMode::singleplayer);
+				break;
+			case Selection::coop:
+				GameInstance::GetInstance().SetGameMode(GameMode::coop);
+				break;
+			case Selection::versus:
+				GameInstance::GetInstance().SetGameMode(GameMode::versus);
+				break;
+			}
+			NextScreen{};
+		}
+		else if (ch != '\0')
+		if (ch != m_LastKey)
+		{
+			m_LastKey = ch;
+			m_NameStr.push_back(ch);
+			m_Name->SetText(m_NameStr);
+		}
+		
+	}
+}
+
 
 void dae::MenuComponent::Start()
 {
-	m_Name->SetText("enter name");
-	std::cin >> m_NameStr;
-	GameInstance::GetInstance().SetName(m_NameStr);
 
-	if (!m_Started)
-	{
-		switch (m_Selection)
-		{
-		case Selection::singleplayer:
-			GameInstance::GetInstance().SetGameMode(GameMode::singleplayer);
-			break;
-		case Selection::coop:
-			GameInstance::GetInstance().SetGameMode(GameMode::coop);
-			break;
-		case Selection::versus:
-			GameInstance::GetInstance().SetGameMode(GameMode::versus);
-			break;
+	m_Started = true;
+	m_Name->SetText("ENTER NAME");		
+}
+
+char dae::MenuComponent::GetPressedKey() {
+
+	const Uint8* state = SDL_GetKeyboardState(nullptr);
+
+	for (int scancode = SDL_SCANCODE_A; scancode <= SDL_SCANCODE_Z; ++scancode) {
+		if (state[scancode]) {
+				return static_cast<char>('A' + (scancode - SDL_SCANCODE_A));
 		}
-		m_Started = true;
-		NextScreen{};
 	}
-		
+	if (state[SDL_SCANCODE_RETURN])
+		return '\n';
+	return '\0';
 }

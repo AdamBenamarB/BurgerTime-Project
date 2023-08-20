@@ -52,7 +52,7 @@ bool dae::LadderComponent::OnBottom(GameObject* go)
 bool dae::LadderComponent::OnTop(GameObject* go)
 {
 	if(IsTop())
-		return go->GetTransform()->GetWorldPosition().y - GetOwner()->GetTransform()->GetWorldPosition().y < -63;
+		return GetOwner()->GetTransform()->GetWorldPosition().y - go->GetTransform()->GetWorldPosition().y > 30;
 	return false;
 }
 

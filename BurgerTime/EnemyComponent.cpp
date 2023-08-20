@@ -28,114 +28,387 @@ void dae::EnemyComponent::Update(float deltaTime)
 
 void dae::EnemyComponent::HandleMovement(float deltaTime)
 {
+	//GO ON LADDER IF Y IS BIG
+	//IF Y IS SAME AND ON PLATFORM GO ON PLATFORM
+	//GO IN X DIRECTION ON PLATFORM
+	//IF DIRECTION CHANGE BECAUSE PLATFORM DOESNT GET TO PETER TAKE NEXT LADDER (directionChanged bool)
+	//IF PLATFORM AND X BIG GO IN X DIRECTION ON PLATFORM AND RESET directionChanged
+
+	//TAKE LADDER IF: direction changed or y > x
+	//TAKE PLATFORM IF: x > y
+	//reset direction changed when ladder top or bottom
+
 	if (m_State != State::falling && m_State != State::stunned)
 	{
-		glm::vec3 peterPos = m_Peter->GetTransform()->GetWorldPosition();
+		CalcDirection();
+		if (m_MovementDir.x == 0 && m_MovementDir.y == 0)
+			m_MovementDir = m_Direction;
+
+		GameObject* platform = nullptr;
+		GameObject* ladder = nullptr;
 		glm::vec3 pos = GetOwner()->GetTransform()->GetWorldPosition();
 
-		if (m_OnPlatform)
-			m_Direction.y = peterPos.y - pos.y;
-
-		//std::cout << "X: " << m_Direction.x << " Y: " << m_Direction.y << std::endl;
-
+		float platDist = 999;
+		float ladderDist = 999;
 		for (auto& object : SceneManager::GetInstance().GetActiveScene().GetObjects())
 		{
 			if (object->GetComponent<CollisionComponent>())
 			{
 				if (m_CollisionComp->IsOverlapping(object.get()))
 				{
-					if(object->GetTag() == Tag::peter || object->GetTag() == Tag::peterjr)
+					if(object->GetTag() == Tag::ladder)
 					{
-						object->GetComponent<PeterPepperComponent>()->Hit();
-					}
-					if (object->GetTag() == Tag::ladder)
-					{
-						
 						auto laddercomp = object->GetComponent<LadderComponent>();
-						if (laddercomp->InRange(GetOwner()))
+						if(laddercomp->InRange(GetOwner()))
 						{
-							if (abs(m_Direction.y) > 8)
+							if (m_MovementDir.y > 0)
 							{
-								auto pos = m_Transform->GetWorldPosition();
-
-								if (m_Direction.y > 0)
+								if (!laddercomp->OnBottom(GetOwner()))
 								{
-									if (!laddercomp->OnBottom(GetOwner()))
+									if (abs(object->GetTransform()->GetWorldPosition().y - GetOwner()->GetTransform()->GetWorldPosition().y) < ladderDist)
 									{
-										pos.y += m_ClimbSpeed * deltaTime;
-										m_State = State::down;
-										pos.x = object->GetTransform()->GetWorldPosition().x;
-										m_Transform->SetLocalPosition(pos);
-										m_OnLadder = true;
-										m_OnPlatform = false;
+										ladderDist = abs(object->GetTransform()->GetWorldPosition().y - GetOwner()->GetTransform()->GetWorldPosition().y);
+										ladder = object.get();
 									}
-									else
-										CalcDirection();
-
 								}
-								if (m_Direction.y < 0)
+								else
 								{
-									if (!laddercomp->OnTop(GetOwner()))
-									{
-										pos.y -= m_ClimbSpeed * deltaTime;
-										m_State = State::up;
-										pos.x = object->GetTransform()->GetWorldPosition().x;
-										m_Transform->SetLocalPosition(pos);
-										m_OnLadder = true;
-										m_OnPlatform = false;
-									}
-									else
-										CalcDirection();
+									m_DirChanged = false;
+									m_MovementDir = m_Direction;
 								}
-
 							}
+							
+							if(m_MovementDir.y < 0)
+							{
+								if (!laddercomp->OnTop(GetOwner()))
+								{
+									if (abs(object->GetTransform()->GetWorldPosition().y - GetOwner()->GetTransform()->GetWorldPosition().y) < ladderDist)
+									{
+										ladderDist = abs(object->GetTransform()->GetWorldPosition().y - GetOwner()->GetTransform()->GetWorldPosition().y);
+										ladder = object.get();
+									}
+								}
+								else
+								{
+									m_DirChanged = false;
+									m_MovementDir = m_Direction;
+								}
+							}
+							
 						}
-
 					}
+
 					if (object->GetTag() == Tag::platform)
 					{
-						auto pos = m_Transform->GetWorldPosition();
 						auto platcomp = object->GetComponent<PlatformComponent>();
-						if (m_Direction.x > 1)
+						if (platcomp->InRange(GetOwner()))
 						{
-							if (platcomp->OnRight(GetOwner()))
+							if (m_MovementDir.x < 0)
 							{
-								pos.x -= m_Speed * deltaTime;
-								m_State = State::left;
-								pos.y = platcomp->GetFloorY();
-								m_Transform->SetLocalPosition(pos);
-								m_OnLadder = false;
-								m_OnPlatform = true;
-								CalcDirection();
+								if (!platcomp->OnLeft(GetOwner()))
+								{
+									if (abs(object->GetTransform()->GetWorldPosition().x - GetOwner()->GetTransform()->GetWorldPosition().x) < platDist)
+									{
+										platDist = abs(object->GetTransform()->GetWorldPosition().x - GetOwner()->GetTransform()->GetWorldPosition().x);
+										platform = object.get();
+									}
+								}
+								else
+								{
+									m_DirChanged = true;
+									m_MovementDir.x = -m_MovementDir.x;
+								}
 							}
-							pos.x += m_Speed * deltaTime;
-							m_State = State::right;
-						}
-						if (m_Direction.x < -1)
-						{
-							if (platcomp->OnLeft(GetOwner()))
+							if (m_MovementDir.x > 0)
 							{
-								pos.x -= m_Speed * deltaTime;
-								m_State = State::left;
-								pos.y = platcomp->GetFloorY();
-								m_Transform->SetLocalPosition(pos);
-								m_OnLadder = false;
-								m_OnPlatform = true;
-								CalcDirection();
+								if (!platcomp->OnRight(GetOwner()))
+								{
+									if (abs(object->GetTransform()->GetWorldPosition().x - GetOwner()->GetTransform()->GetWorldPosition().x) < platDist)
+									{
+										platDist = abs(object->GetTransform()->GetWorldPosition().x - GetOwner()->GetTransform()->GetWorldPosition().x);
+										platform = object.get();
+									}
+								}
+								else
+								{
+									m_DirChanged = true;
+									m_MovementDir.x = -m_MovementDir.x;
+								}
 							}
-							pos.x -= m_Speed * deltaTime;
-							m_State = State::left;
+
 						}
-						pos.y = platcomp->GetFloorY();
-						m_Transform->SetLocalPosition(pos);
-						m_OnLadder = false;
-						m_OnPlatform = true;
 					}
-					
+
+
 				}
 			}
-
 		}
+
+		if(platform && ladder)
+		{
+			if(m_DirChanged)
+			{
+				if (m_MovementDir.y > 0)
+				{
+					pos.y += m_ClimbSpeed * deltaTime;
+					m_State = State::down;
+					pos.x = ladder->GetTransform()->GetWorldPosition().x;
+					m_Transform->SetLocalPosition(pos);
+				}
+				if (m_MovementDir.y < 0)
+				{
+					pos.y -= m_ClimbSpeed * deltaTime;
+					m_State = State::up;
+					pos.x = ladder->GetTransform()->GetWorldPosition().x;
+					m_Transform->SetLocalPosition(pos);
+				}
+				
+			}
+			else
+			{
+				if (abs(m_MovementDir.x) > abs(m_MovementDir.y))
+				{
+					if (m_MovementDir.x < 0)
+					{
+						pos.x -= m_Speed * deltaTime;
+						m_State = State::left;
+						pos.y = platform->GetComponent<PlatformComponent>()->GetFloorY();
+						m_Transform->SetLocalPosition(pos);
+					}
+					if (m_MovementDir.x > 0)
+					{
+						pos.x += m_Speed * deltaTime;
+						m_State = State::right;
+						pos.y = platform->GetComponent<PlatformComponent>()->GetFloorY();
+						m_Transform->SetLocalPosition(pos);
+					}
+				}
+				else
+				{
+					if (m_MovementDir.y > 0)
+					{
+						pos.y += m_ClimbSpeed * deltaTime;
+						m_State = State::down;
+						pos.x = ladder->GetTransform()->GetWorldPosition().x;
+						m_Transform->SetLocalPosition(pos);
+					}
+					if (m_MovementDir.y < 0)
+					{
+						pos.y -= m_ClimbSpeed * deltaTime;
+						m_State = State::up;
+						pos.x = ladder->GetTransform()->GetWorldPosition().x;
+						m_Transform->SetLocalPosition(pos);
+					}
+				}
+			}
+			
+		}
+		else if(ladder)
+		{
+			if (m_MovementDir.y > 0)
+			{
+				pos.y += m_ClimbSpeed * deltaTime;
+				m_State = State::down;
+				pos.x = ladder->GetTransform()->GetWorldPosition().x;
+				m_Transform->SetLocalPosition(pos);
+			}
+			if (m_MovementDir.y < 0)
+			{
+				pos.y -= m_ClimbSpeed * deltaTime;
+				m_State = State::up;
+				pos.x = ladder->GetTransform()->GetWorldPosition().x;
+				m_Transform->SetLocalPosition(pos);
+			}
+		}
+		else if(platform)
+		{
+			if (m_MovementDir.x < 0)
+			{
+				pos.x -= m_Speed * deltaTime;
+				m_State = State::left;
+				pos.y = platform->GetComponent<PlatformComponent>()->GetFloorY();
+				m_Transform->SetLocalPosition(pos);
+			}
+			if (m_MovementDir.x > 0)
+			{
+				pos.x += m_Speed * deltaTime;
+				m_State = State::right;
+				pos.y = platform->GetComponent<PlatformComponent>()->GetFloorY();
+				m_Transform->SetLocalPosition(pos);
+			}
+		}
+
+		std::cout << "X: " << m_MovementDir.x << " Y: " << m_MovementDir.y << std::endl;
+		
+		/*if (platform)
+		{
+			if (m_DirChanged && lastPlatform)
+			{
+				if (platform->GetTransform()->GetWorldPosition().y != lastPlatform->GetTransform()->GetWorldPosition().y)
+				{
+					m_MovementDir.y = m_Direction.y;
+					lastPlatform = nullptr;
+					m_DirChanged = false;
+				}
+			}
+			else
+				m_MovementDir.y = m_Direction.y;
+		}
+		if (!(platform && abs(m_Direction.x) > 2) && ladder)
+		{
+			if ((abs(m_MovementDir.y) > 4 && !m_DirChanged) && ladder || (m_DirChanged && ladder))
+			{
+				if (m_MovementDir.y > 0)
+				{
+					pos.y += m_ClimbSpeed * deltaTime;
+					m_State = State::down;
+					pos.x = ladder->GetTransform()->GetWorldPosition().x;
+					m_Transform->SetLocalPosition(pos);
+				}
+				if (m_MovementDir.y < 0)
+				{
+					pos.y -= m_ClimbSpeed * deltaTime;
+					m_State = State::up;
+					pos.x = ladder->GetTransform()->GetWorldPosition().x;
+					m_Transform->SetLocalPosition(pos);
+				}
+
+
+			}
+		}
+		else if(abs(m_MovementDir.x) > 0)
+		{
+			if(platform)
+			{
+				if(m_MovementDir.x < 0)
+				{
+					pos.x -= m_Speed * deltaTime;
+					m_State = State::left;
+					pos.y = platform->GetComponent<PlatformComponent>()->GetFloorY();
+					m_Transform->SetLocalPosition(pos);
+					m_OnLadder = false;
+					m_OnPlatform = true;
+				}
+				if (m_MovementDir.x > 0)
+				{
+					pos.x += m_Speed * deltaTime;
+					m_State = State::right;
+					pos.y = platform->GetComponent<PlatformComponent>()->GetFloorY();
+					m_Transform->SetLocalPosition(pos);
+					m_OnLadder = false;
+					m_OnPlatform = true;
+				}
+			}
+		}*/
+
+		//std::cout << int(m_State) << '\n' << " Dir X: " << m_MovementDir.x << " Y: " << m_MovementDir.y << std::endl;
+
+		//glm::vec3 peterPos = m_Peter->GetTransform()->GetWorldPosition();
+		//glm::vec3 pos = GetOwner()->GetTransform()->GetWorldPosition();
+
+		//if (m_OnPlatform)
+		//	m_Direction.y = peterPos.y - pos.y;
+
+		////std::cout << "X: " << m_Direction.x << " Y: " << m_Direction.y << std::endl;
+
+		//for (auto& object : SceneManager::GetInstance().GetActiveScene().GetObjects())
+		//{
+		//	if (object->GetComponent<CollisionComponent>())
+		//	{
+		//		if (m_CollisionComp->IsOverlapping(object.get()))
+		//		{
+		//			if(object->GetTag() == Tag::peter || object->GetTag() == Tag::peterjr)
+		//			{
+		//				object->GetComponent<PeterPepperComponent>()->Hit();
+		//			}
+		//			if (object->GetTag() == Tag::ladder)
+		//			{
+		//				
+		//				auto laddercomp = object->GetComponent<LadderComponent>();
+		//				if (laddercomp->InRange(GetOwner()))
+		//				{
+		//					if (abs(m_Direction.y) > 8)
+		//					{
+		//						auto pos = m_Transform->GetWorldPosition();
+
+		//						if (m_Direction.y > 0)
+		//						{
+		//							if (!laddercomp->OnBottom(GetOwner()))
+		//							{
+		//								pos.y += m_ClimbSpeed * deltaTime;
+		//								m_State = State::down;
+		//								pos.x = object->GetTransform()->GetWorldPosition().x;
+		//								m_Transform->SetLocalPosition(pos);
+		//								m_OnLadder = true;
+		//								m_OnPlatform = false;
+		//							}
+		//							else
+		//								CalcDirection();
+
+		//						}
+		//						if (m_Direction.y < 0)
+		//						{
+		//							if (!laddercomp->OnTop(GetOwner()))
+		//							{
+		//								pos.y -= m_ClimbSpeed * deltaTime;
+		//								m_State = State::up;
+		//								pos.x = object->GetTransform()->GetWorldPosition().x;
+		//								m_Transform->SetLocalPosition(pos);
+		//								m_OnLadder = true;
+		//								m_OnPlatform = false;
+		//							}
+		//							else
+		//								CalcDirection();
+		//						}
+
+		//					}
+		//				}
+
+		//			}
+		//			if (object->GetTag() == Tag::platform)
+		//			{
+		//				auto pos = m_Transform->GetWorldPosition();
+		//				auto platcomp = object->GetComponent<PlatformComponent>();
+		//				if (m_Direction.x > 1)
+		//				{
+		//					if (platcomp->OnRight(GetOwner()))
+		//					{
+		//						pos.x -= m_Speed * deltaTime;
+		//						m_State = State::left;
+		//						pos.y = platcomp->GetFloorY();
+		//						m_Transform->SetLocalPosition(pos);
+		//						m_OnLadder = false;
+		//						m_OnPlatform = true;
+		//						CalcDirection();
+		//					}
+		//					pos.x += m_Speed * deltaTime;
+		//					m_State = State::right;
+		//				}
+		//				if (m_Direction.x < -1)
+		//				{
+		//					if (platcomp->OnLeft(GetOwner()))
+		//					{
+		//						pos.x -= m_Speed * deltaTime;
+		//						m_State = State::left;
+		//						pos.y = platcomp->GetFloorY();
+		//						m_Transform->SetLocalPosition(pos);
+		//						m_OnLadder = false;
+		//						m_OnPlatform = true;
+		//						CalcDirection();
+		//					}
+		//					pos.x -= m_Speed * deltaTime;
+		//					m_State = State::left;
+		//				}
+		//				pos.y = platcomp->GetFloorY();
+		//				m_Transform->SetLocalPosition(pos);
+		//				m_OnLadder = false;
+		//				m_OnPlatform = true;
+		//			}
+		//			
+		//		}
+		//	}
+
+		//}
 	}
 }
 

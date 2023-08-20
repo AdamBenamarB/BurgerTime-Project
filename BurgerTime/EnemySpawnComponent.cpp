@@ -21,7 +21,7 @@ dae::EnemySpawnComponent::EnemySpawnComponent(GameObject* owner)
 
 void dae::EnemySpawnComponent::Update(float deltaTime)
 {
-	m_ELapsedTime += deltaTime;
+	//m_ELapsedTime += deltaTime;
 	if(m_ELapsedTime >= m_TimePerSpawn)
 	{
 		m_ELapsedTime = 0;

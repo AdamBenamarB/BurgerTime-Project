@@ -45,21 +45,22 @@ namespace dae {
         void HandleMovement(float deltaTime);
         void HandleAnim() const;
         void HandleStun(float deltaTime);
+
         State m_State = State::left;
 
         float m_Speed{ 35.f },
-            m_ClimbSpeed{ 30.f },
-            m_FallSpeed{ 150.f };
+            m_ClimbSpeed{ 30.f };
 
         float m_StunTime{ 1.5f },
             m_StunElapsed{};
 
         bool m_OnPlatform{ true },
-            m_OnLadder{ false };
+            m_OnLadder{ false },
+            m_DirChanged{ false };
 
         GameObject* m_Peter{};
 
-        Vec2 m_Direction{};
+        Vec2 m_Direction{}, m_MovementDir{};
 
         AnimatedRenderComponent* m_Anim{};
 
