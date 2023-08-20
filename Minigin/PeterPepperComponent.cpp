@@ -250,7 +250,7 @@ void dae::PeterPepperComponent::Hit()
 			if (hp->GetLives() == 0)
 				GameInstance::GetInstance().Died(m_OtherPeter->GetComponent<PointsComponent>()->GetPoints());
 			else
-				GameInstance::GetInstance().Hit(hp->GetLives(), GetOwner()->GetComponent<PointsComponent>()->GetPoints());
+				GameInstance::GetInstance().Hit(hp->GetLives(), m_OtherPeter->GetComponent<PointsComponent>()->GetPoints());
 		}
 		
 	}

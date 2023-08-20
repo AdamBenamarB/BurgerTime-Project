@@ -57,7 +57,7 @@ void Scene::DeleteObjects()
 {
 	for (int j{}; j < (int)m_ToRemove.size(); ++j)
 	{
-		for (int i{}; i < m_Objects.size(); ++i)
+		for (int i{}; i < (int)m_Objects.size(); ++i)
 			if (m_Objects[i].get() == m_ToRemove[j])
 				m_Objects.erase(m_Objects.begin() + i);
 	}

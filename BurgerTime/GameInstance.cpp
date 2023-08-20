@@ -88,6 +88,11 @@ void GameInstance::LoadNextLevel()
 
 void GameInstance::EndGame()
 {
+	for (auto object : dae::SceneManager::GetInstance().GetActiveScene().GetObjects())
+	{
+		if (object->GetTag() == Tag::peter)
+			m_Score = object->GetComponent<dae::PointsComponent>()->GetPoints();
+	}
 	auto& scene = dae::SceneManager::GetInstance().GetActiveScene();
 	dae::SceneManager::GetInstance().RemoveScene(scene);
 	dae::InputManager::GetInstance().RemoveCommands();
