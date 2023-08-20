@@ -2,7 +2,6 @@
 
 #include "Event.h"
 #include "HealthComponent.h"
-#include "RenderComponent.h"
 #include "ResourceManager.h"
 #include "GameObject.h"
 #include "PepperComponent.h"

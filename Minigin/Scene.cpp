@@ -1,7 +1,5 @@
 #include "Scene.h"
 
-#include <iostream>
-
 #include "GameObject.h"
 
 using namespace dae;

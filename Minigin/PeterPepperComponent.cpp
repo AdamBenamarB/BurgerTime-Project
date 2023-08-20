@@ -1,7 +1,5 @@
 #include "PeterPepperComponent.h"
 
-#include <iostream>
-
 #include "CollisionComponent.h"
 #include "GameObject.h"
 #include "AnimatedRenderComponent.h"

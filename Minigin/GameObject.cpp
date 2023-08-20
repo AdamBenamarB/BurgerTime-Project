@@ -1,7 +1,4 @@
-#include <string>
 #include "GameObject.h"
-
-#include <iostream>
 
 #include "Component.h"
 #include "RenderComponent.h"

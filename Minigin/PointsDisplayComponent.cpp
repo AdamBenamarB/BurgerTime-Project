@@ -9,7 +9,7 @@
 
 
 dae::PointsDisplayComponent::PointsDisplayComponent(GameObject* owner) : Component(owner)
-{//I know I shouldn pass the components instead of making them in another comp
+{
 	auto font = ResourceManager::GetInstance().LoadFont("Burgertime.otf", 20);
 	m_TextComponent = owner->AddComponent<TextComponent>();
 	m_TextComponent->SetFont(font);

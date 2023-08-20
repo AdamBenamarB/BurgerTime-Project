@@ -1,6 +1,5 @@
 #include "InputManager.h"
 #include "Command.h"
-#include <iostream>
 #include <SDL_events.h>
 
 #include "ServiceLocator.h"
@@ -10,17 +9,6 @@ dae::InputManager::InputManager()
 {
 
 }
-
-
-//void dae::InputManager::Update(float deltaTime)
-//{
-//	m_ElapsedControllerCheck += deltaTime;
-//	if (m_ElapsedControllerCheck >= m_ControllerCheckInterval)
-//	{
-//		m_ElapsedControllerCheck = 0.f;
-//	}
-//	
-//}
 
 bool dae::InputManager::HandleInput()
 {

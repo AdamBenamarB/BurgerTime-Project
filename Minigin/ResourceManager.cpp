@@ -5,7 +5,6 @@
 #include "Renderer.h"
 #include "Texture2D.h"
 #include "Font.h"
-#include <SDL_mixer.h>
 
 void dae::ResourceManager::Init(const std::string& dataPath)
 {

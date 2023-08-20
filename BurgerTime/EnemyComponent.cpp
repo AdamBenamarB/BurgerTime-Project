@@ -53,6 +53,7 @@ void dae::EnemyComponent::HandleMovement(float deltaTime)
 						auto laddercomp = object->GetComponent<LadderComponent>();
 						if(laddercomp->InRange(GetOwner()))
 						{
+
 							if (m_MovementDir.y > 0)
 							{
 								if (!laddercomp->OnBottom(GetOwner()))

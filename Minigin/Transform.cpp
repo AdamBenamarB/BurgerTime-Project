@@ -1,9 +1,6 @@
 #include "Transform.h"
 
-#include <iostream>
-
 #include "GameObject.h"
-#include "..\BurgerTime\EnemyComponent.h"
 
 dae::Transform::Transform(GameObject* obj)
 	:Component(obj){}

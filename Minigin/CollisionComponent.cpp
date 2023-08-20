@@ -2,7 +2,6 @@
 
 #include <glm/vec3.hpp>
 #include "GameObject.h"
-#include "Tags.h"
 
 bool dae::CollisionComponent::IsOverlapping(GameObject* other)
 {

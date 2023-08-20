@@ -84,5 +84,5 @@ int XBox360Controller::GetIndex()
 
 int* XBox360Controller::GetControllerIds()
 {
-	return nullptr;// Xbox360ControllerImpl::GetConnectedIds();
+	return nullptr;
 }
